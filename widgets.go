@@ -19,10 +19,10 @@ import (
 var rootPath string
 var templateFuncs template.FuncMap
 var templateBox *rice.Box
-var devMode bool
+var isDevMode bool
 
-func Init(isDev bool, root string, funcs template.FuncMap) {
-	devMode = isDev
+func Init(devMode bool, root string, funcs template.FuncMap) {
+	isDevMode = devMode
 	rootPath = root
 	templateFuncs = funcs
 	templateBox = rice.MustFindBox("templates")
@@ -89,7 +89,7 @@ func getTemplateFromCache(name string) *template.Template {
 
 // BaseWidget creates a Widget based on style and inpuType parameters, both defined in the common package.
 func BaseWidget(style, inputType string) Widget {
-	if devMode {
+	if isDevMode {
 		templ := loadTemplate(style, inputType)
 		return &widget{template: templ}
 	}
