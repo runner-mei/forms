@@ -164,7 +164,7 @@ func loadTemplate(style, inputType string) *template.Template {
 	}
 
 	for _, p := range filepath.SplitList(os.Getenv("GOPATH")) {
-		styledURL := path.Join(p, "templates", widgetFilename)
+		styledURL := path.Join(p, "src/github.com/three-plus-three/forms", "templates", widgetFilename)
 		if _, err := os.Stat(styledURL); err == nil {
 			return mustLoadTemplate(style, styledURL)
 		}
