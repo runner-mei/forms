@@ -15,8 +15,12 @@ func PasswordField(ctx interface{}, name, label string) *Field {
 // TextAreaField creates a default textarea input field based on the provided name and dimensions.
 func TextAreaField(ctx interface{}, name, label string, rows, cols int) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, TEXTAREA)
-	ret.SetParam("rows", string(rows))
-	ret.SetParam("cols", string(cols))
+	if rows > 0 {
+		ret.SetParam("rows", string(rows))
+	}
+	if cols > 0 {
+		ret.SetParam("cols", string(cols))
+	}
 	return ret
 }
 
