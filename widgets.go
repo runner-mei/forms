@@ -23,7 +23,8 @@ var MapToString = func(v interface{}) string {
 		panic(fmt.Errorf("MapToString: value is not map - %T `%v`", v, v))
 	}
 	var buf bytes.Buffer
-	buf.WriteString("一行为一条记录，以等号分隔键和值\r\n")
+	buf.WriteString("# 一行为一条记录，以等号分隔键和值\r\n")
+	buf.WriteString("# 以 # 开始的行及空行将忽略\r\n")
 	for k, v := range m {
 		buf.WriteString(k)
 		buf.WriteString("=")
