@@ -6,6 +6,7 @@ package forms
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"html/template"
 	"os"
 	"path"
@@ -16,6 +17,21 @@ import (
 	"github.com/GeertJohan/go.rice"
 )
 
+var MapToString = func(v interface{}) string {
+	m, ok := v.(map[string]interface{})
+	if !ok {
+		panic(fmt.Errorf("MapToString: value is not map - %T `%v`", v, v))
+	}
+	var buf bytes.Buffer
+	buf.WriteString("一行为一条记录，以等号分隔键和值\r\n")
+	for k, v := range m {
+		buf.WriteString(k)
+		buf.WriteString("=")
+		buf.WriteString(v)
+		buf.WriteString("\r\n")
+	}
+	return buf.String()
+}
 var rootPath string
 var templateFuncs template.FuncMap
 var templateBox *rice.Box
@@ -141,6 +157,8 @@ func loadTemplate(style, inputType string) *template.Template {
 		widgetFilename = style + "/cron.html"
 	case HIDDEN:
 		widgetFilename = style + "/hidden.html"
+	case MAP:
+		widgetFilename = style + "/map.html"
 	case SEARCH,
 		TEL,
 		URL,

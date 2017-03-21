@@ -36,6 +36,7 @@ const (
 	SELECT         = "select"
 	STATIC         = "static"
 	CRON           = "cron"
+	MAP            = "map"
 )
 
 // Available form styles

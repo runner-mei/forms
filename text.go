@@ -24,6 +24,18 @@ func TextAreaField(ctx interface{}, name, label string, rows, cols int) *Field {
 	return ret
 }
 
+// MapField creates a default textarea input field based on the provided name and dimensions.
+func MapField(ctx interface{}, name, label string, rows, cols int) *Field {
+	ret := FieldWithTypeWithCtx(ctx, name, label, MAP)
+	if rows > 0 {
+		ret.SetParam("rows", string(rows))
+	}
+	if cols > 0 {
+		ret.SetParam("cols", string(cols))
+	}
+	return ret
+}
+
 // ========================
 
 // HiddenField creates a default hidden input field based on the provided name.
@@ -36,4 +48,6 @@ func init() {
 	FieldFuncs["password_field"] = PasswordField
 	FieldFuncs["textarea_field"] = TextAreaField
 	FieldFuncs["hidden_field"] = HiddenField
+	FieldFuncs["map_field"] = MapField
+
 }

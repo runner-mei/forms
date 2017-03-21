@@ -85,7 +85,13 @@ func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 	field.SetLabel(label)
 
 	value := revel.NewField(name, ctx.(map[string]interface{}))
-	if TEXTAREA == field.fieldType {
+	if MAP == field.fieldType {
+		if flashValue := value.Flash(); "" != flashValue {
+			field.SetText(flashValue)
+		} else {
+			field.SetText(MapToString(value.Value()))
+		}
+	} else if TEXTAREA == field.fieldType {
 		if flashValue := value.Flash(); "" != flashValue {
 			field.SetText(flashValue)
 		} else {
@@ -98,7 +104,7 @@ func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 			field.SetValue(fmt.Sprint(value.Value()))
 		}
 	}
-	
+
 	if value.Error != nil {
 		field.AddError(value.Error.Message)
 	}
