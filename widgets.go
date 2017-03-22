@@ -28,7 +28,7 @@ var MapToString = func(v interface{}) string {
 	for k, v := range m {
 		buf.WriteString(k)
 		buf.WriteString("=")
-		buf.WriteString(v)
+		buf.WriteString(fmt.Sprint(v))
 		buf.WriteString("\r\n")
 	}
 	return buf.String()
