@@ -88,9 +88,3 @@ func Checkbox(ctx interface{}, name, label string) *Field {
 	}
 	return ret
 }
-
-func init() {
-	FieldFuncs["radio_field"] = RadioField
-	FieldFuncs["select_field"] = SelectField
-	FieldFuncs["checkbox_field"] = Checkbox
-}

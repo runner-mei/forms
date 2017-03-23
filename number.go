@@ -14,8 +14,3 @@ func RangeField(ctx interface{}, name, label string, min, max, step int) *Field 
 func NumberField(ctx interface{}, name, label string) *Field {
 	return FieldWithTypeWithCtx(ctx, name, label, NUMBER)
 }
-
-func init() {
-	FieldFuncs["range_field"] = RangeField
-	FieldFuncs["number_field"] = NumberField
-}

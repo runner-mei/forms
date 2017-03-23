@@ -20,9 +20,3 @@ func Button(ctx interface{}, name string, text string) *Field {
 	ret.SetText(text)
 	return ret
 }
-
-func init() {
-	FieldFuncs["submit"] = SubmitButton
-	FieldFuncs["reset"] = ResetButton
-	FieldFuncs["button"] = Button
-}

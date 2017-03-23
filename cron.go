@@ -4,7 +4,3 @@ package forms
 func CronField(ctx interface{}, name, label string) *Field {
 	return FieldWithTypeWithCtx(ctx, name, label, CRON)
 }
-
-func init() {
-	FieldFuncs["cron_field"] = CronField
-}

@@ -24,9 +24,3 @@ func TimeField(ctx interface{}, name, label string) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, TIME)
 	return ret
 }
-
-func init() {
-	FieldFuncs["datetime_field"] = DatetimeField
-	FieldFuncs["date_field"] = DateField
-	FieldFuncs["time_field"] = TimeField
-}

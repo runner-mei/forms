@@ -6,7 +6,3 @@ func StaticField(name, content string) *Field {
 	ret.SetText(content)
 	return ret
 }
-
-func init() {
-	FieldFuncs["static_field"] = StaticField
-}

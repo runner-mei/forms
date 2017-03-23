@@ -42,12 +42,3 @@ func MapField(ctx interface{}, name, label string, rows, cols int) *Field {
 func HiddenField(ctx interface{}, name string) *Field {
 	return FieldWithTypeWithCtx(ctx, name, "", HIDDEN)
 }
-
-func init() {
-	FieldFuncs["text_field"] = TextField
-	FieldFuncs["password_field"] = PasswordField
-	FieldFuncs["textarea_field"] = TextAreaField
-	FieldFuncs["hidden_field"] = HiddenField
-	FieldFuncs["map_field"] = MapField
-
-}
