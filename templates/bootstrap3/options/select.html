@@ -27,7 +27,7 @@
                   {{end}}
                 {{else}}
                   {{ if eq $p.value .ID}} selected{{end}}
-                {{end}}>{{.Val}}
+                {{end}}>{{raw .Val}}
         </option>
       {{end}}
       {{if $k}}
