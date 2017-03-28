@@ -19,15 +19,15 @@
       {{ if $k }}
         <optgroup label="{{$k}}">{{end}}
       {{range $v}}
-        <option value="{{.ID}}"
+        <option value="{{.Value}}"
                 {{if strIn "multiple" $p.tags }}
-                  {{$id :=.ID}}
+                  {{$id :=.Value}}
                   {{range $k2, $p2 :=$p.multValues}}
                   {{if eq $k2 $id}}selected{{end}}
                   {{end}}
                 {{else}}
-                  {{ if eq $p.value .ID}} selected{{end}}
-                {{end}}>{{raw .Val}}
+                  {{ if eq $p.value .Value}} selected{{end}}
+                {{end}}>{{raw .Label}}
         </option>
       {{end}}
       {{if $k}}

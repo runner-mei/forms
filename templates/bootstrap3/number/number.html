@@ -7,7 +7,7 @@
       for="{{.id}}" {{end}}>{{.label}}</label>
   {{end}}
   <div class="col-lg-{{default .controlWidth 9}}">
-    <input type="text" name="{{.name}}" class="form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
+    <input type="number" name="{{.name}}" class="form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
            {{if .id}} id="{{.id}}" {{end}}
            {{if .params}}
            {{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}
