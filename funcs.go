@@ -11,6 +11,10 @@ func init() {
 	FieldFuncs["submit"] = SubmitButton
 	FieldFuncs["reset"] = ResetButton
 	FieldFuncs["button"] = Button
+	FieldFuncs["email_field"] = TextField
+	FieldFuncs["ipaddress_field"] = TextField
+	FieldFuncs["ipaddr_field"] = TextField
+	FieldFuncs["ip_field"] = TextField
 	FieldFuncs["text_field"] = TextField
 	FieldFuncs["password_field"] = PasswordField
 	FieldFuncs["textarea_field"] = TextAreaField

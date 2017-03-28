@@ -34,12 +34,12 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 
 func validateChoices(results []InputChoice) {
 	for idx := range results {
-		if results[idx].ID == "" {
-			panic(errors.New("ID of InputChoice is empty"))
+		if results[idx].Value == "" {
+			panic(errors.New("Value of InputChoice is empty"))
 		}
 
 		if results[idx].Label == "" {
-			results[idx].Label = results[idx].ID
+			results[idx].Label = results[idx].Value
 		}
 	}
 }
@@ -59,7 +59,7 @@ func readChoices(v interface{}) []InputChoice {
 
 		panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is []InputChoice - [%T]%#V", v, v))
+	panic(fmt.Errorf("Choices arguments must is []InputChoice - [%T]%#v", v, v))
 }
 
 func readChoiceGroups(v interface{}) map[string][]InputChoice {
@@ -92,7 +92,7 @@ func readChoiceGroups(v interface{}) map[string][]InputChoice {
 
 		panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is map[string][]InputChoice or []InputChoice - [%T]%#V", v, v))
+	panic(fmt.Errorf("Choices arguments must is map[string][]InputChoice or []InputChoice - [%T]%#v", v, v))
 }
 
 // Checkbox creates a default checkbox field with the provided name. It also makes it checked by default based
