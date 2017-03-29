@@ -83,6 +83,7 @@ func readChoiceGroups(v interface{}) map[string][]InputChoice {
 // on the checked parameter.
 func Checkbox(ctx interface{}, name, label string) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, CHECKBOX)
+	fmt.Println("ret.value:", ret.value)
 	if s := strings.ToUpper(ret.value); s == "TRUE" || s == "enabled" || s == "yes" || s == "1" || s == "ON" {
 		ret.AddTag("checked")
 	}
