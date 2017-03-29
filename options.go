@@ -10,8 +10,8 @@ import (
 
 // InputChoice - Value pair used to define an option for select and redio input fields.
 type InputChoice struct {
-	ID  string `json:"id"`
-	Val string `json:"val"`
+	Value string `json:"value"`
+	Label string `json:"label"`
 }
 
 // RadioField creates a default radio button input field with the provided name and list of choices.
@@ -32,6 +32,17 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 	return ret
 }
 
+func validateChoices(results []InputChoice) {
+	for idx := range results {
+		if results[idx].Value == "" {
+			panic(errors.New("Value of InputChoice is empty"))
+		}
+
+		if results[idx].Label == "" {
+			results[idx].Label = results[idx].Value
+		}
+	}
+}
 func readChoices(v interface{}) []InputChoice {
 	if choices, ok := v.([]InputChoice); ok {
 		return choices
@@ -42,12 +53,13 @@ func readChoices(v interface{}) []InputChoice {
 			if err := json.Unmarshal([]byte(s), &results); err != nil {
 				panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice, " + err.Error()))
 			}
+			validateChoices(results)
 			return results
 		}
 
 		panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is []InputChoice - [%T]%#V", v, v))
+	panic(fmt.Errorf("Choices arguments must is []InputChoice - [%T]%#v", v, v))
 }
 
 func readChoiceGroups(v interface{}) map[string][]InputChoice {
@@ -63,6 +75,9 @@ func readChoiceGroups(v interface{}) map[string][]InputChoice {
 			if err := json.Unmarshal([]byte(s), &results); err != nil {
 				panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice, " + err.Error()))
 			}
+			for _, choices := range results {
+				validateChoices(choices)
+			}
 			return results
 		}
 
@@ -71,12 +86,13 @@ func readChoiceGroups(v interface{}) map[string][]InputChoice {
 			if err := json.Unmarshal([]byte(s), &results); err != nil {
 				panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice, " + err.Error()))
 			}
+			validateChoices(results)
 			return map[string][]InputChoice{"": results}
 		}
 
 		panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is map[string][]InputChoice or []InputChoice - [%T]%#V", v, v))
+	panic(fmt.Errorf("Choices arguments must is map[string][]InputChoice or []InputChoice - [%T]%#v", v, v))
 }
 
 // Checkbox creates a default checkbox field with the provided name. It also makes it checked by default based
