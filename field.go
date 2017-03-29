@@ -423,6 +423,14 @@ var (
 			field.Enabled()
 			return field
 		},
+		"f_setEditMode": func(mode bool, field FieldInterface) FieldInterface {
+			if mode {
+				field.Enabled()
+			} else {
+				field.Disabled()
+			}
+			return field
+		},
 		"f_helpText": func(text string, field FieldInterface) FieldInterface {
 			field.SetHelptext(text)
 			return field
