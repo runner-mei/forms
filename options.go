@@ -59,7 +59,7 @@ func readChoices(v interface{}) []InputChoice {
 
 		panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is []InputChoice - [%T]%#v", v, v))
+	panic(fmt.Errorf("Choices arguments must be []InputChoice - [%T]%#v", v, v))
 }
 
 func readChoiceGroups(v interface{}) map[string][]InputChoice {
