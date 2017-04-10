@@ -63,6 +63,14 @@ func readChoices(v interface{}) []InputChoice {
 }
 
 func readChoiceGroups(v interface{}) map[string][]InputChoice {
+	if strMap, ok := v.(map[string]interface{}); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{k, fmt.Sprint(v)})
+		}
+
+		return map[string][]InputChoice{"": choices}
+	}
 	if choices, ok := v.(map[string][]InputChoice); ok {
 		return choices
 	}

@@ -33,6 +33,7 @@ type FieldInterface interface {
 	Name() string
 	Render() template.HTML
 	AddClass(class string) FieldInterface
+	AddData(key, value string) FieldInterface
 	RemoveClass(class string) FieldInterface
 	AddTag(class string) FieldInterface
 	RemoveTag(class string) FieldInterface
@@ -168,6 +169,12 @@ func (f *Field) String() string {
 // AddClass adds a class to the field.
 func (f *Field) AddClass(class string) FieldInterface {
 	f.classes = f.classes.add(class)
+	return f
+}
+
+// AddClass adds a class to the field.
+func (f *Field) AddData(key, value string) FieldInterface {
+	f.additionalData[key] = value
 	return f
 }
 
@@ -437,6 +444,10 @@ var (
 		},
 		"f_addError": func(err string, field FieldInterface) FieldInterface {
 			field.AddError(err)
+			return field
+		},
+		"f_addData": func(key, value string, field FieldInterface) FieldInterface {
+			field.AddData(key, value)
 			return field
 		},
 		"render": func(field FieldInterface) template.HTML {
