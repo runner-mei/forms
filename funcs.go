@@ -1,5 +1,7 @@
 package forms
 
+import "html/template"
+
 func init() {
 	FieldFuncs["radio_field"] = RadioField
 	FieldFuncs["select_field"] = SelectField
@@ -23,4 +25,8 @@ func init() {
 	FieldFuncs["static_field"] = StaticField
 	FieldFuncs["range_field"] = RangeField
 	FieldFuncs["number_field"] = NumberField
+
+	FieldFuncs["table_column_title"] = func(ctx map[string]interface{}, name, label string) interface{} {
+		return template.HTML("<nobr>" + label + "</nobr>")
+	}
 }

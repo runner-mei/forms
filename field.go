@@ -432,9 +432,9 @@ var (
 		},
 		"f_setEditMode": func(mode bool, field FieldInterface) FieldInterface {
 			if mode {
-				field.Enabled()
+				field.DeleteParam("readonly")
 			} else {
-				field.Disabled()
+				field.SetParam("readonly", "readonly")
 			}
 			return field
 		},
