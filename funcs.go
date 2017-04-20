@@ -27,6 +27,6 @@ func init() {
 	FieldFuncs["number_field"] = NumberField
 
 	FieldFuncs["table_column_title"] = func(ctx map[string]interface{}, name, label string) interface{} {
-		return template.HTML("<nobr>" + label + "</nobr>")
+		return template.HTML("<th><nobr>" + label + "</nobr></th>")
 	}
 }

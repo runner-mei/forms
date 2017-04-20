@@ -1,7 +1,7 @@
 package forms
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path"
 	"path/filepath"
@@ -51,7 +51,7 @@ func CreateURL(widget string) string {
 		for _, p := range filepath.SplitList(os.Getenv("GOPATH")) {
 			widgetPath := path.Join(p, "mc/app/libs/forms", widget)
 			if _, err := os.Stat(widgetPath); os.IsNotExist(err) {
-				fmt.Println(widgetPath)
+				log.Println(widgetPath)
 				continue
 			} else {
 				return widgetPath
