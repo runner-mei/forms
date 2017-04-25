@@ -40,8 +40,8 @@ type FieldInterface interface {
 	SetID(id string) FieldInterface
 	SetParam(key, value string) FieldInterface
 	DeleteParam(key string) FieldInterface
-	AddCss(key, value string) FieldInterface
-	RemoveCss(key string) FieldInterface
+	AddCSS(key, value string) FieldInterface
+	RemoveCSS(key string) FieldInterface
 	SetStyle(style string) FieldInterface
 	SetLabel(label string) FieldInterface
 	AddLabelClass(class string) FieldInterface
@@ -102,7 +102,12 @@ func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 		if flashValue := value.Flash(); "" != flashValue {
 			field.SetValue(flashValue)
 		} else {
-			field.SetValue(fmt.Sprint(value.Value()))
+			val := value.Value()
+			if b, ok := val.(byte); ok {
+				field.SetValue(string(b))
+			} else {
+				field.SetValue(fmt.Sprint(value.Value()))
+			}
 		}
 	}
 
@@ -172,7 +177,7 @@ func (f *Field) AddClass(class string) FieldInterface {
 	return f
 }
 
-// AddClass adds a class to the field.
+// AddData adds a k/v to the additional data.
 func (f *Field) AddData(key, value string) FieldInterface {
 	f.additionalData[key] = value
 	return f
@@ -196,7 +201,7 @@ func (f *Field) SetLabel(label string) FieldInterface {
 	return f
 }
 
-// SetLablClass allows to define custom classes for the label.
+// AddLabelClass allows to define custom classes for the label.
 func (f *Field) AddLabelClass(class string) FieldInterface {
 	f.labelClasses = f.labelClasses.add(class)
 	return f
@@ -220,14 +225,14 @@ func (f *Field) DeleteParam(key string) FieldInterface {
 	return f
 }
 
-// AddCss adds a custom CSS style the field.
-func (f *Field) AddCss(key, value string) FieldInterface {
+// AddCSS adds a custom CSS style the field.
+func (f *Field) AddCSS(key, value string) FieldInterface {
 	f.css[key] = value
 	return f
 }
 
-// RemoveCss removes CSS options identified by key from the field.
-func (f *Field) RemoveCss(key string) FieldInterface {
+// RemoveCSS removes CSS options identified by key from the field.
+func (f *Field) RemoveCSS(key string) FieldInterface {
 	delete(f.css, key)
 	return f
 }
@@ -299,7 +304,7 @@ func (f *Field) SingleChoice() FieldInterface {
 	return f
 }
 
-// If the field is configured as "multiple", AddSelected adds a selected value to the field (valid for SelectFields only).
+// AddSelected If the field is configured as "multiple", AddSelected adds a selected value to the field (valid for SelectFields only).
 // It has no effect if type is not SELECT.
 func (f *Field) AddSelected(opt ...string) FieldInterface {
 	if f.fieldType == SELECT {
@@ -310,7 +315,7 @@ func (f *Field) AddSelected(opt ...string) FieldInterface {
 	return f
 }
 
-// If the field is configured as "multiple", AddSelected removes the selected value from the field (valid for SelectFields only).
+// RemoveSelected If the field is configured as "multiple", AddSelected removes the selected value from the field (valid for SelectFields only).
 // It has no effect if type is not SELECT.
 func (f *Field) RemoveSelected(opt string) FieldInterface {
 	if f.fieldType == SELECT {
@@ -383,11 +388,11 @@ var (
 			return field
 		},
 		"f_addCss": func(key, value string, field FieldInterface) FieldInterface {
-			field.AddCss(key, value)
+			field.AddCSS(key, value)
 			return field
 		},
 		"f_removeCss": func(key string, field FieldInterface) FieldInterface {
-			field.RemoveCss(key)
+			field.RemoveCSS(key)
 			return field
 		},
 		"f_setStyle": func(style string, field FieldInterface) FieldInterface {
