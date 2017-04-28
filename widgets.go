@@ -201,9 +201,21 @@ func loadTemplate(style, inputType string) *template.Template {
 }
 
 func mustLoadTemplate(style, filename string) *template.Template {
-	templ, err := template.New(style).Funcs(templateFuncs).ParseFiles(filename)
+	templ, err := template.New(style).Funcs(defaultFuncs).Funcs(templateFuncs).ParseFiles(filename)
 	if err != nil {
 		panic(errors.New("load template(" + filename + ") fail, " + err.Error()))
 	}
 	return templ
+}
+
+var defaultFuncs = template.FuncMap{
+	"default": func(value, defvalue interface{}) interface{} {
+		if nil == value {
+			return defvalue
+		}
+		if s, ok := value.(string); ok && "" == s {
+			return defvalue
+		}
+		return value
+	},
 }
