@@ -11,6 +11,7 @@ import (
 
 // Field is a generic type containing all data associated to an input field.
 type Field struct {
+	ctx            interface{}
 	fieldType      string
 	Widget         Widget // Public Widget field for widget customization
 	name           string
@@ -61,8 +62,9 @@ type FieldInterface interface {
 }
 
 // FieldWithType creates an empty field of the given type and identified by name.
-func FieldWithType(name, t string) *Field {
+func FieldWithType(ctx interface{}, name, t string) *Field {
 	return &Field{
+		ctx:            ctx,
 		fieldType:      t,
 		Widget:         nil,
 		name:           name,
@@ -82,7 +84,7 @@ func FieldWithType(name, t string) *Field {
 
 // FieldWithTypeWithCtx creates an field of the given type and identified by name.
 func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
-	field := FieldWithType(name, typ)
+	field := FieldWithType(ctx, name, typ)
 	field.SetLabel(label)
 
 	value := revel.NewField(name, ctx.(map[string]interface{}))
@@ -135,6 +137,7 @@ func (f *Field) dataForRender() map[string]interface{} {
 		safeParams[template.HTMLAttr(k)] = v
 	}
 	data := map[string]interface{}{
+		"ctx_parent":   f.ctx,
 		"classes":      f.classes,
 		"id":           f.id,
 		"name":         f.name,

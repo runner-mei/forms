@@ -11,6 +11,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strconv"
 	"sync"
 	"sync/atomic"
 
@@ -193,7 +194,7 @@ func loadTemplate(style, inputType string) *template.Template {
 	if err != nil {
 		panic(errors.New("load template(" + widgetFilename + ") fail, " + err.Error()))
 	}
-	templ, err := template.New(style).Funcs(templateFuncs).Parse(txt)
+	templ, err := template.New(style).Funcs(defaultFuncs).Funcs(templateFuncs).Parse(txt)
 	if err != nil {
 		panic(errors.New("load template(" + widgetFilename + ") from rice-box fail, " + err.Error()))
 	}
@@ -208,6 +209,8 @@ func mustLoadTemplate(style, filename string) *template.Template {
 	return templ
 }
 
+var g_id int32 = 0
+
 var defaultFuncs = template.FuncMap{
 	"default": func(value, defvalue interface{}) interface{} {
 		if nil == value {
@@ -217,5 +220,9 @@ var defaultFuncs = template.FuncMap{
 			return defvalue
 		}
 		return value
+	},
+	"generateID": func() string {
+		v := atomic.AddInt32(&g_id, 1)
+		return "widget_" + strconv.FormatInt(int64(v), 10)
 	},
 }

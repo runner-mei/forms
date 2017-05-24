@@ -1,1 +1,59 @@
-{{ define "main"}}{{ template "generic" . }}{{ end }}
+
+{{ define "main"}}
+{{append .ctx_parent "moreScripts" "/public/js/plugins/datepicker/bootstrap-datepicker.js"}}
+{{append .ctx_parent "moreStyles" "/public/css/plugins/datepicker/datepicker3.css"}}
+
+
+<div class="form-group{{if .errors}} has-error{{end}}">
+  {{- if .label -}}
+  <label
+    class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
+    {{- if .id}} for="{{.id}}" {{end}}>
+    {{.label}}
+  </label>
+  {{- end}}
+  {{if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
+  <div class="form-group col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
+    <div class="input-group date">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <input type="text" class="form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}"
+            name="{{.name}}"
+            {{- if .id}} id="{{.id}}" {{end -}}
+            {{- if .params -}} 
+              {{- range $k, $v :=.params}} {{$k}}="{{$v}}" {{end -}} 
+            {{- end -}}
+            {{- range $v :=.tags}} {{$v}} {{end -}}
+            {{- if .value -}} value="{{.value}}" {{end}}>
+      {{- if or .helptext .errors -}}
+      <span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
+          {{- if .errors}}
+            <ul>
+            {{- range .errors }}
+              <li>{{.}}</li>
+            {{- end -}}
+            </ul>
+          {{- end}}
+    </span>
+    {{- end}}
+    </div>
+
+    <script>
+      if (tpt_form_callbacks == null) {
+        tpt_form_callbacks = new Array();
+      }
+      tpt_form_callbacks.push(function () {
+            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({
+                todayBtn: "linked",
+                todayHighlight: false,
+                keyboardNavigation: true,
+                forceParse: true,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "yyyy-m-d"
+            });
+        });
+    </script>
+
+  </div>
+</div>
+{{- end}}
