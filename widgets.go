@@ -14,6 +14,7 @@ import (
 	"strconv"
 	"sync"
 	"sync/atomic"
+	"time"
 
 	"github.com/GeertJohan/go.rice"
 )
@@ -221,8 +222,36 @@ var defaultFuncs = template.FuncMap{
 		}
 		return value
 	},
+	"form_date": func(value interface{}) string {
+		t, ok := toTime(value)
+		if !ok {
+			return fmt.Sprint(value)
+		}
+		return t.Format("2006-01-02")
+	},
 	"generateID": func() string {
 		v := atomic.AddInt32(&g_id, 1)
 		return "widget_" + strconv.FormatInt(int64(v), 10)
 	},
+}
+
+func toTime(v interface{}) (time.Time, bool) {
+	if t, ok := v.(time.Time); ok {
+		return t, true
+	}
+
+	s, ok := v.(string)
+	if !ok {
+		return time.Time{}, false
+	}
+	for _, layout := range []string{time.RFC3339,
+		time.RFC3339Nano,
+		"2006-01-02",
+		"2006-01-02 15:04:05"} {
+		if m, e := time.Parse(time.RFC3339, s); nil == e {
+			return m, true
+		}
+	}
+
+	return time.Time{}, false
 }
