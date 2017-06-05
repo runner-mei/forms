@@ -244,7 +244,10 @@ func toTime(v interface{}) (time.Time, bool) {
 	if !ok {
 		return time.Time{}, false
 	}
-	for _, layout := range []string{time.RFC3339,
+	for _, layout := range []string{
+		"2006-01-02 15:04:05.999999999 -0700 MST",
+		"2006-01-02 15:04:05 -0700 MST",
+		time.RFC3339,
 		time.RFC3339Nano,
 		"2006-01-02",
 		"2006-01-02 15:04:05"} {
@@ -253,5 +256,6 @@ func toTime(v interface{}) (time.Time, bool) {
 		}
 	}
 
+	fmt.Println("===================", v)
 	return time.Time{}, false
 }
