@@ -458,6 +458,14 @@ var (
 			field.AddData(key, value)
 			return field
 		},
+		"f_multiple": func(field FieldInterface) FieldInterface {
+			field.MultipleChoice()
+			return field
+		},
+		"f_selected": func(options []string, field FieldInterface) FieldInterface {
+			field.AddSelected(options...)
+			return field
+		},
 		"render": func(field FieldInterface) template.HTML {
 			return field.Render()
 		},
@@ -466,9 +474,7 @@ var (
 		//	return field
 		//},
 
-		// MultipleChoice() FieldInterface
 		// SingleChoice() FieldInterface
-		// AddSelected(opt ...string) FieldInterface
 		// RemoveSelected(opt string) FieldInterface
 		// SetSelectChoices(choices map[string][]InputChoice) FieldInterface
 		// SetRadioChoices(choices []InputChoice) FieldInterface
