@@ -6,7 +6,10 @@
     {{.label}}
   </label>
   {{- end}}
-  <div class="col-lg-{{default .controlWidth 9}}">
+  <div class="col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}">
+    
+    {{- if .preText}}<span>{{.preText}}</span>{{end -}}
+
     <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
             {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
             {{- if .css}}
@@ -34,6 +37,8 @@
       {{- end -}}
       {{- end -}}
     </select>
+    {{- if .preText}}<span>{{.postText}}</span>{{end -}}
+
     {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
   </div>

@@ -6,7 +6,7 @@
   {{if .id}}
       for="{{.id}}" {{end}}>{{.label}}</label>
   {{end}}
-  <div class="col-lg-{{default .controlWidth 9}}">
+  <div class="col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}">
     <input type="number" name="{{.name}}" class="form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
            {{if .id}} id="{{.id}}" {{end}}
            {{if .params}}

@@ -13,7 +13,7 @@
   </label>
   {{- end}}
   {{if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
-  <div class="form-group col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
+  <div class="form-group col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
     <div class="input-group date">
       <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
       <input type="text" class="form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}"
