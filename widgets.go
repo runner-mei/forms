@@ -16,7 +16,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/GeertJohan/go.rice"
+	rice "github.com/GeertJohan/go.rice"
 )
 
 var MapToString = func(v interface{}) string {
@@ -233,6 +233,14 @@ var defaultFuncs = template.FuncMap{
 		v := atomic.AddInt32(&g_id, 1)
 		return "widget_" + strconv.FormatInt(int64(v), 10)
 	},
+	"strIn": func(value string, values []string) bool {
+		for _, v := range values {
+			if v == value {
+				return true
+			}
+		}
+		return false
+	},
 }
 
 func toTime(v interface{}) (time.Time, bool) {
@@ -256,6 +264,5 @@ func toTime(v interface{}) (time.Time, bool) {
 		}
 	}
 
-	fmt.Println("===================", v)
 	return time.Time{}, false
 }

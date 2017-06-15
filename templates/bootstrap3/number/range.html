@@ -1,4 +1,4 @@
-{{ define "main"}}
+{{- define "main" -}}
 <div class="form-group{{if .errors}} has-error{{end}}">
   {{if .label }}
   <label
@@ -8,24 +8,27 @@
   {{end}}
   <div class="col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}">
     <input type="number" name="{{.name}}" class="form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
-           {{if .id}} id="{{.id}}" {{end}}
-           {{if .params}}
-           {{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}
-           {{end}}
-           {{if .css}}
-           style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
-           {{end}}
-           {{range $v :=.tags}} {{$v}}
-           {{end}}
-           {{if .value}}
-           value="{{.value}}"
-           {{end}}>
-    {{if or .helptext .errors }}
+           {{- if .id}} id="{{.id}}" {{end}}
+           {{- if .params}}
+           {{- range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}
+           {{- end}}
+           {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+           {{- end}}
+           {{- range $v :=.tags}} {{$v}}
+           {{- end}}
+           {{- if .value}} value="{{.value}}"
+           {{- end}}>
+    {{- if or .helptext .errors }}
     <span class="help-block">{{if .helptext}}{{ .helptext }}{{end}}
-            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}
-              </ul>{{end}}
+      {{- if .errors}}
+      <ul>
+        {{- range .errors }}
+         <li>{{.}}</li>
+         {{- end}}
+      </ul>
+      {{- end}}
     </span>
-    {{end}}
+    {{- end}}
   </div>
 </div>
-{{end}}
+{{- end}}

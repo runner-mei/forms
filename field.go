@@ -4,6 +4,8 @@ package forms
 import (
 	"fmt"
 	"html/template"
+	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/revel/revel"
@@ -22,6 +24,7 @@ type Field struct {
 	label          string
 	labelClasses   stringSet
 	tags           stringSet
+	valueLoaded    bool
 	value          string
 	helptext       string
 	errors         []string
@@ -47,7 +50,7 @@ type FieldInterface interface {
 	SetLabel(label string) FieldInterface
 	AddLabelClass(class string) FieldInterface
 	RemoveLabelClass(class string) FieldInterface
-	SetValue(value string) FieldInterface
+	SetValue(value interface{}) FieldInterface
 	Disabled() FieldInterface
 	Enabled() FieldInterface
 	SetHelptext(text string) FieldInterface
@@ -86,37 +89,6 @@ func FieldWithType(ctx interface{}, name, t string) *Field {
 func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 	field := FieldWithType(ctx, name, typ)
 	field.SetLabel(label)
-
-	value := revel.NewField(name, ctx.(map[string]interface{}))
-	if MAP == field.fieldType {
-		if flashValue := value.Flash(); "" != flashValue {
-			field.SetText(flashValue)
-		} else {
-			field.SetText(MapToString(value.Value()))
-		}
-	} else if TEXTAREA == field.fieldType {
-		if flashValue := value.Flash(); "" != flashValue {
-			field.SetText(flashValue)
-		} else {
-			field.SetText(fmt.Sprint(value.Value()))
-		}
-	} else {
-		if flashValue := value.Flash(); "" != flashValue {
-			field.SetValue(flashValue)
-		} else {
-			val := value.Value()
-			if b, ok := val.(byte); ok {
-				field.SetValue(string(b))
-			} else {
-				field.SetValue(fmt.Sprint(value.Value()))
-			}
-		}
-	}
-
-	if value.Error != nil {
-		field.AddError(value.Error.Message)
-	}
-
 	return field
 }
 
@@ -131,7 +103,86 @@ func (f *Field) Name() string {
 	return strings.TrimSuffix(f.name, "[]")
 }
 
+func (f *Field) loadValueIfNeed() {
+	if f.valueLoaded {
+		return
+	}
+
+	if f.ctx == nil {
+		return
+	}
+
+	name := f.Name()
+	ctx := f.ctx.(map[string]interface{})
+
+	value := revel.NewField(name, ctx)
+	f.setValue(value)
+
+	if value.Error != nil {
+		f.AddError(value.Error.Message)
+	}
+}
+
+type FieldValue interface {
+	Flash() string
+	FlashArray() []string
+	Value() interface{}
+}
+
+type fieldValue struct {
+	value interface{}
+}
+
+func (fv fieldValue) Flash() string {
+	return ""
+}
+func (fv fieldValue) FlashArray() []string {
+	return nil
+}
+func (fv fieldValue) Value() interface{} {
+	return fv.value
+}
+
+func (f *Field) setValue(value FieldValue) {
+	if MAP == f.fieldType {
+		if flashValue := value.Flash(); "" != flashValue {
+			f.SetText(flashValue)
+		} else {
+			f.SetText(MapToString(value.Value()))
+		}
+	} else if TEXTAREA == f.fieldType {
+		if flashValue := value.Flash(); "" != flashValue {
+			f.SetText(flashValue)
+		} else {
+			f.SetText(fmt.Sprint(value.Value()))
+		}
+	} else if SELECT == f.fieldType && f.IsMultipleChoice() {
+		if flashArray := value.FlashArray(); len(flashArray) > 0 {
+			f.AddSelected(flashArray...)
+		} else {
+			opts := toStringArray(value.Value(), nil)
+			if len(opts) != 0 {
+				f.AddSelected(opts...)
+			}
+		}
+	} else {
+		if flashValue := value.Flash(); "" != flashValue {
+			f.value = flashValue
+		} else {
+			val := value.Value()
+			if b, ok := val.(byte); ok {
+				f.value = string(b)
+			} else {
+				f.value = fmt.Sprint(value.Value())
+			}
+		}
+	}
+	f.valueLoaded = true
+}
+
 func (f *Field) dataForRender() map[string]interface{} {
+	f.loadValueIfNeed()
+
 	safeParams := make(map[template.HTMLAttr]string)
 	for k, v := range f.params {
 		safeParams[template.HTMLAttr(k)] = v
@@ -264,9 +315,14 @@ func (f *Field) RemoveTag(tag string) FieldInterface {
 	return f
 }
 
+// HasTag has a no-value parameter in the field.
+func (f *Field) HasTag(tag string) bool {
+	return f.tags.has(tag)
+}
+
 // SetValue sets the value parameter for the field.
-func (f *Field) SetValue(value string) FieldInterface {
-	f.value = value
+func (f *Field) SetValue(value interface{}) FieldInterface {
+	f.setValue(fieldValue{value})
 	return f
 }
 
@@ -293,6 +349,11 @@ func (f *Field) MultipleChoice() FieldInterface {
 		}
 	}
 	return f
+}
+
+// IsMultipleChoice is a multiple choices.
+func (f *Field) IsMultipleChoice() bool {
+	return f.HasTag("multiple")
 }
 
 // SingleChoice configures the Field to accept and display only one choice (valid for SelectFields only).
@@ -415,15 +476,7 @@ var (
 			return field
 		},
 		"f_setValue": func(value interface{}, field FieldInterface) FieldInterface {
-			vl := ""
-			if nil != value {
-				if s, ok := value.(string); ok {
-					vl = s
-				}
-				vl = fmt.Sprint(value)
-			}
-
-			field.SetValue(vl)
+			field.SetValue(value)
 			return field
 		},
 		"f_setText": func(text string, field FieldInterface) FieldInterface {
@@ -480,3 +533,42 @@ var (
 		// SetRadioChoices(choices []InputChoice) FieldInterface
 	}
 )
+
+func toStringArray(value interface{}, defValue []string) []string {
+	if value == nil {
+		return defValue
+	}
+	switch vv := value.(type) {
+	case []int:
+		results := make([]string, 0, len(vv))
+		for _, v := range vv {
+			results = append(results, strconv.FormatInt(int64(v), 10))
+		}
+		return results
+	case []int64:
+		results := make([]string, 0, len(vv))
+		for _, v := range vv {
+			results = append(results, strconv.FormatInt(v, 10))
+		}
+		return results
+	case []string:
+		return vv
+	case []interface{}:
+		results := make([]string, 0, len(vv))
+		for _, v := range vv {
+			results = append(results, fmt.Sprint(v))
+		}
+		return results
+	default:
+		rValue := reflect.ValueOf(value)
+		if rValue.Kind() == reflect.Slice {
+			results := make([]string, 0, rValue.Len())
+			for idx := 0; idx < rValue.Len(); idx++ {
+				results = append(results, fmt.Sprint(rValue.Index(idx).Interface()))
+			}
+			return results
+		}
+	}
+
+	return defValue
+}
