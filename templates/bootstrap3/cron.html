@@ -5,7 +5,7 @@
         tpt_form_callbacks = new Array();
       }
       tpt_form_callbacks.push(function () {
-            $('#cornExpression a').click(function (e) {
+            $('#{{.widget_id}}_cornExpression a').click(function (e) {
                 e.preventDefault();
                 $(this).tab('show')
             });
@@ -14,56 +14,55 @@
     //            return ele.val()?"_"+ele.val():""
     //        }
             var cornExpression = [];
-            $("#month select").on("change", function () {
-                var month_monthDay = $("#month_monthDay").val(),
-                        month_hour = $("#month_hour").val(),
-                        month_minute = $("#month_minute").val(),
+            $("#{{.widget_id}}_month select").on("change", function () {
+                var month_monthDay = $("#{{.widget_id}}_month_monthDay").val(),
+                        month_hour = $("#{{.widget_id}}_month_hour").val(),
+                        month_minute = $("#{{.widget_id}}_month_minute").val(),
                         cornExpression = ["0", month_minute, month_hour, month_monthDay, "*", "?" ];
                 $("[name='{{.name}}']").val(cornExpression.join(" "));
             });
-            $("#week select").on("change", function () {
-                var week_weekDay = $("#week_weekDay").val(),
-                        week_hour = $("#week_hour").val(),
-                        week_minute = $("#week_minute").val(),
+            $("#{{.widget_id}}_week select").on("change", function () {
+                var week_weekDay = $("#{{.widget_id}}_week_weekDay").val(),
+                        week_hour = $("#{{.widget_id}}_week_hour").val(),
+                        week_minute = $("#{{.widget_id}}_week_minute").val(),
                         cornExpression = ["0", week_minute, week_hour, "?", "*", week_weekDay ];
                 $("[name='{{.name}}']").val(cornExpression.join(" "));
             });
-            $("#day select").on("change", function () {
-                var day_hour = $("#day_hour").val(),
-                        day_minute = $("#day_minute").val(),
+            $("#{{.widget_id}}_day select").on("change", function () {
+                var day_hour = $("#{{.widget_id}}_day_hour").val(),
+                        day_minute = $("#{{.widget_id}}_day_minute").val(),
                         cornExpression = ["0", day_minute, day_hour, "*", "*", "?" ];
                 $("[name='{{.name}}']").val(cornExpression.join(" "));
             });
-            $("#hour select").on("change", function () {
-                var hour_hour = $("#hour_hour").val(),
+            $("#{{.widget_id}}_hour select").on("change", function () {
+                var hour_hour = $("#{{.widget_id}}_hour_hour").val(),
                         cornExpression = ["0", "0", "0/" + hour_hour, "*", "*", "?" ];
                 $("[name='{{.name}}']").val(cornExpression.join(" "));
             });
-            $("#offset").on("change", function () {
+            $("#{{.widget_id}}_offset").on("change", function () {
                 $(".tab-content .active select").trigger("change")
             });
-            $("#cornExpression").on("change", "select", function () {
+            $("#{{.widget_id}}_cornExpression").on("change", "select", function () {
                 $("[name='{{.name}}']").trigger("change")
             });
-
-
         });
 </script>
-<div class="form-group{{if .errors}} has-error{{end}}">{{ if .label }}
-    <label class="control-label{{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}" {{if .id}} for="{{.id}}" {{end}}>{{.label}}</label>{{end}}
-    <div class="col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}">
+<div class="form-group{{if .errors}} has-error{{end}}">
+    <label class="col-lg-{{default .labelWidth 2}} control-label{{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}" 
+    {{- if .id}} for="{{.id}}" {{end}}>{{ if .label }}{{.label}}{{end}}</label>
+    <div class="col-lg-{{default .controlWidth 9}}">
         <div class="list-group-item">
-            <ul class="nav nav-tabs" role="tablist" id="cornExpression">
-                <li role="presentation" class="active"><a href="#month" style="color:#555">每月</a></li>
-                <li role="presentation"><a href="#week" style="color:#555">每周</a></li>
-                <li role="presentation"><a href="#day"  style="color:#555">每日</a></li>
-                <li role="presentation"><a href="#hour" style="color:#555">每时</a></li>
+            <ul class="nav nav-tabs" role="tablist" id="{{.widget_id}}_cornExpression">
+                <li role="presentation" class="active"><a href="#{{.widget_id}}_month" style="color:#555">每月</a></li>
+                <li role="presentation"><a href="#{{.widget_id}}_week" style="color:#555">每周</a></li>
+                <li role="presentation"><a href="#{{.widget_id}}_day"  style="color:#555">每日</a></li>
+                <li role="presentation"><a href="#{{.widget_id}}_hour" style="color:#555">每时</a></li>
             </ul>
 
             <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="month">
+                <div role="tabpanel" class="tab-pane active" id="{{.widget_id}}_month">
                     <span>每月</span>
-                    <select id="month_monthDay">
+                    <select id="{{.widget_id}}_month_monthDay">
                         <option value="1">1日</option>
                         <option value="2">2日</option>
                         <option value="3">3日</option>
@@ -97,7 +96,7 @@
                         <option value="30">31日</option>
                     </select>
                     <span>的</span>
-                    <select id="month_hour">
+                    <select id="{{.widget_id}}_month_hour">
                         <option value="0">0时</option>
                         <option value="1">1时</option>
                         <option value="2">2时</option>
@@ -124,7 +123,7 @@
                         <option value="23">23时</option>
                     </select>
                     <span>:</span>
-                    <select id="month_minute">
+                    <select id="{{.widget_id}}_month_minute">
                         <option value="0">0分</option>
                         <option value="1">1分</option>
                         <option value="2">2分</option>
@@ -187,9 +186,9 @@
                         <option value="59">59分</option>
                     </select>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="week">
+                <div role="tabpanel" class="tab-pane" id="{{.widget_id}}_week">
                     <span>每周:</span>
-                    <select id="week_weekDay">
+                    <select id="{{.widget_id}}_week_weekDay">
                         <option value="SUN">星期日</option>
                         <option value="MON">星期一</option>
                         <option value="TUE">星期二</option>
@@ -199,7 +198,7 @@
                         <option value="SAT">星期六</option>
                     </select>
                     <span>的</span>
-                    <select id="week_hour">
+                    <select id="{{.widget_id}}_week_hour">
                         <option value="0">0时</option>
                         <option value="1">1时</option>
                         <option value="2">2时</option>
@@ -226,7 +225,7 @@
                         <option value="23">23时</option>
                     </select>
                     <span>:</span>
-                    <select id="week_minute">
+                    <select id="{{.widget_id}}_week_minute">
                         <option value="0">0分</option>
                         <option value="1">1分</option>
                         <option value="2">2分</option>
@@ -290,9 +289,9 @@
                     </select>
 
                 </div>
-                <div role="tabpanel" class="tab-pane" id="day">
+                <div role="tabpanel" class="tab-pane" id="{{.widget_id}}_day">
                     <span>每天 的</span>
-                    <select id="day_hour">
+                    <select id="{{.widget_id}}_day_hour">
                         <option value="0">0时</option>
                         <option value="1">1时</option>
                         <option value="2">2时</option>
@@ -319,7 +318,7 @@
                         <option value="23">23时</option>
                     </select>
                     <span>:</span>
-                    <select id="day_minute">
+                    <select id="{{.widget_id}}_day_minute">
                         <option value="0">0分</option>
                         <option value="1">1分</option>
                         <option value="2">2分</option>
@@ -382,9 +381,9 @@
                         <option value="59">59分</option>
                     </select>
                 </div>
-                <div role="tabpanel" class="tab-pane" id="hour">
+                <div role="tabpanel" class="tab-pane" id="{{.widget_id}}_hour">
                     <span>每隔</span>
-                    <select id="hour_hour">
+                    <select id="{{.widget_id}}_hour_hour">
                         <option value="1">1时</option>
                         <option value="2">2时</option>
                         <option value="3">3时</option>
@@ -412,32 +411,31 @@
                     <span>小时</span>
                 </div>
             </div>
+
+            <div style="height: 10px"></div>
+            <div>
+                <input type="text" readonly name="{{.name}}" class="{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
+                       {{- if .id}} id="{{.id}}" {{end}}
+                       {{- if .params}}
+                         {{- range $k, $v :=.params}} {{$k}}="{{$v}}"{{end}}{{end}}
+                         {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+                         {{- end}}
+                         {{- range $v :=.tags}} {{$v}}{{end}}
+                         {{- if .value}} value="{{.value}}" {{end}}>
+                {{- if or .helptext .errors }}
+                <span class="help-block">
+                  {{- if .helptext}}{{ .helptext }}{{end}}
+                  {{- if .errors}}
+                  <ul>
+                    {{- range .errors }}
+                    <li>{{.}}</li>
+                    {{- end}}
+                  </ul>
+                  {{- end}}
+                </span>
+                {{- end}}
+            </div>
         </div>
-    </div>
-</div>
-<div class="form-group">
-    <div class="col-lg-offset-{{default .labelWidth 2}} col-lg-{{default .controlWidth 9}}">
-        <input type="text" readonly name="{{.name}}" class="{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
-               {{if .id}} id="{{.id}}" {{end}}
-               {{- if .params}}
-                 {{- range $k, $v :=.params}} {{$k}}="{{$v}}"{{end}}{{end}}
-                 {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
-                 {{- end}}
-                 {{- range $v :=.tags}} {{$v}}{{end}}
-                 {{- if .value}} value="{{.value}}" {{end}}>
-        <div></div>
-        {{- if or .helptext .errors }}
-        <span class="help-block">
-          {{- if .helptext}}{{ .helptext }}{{end}}
-          {{- if .errors}}
-          <ul>
-            {{- range .errors }}
-            <li>{{.}}</li>
-            {{- end}}
-          </ul>
-          {{- end}}
-    </span>
-    {{- end}}
     </div>
 </div>
 {{- end}}
