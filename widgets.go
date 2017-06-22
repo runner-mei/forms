@@ -12,6 +12,7 @@ import (
 	"path"
 	"path/filepath"
 	"strconv"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -240,6 +241,15 @@ var defaultFuncs = template.FuncMap{
 			}
 		}
 		return false
+	},
+	// Replaces newlines with <br>
+	"nl2br": func(text string) template.HTML {
+		return template.HTML(strings.Replace(template.HTMLEscapeString(text), "\n", "<br>", -1))
+	},
+
+	// Skips sanitation on the parameter.  Do not use with dynamic data.
+	"raw": func(text string) template.HTML {
+		return template.HTML(text)
 	},
 }
 
