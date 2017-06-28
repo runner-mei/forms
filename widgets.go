@@ -214,6 +214,51 @@ func mustLoadTemplate(style, filename string) *template.Template {
 var g_id int32 = 0
 
 var defaultFuncs = template.FuncMap{
+	"set": func(renderArgs map[string]interface{}, key string, value interface{}) template.JS {
+		renderArgs[key] = value
+		return template.JS("")
+	},
+	"append": func(renderArgs map[string]interface{}, key string, value interface{}) template.JS {
+		if renderArgs[key] == nil {
+			renderArgs[key] = []interface{}{value}
+		} else {
+			renderArgs[key] = append(renderArgs[key].([]interface{}), value)
+		}
+		return template.JS("")
+	},
+
+	"unique": func(renderArgs map[string]interface{}, key string) template.JS {
+		o := renderArgs[key]
+		if o == nil {
+			return template.JS("")
+		}
+		values, ok := o.([]interface{})
+		if !ok || len(values) <= 1 {
+			return template.JS("")
+		}
+		newValues := make([]interface{}, 0, len(values))
+		for idx, value := range values {
+			if idx == 0 {
+				newValues = append(newValues, value)
+				continue
+			}
+
+			found := false
+			for _, pre := range values[:idx] {
+				if pre == value {
+					found = true
+					break
+				}
+			}
+
+			if !found {
+				newValues = append(newValues, value)
+			}
+		}
+		renderArgs[key] = newValues
+		return template.JS("")
+	},
+
 	"default": func(value, defvalue interface{}) interface{} {
 		if nil == value {
 			return defvalue

@@ -1,9 +1,9 @@
 
-{{ define "main"}}
-{{append .ctx_parent "moreScripts" "/public/js/plugins/datepicker/bootstrap-datepicker.js"}}
-{{append .ctx_parent "moreLazyStyles" "/public/css/plugins/datepicker/datepicker3.css"}}
-
-
+{{- define "main"}}
+{{- append .ctx_parent "moreScripts" "/public/js/plugins/datepicker/bootstrap-datepicker.js"}}
+{{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/datepicker/datepicker3.css"}}
+{{- unique .ctx_parent "moreScripts" -}}
+{{- unique .ctx_parent "moreLazyStyles" -}}
 <div class="form-group{{if .errors}} has-error{{end}}">
   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
     {{- if .id}} for="{{.id}}" {{end}}>
