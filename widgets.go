@@ -275,6 +275,9 @@ func toTime(v interface{}) (time.Time, bool) {
 	if !ok {
 		return time.Time{}, false
 	}
+	if s == "" {
+		return time.Time{}, true
+	}
 	for _, layout := range []string{
 		"2006-01-02 15:04:05.999999999 -0700 MST",
 		"2006-01-02 15:04:05 -0700 MST",
