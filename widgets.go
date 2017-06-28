@@ -228,7 +228,20 @@ var defaultFuncs = template.FuncMap{
 		if !ok {
 			return fmt.Sprint(value)
 		}
+		if t.IsZero() {
+			return ""
+		}
 		return t.Format("2006-01-02")
+	},
+	"form_datetime": func(value interface{}) string {
+		t, ok := toTime(value)
+		if !ok {
+			return fmt.Sprint(value)
+		}
+		if t.IsZero() {
+			return ""
+		}
+		return t.Format("2006-01-02 15:04:05")
 	},
 	"generateID": func() string {
 		v := atomic.AddInt32(&g_id, 1)
