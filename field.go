@@ -148,13 +148,23 @@ func (f *Field) setValue(value FieldValue) {
 		if flashValue := value.Flash(); "" != flashValue {
 			f.SetText(flashValue)
 		} else {
-			f.SetText(MapToString(value.Value()))
+			value := value.Value()
+			if value == nil {
+				f.SetText("")
+			} else {
+				f.SetText(MapToString(value))
+			}
 		}
 	} else if TEXTAREA == f.fieldType {
 		if flashValue := value.Flash(); "" != flashValue {
 			f.SetText(flashValue)
 		} else {
-			f.SetText(fmt.Sprint(value.Value()))
+			value := value.Value()
+			if value == nil {
+				f.SetText("")
+			} else {
+				f.SetText(fmt.Sprint(value))
+			}
 		}
 	} else if SELECT == f.fieldType && f.IsMultipleChoice() {
 		if flashArray := value.FlashArray(); len(flashArray) > 0 {

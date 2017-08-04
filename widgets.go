@@ -21,6 +21,9 @@ import (
 )
 
 var MapToString = func(v interface{}) string {
+	if v == nil {
+		return ""
+	}
 	m, ok := v.(map[string]interface{})
 	if !ok {
 		panic(fmt.Errorf("MapToString: value is not map - %T `%v`", v, v))
