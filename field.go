@@ -285,6 +285,12 @@ func (f *Field) SetParam(key, value string) FieldInterface {
 	return f
 }
 
+// SetIntParam adds a parameter (defined as key-value pair) in the field.
+func (f *Field) SetIntParam(key string, value int) FieldInterface {
+	f.params[key] = strconv.FormatInt(int64(value), 10)
+	return f
+}
+
 // DeleteParam removes a parameter identified by key from the field.
 func (f *Field) DeleteParam(key string) FieldInterface {
 	delete(f.params, key)

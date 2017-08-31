@@ -16,10 +16,10 @@ func PasswordField(ctx interface{}, name, label string) *Field {
 func TextAreaField(ctx interface{}, name, label string, rows, cols int) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, TEXTAREA)
 	if rows > 0 {
-		ret.SetParam("rows", string(rows))
+		ret.SetIntParam("rows", rows)
 	}
 	if cols > 0 {
-		ret.SetParam("cols", string(cols))
+		ret.SetIntParam("cols", cols)
 	}
 	return ret
 }
@@ -28,10 +28,10 @@ func TextAreaField(ctx interface{}, name, label string, rows, cols int) *Field {
 func MapField(ctx interface{}, name, label string, rows, cols int) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, MAP)
 	if rows > 0 {
-		ret.SetParam("rows", string(rows))
+		ret.SetIntParam("rows", rows)
 	}
 	if cols > 0 {
-		ret.SetParam("cols", string(cols))
+		ret.SetIntParam("cols", cols)
 	}
 	return ret
 }
