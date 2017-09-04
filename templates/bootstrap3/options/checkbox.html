@@ -1,8 +1,9 @@
 {{-  define "main"}}
 {{- $p := . }}
 <div class="form-group">
+  {{- if not .nolabel -}}
    <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}"></label>
-
+  {{- end -}}
 	<div class="col-lg-{{default .controlWidth 9}}">
 		<div class="checkbox{{if .errors}} has-error{{end}}">
 			<label class="control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}">

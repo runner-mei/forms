@@ -1,7 +1,9 @@
 {{- define "main"}}
 <div class="form-group{{if .errors}} has-error{{end}}">
+  {{- if not .nolabel -}}
   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
   {{- if .id}} for="{{.id}}" {{end}}>{{- if .label }}{{.label}}{{- end}}</label>
+  {{- end -}}
   <div class="col-lg-{{default .controlWidth 9}}">
     <input type="number" name="{{.name}}" class="form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}"
            {{- if .id}} id="{{.id}}" {{end}}

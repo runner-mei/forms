@@ -529,6 +529,10 @@ var (
 			field.AddData(key, value)
 			return field
 		},
+		"f_nolabel": func(field FieldInterface) FieldInterface {
+			field.AddData("nolabel", "true")
+			return field
+		},
 		"f_multiple": func(field FieldInterface) FieldInterface {
 			field.MultipleChoice()
 			return field
