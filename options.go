@@ -18,7 +18,7 @@ type InputChoice struct {
 func RadioField(ctx interface{}, name, label string, choices interface{}) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, RADIO)
 	ret.additionalData["choices"] = []InputChoice{}
-	ret.SetRadioChoices(readChoices(choices))
+	ret.SetRadioChoices(readChoices(name, choices))
 	return ret
 }
 
@@ -28,7 +28,7 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 	ret := FieldWithTypeWithCtx(ctx, name, label, SELECT)
 	ret.additionalData["choices"] = map[string][]InputChoice{}
 	ret.additionalData["multValues"] = map[string]struct{}{}
-	ret.SetSelectChoices(readChoiceGroups(choices))
+	ret.SetSelectChoices(readChoiceGroups(name, choices))
 	return ret
 }
 
@@ -43,7 +43,11 @@ func validateChoices(results []InputChoice) {
 		}
 	}
 }
-func readChoices(v interface{}) []InputChoice {
+func readChoices(name string, v interface{}) []InputChoice {
+	if v == nil {
+		return []InputChoice{}
+	}
+
 	if choices, ok := v.([]InputChoice); ok {
 		return choices
 	}
@@ -59,10 +63,13 @@ func readChoices(v interface{}) []InputChoice {
 
 		panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must be []InputChoice - [%T]%#v", v, v))
+	panic(fmt.Errorf("Choices arguments of "+name+" must be []InputChoice - [%T]%#v", v, v))
 }
 
-func readChoiceGroups(v interface{}) map[string][]InputChoice {
+func readChoiceGroups(name string, v interface{}) map[string][]InputChoice {
+	if v == nil {
+		return map[string][]InputChoice{}
+	}
 	if strMap, ok := v.(map[string]interface{}); ok {
 		choices := []InputChoice{}
 		for k, v := range strMap {
@@ -100,7 +107,7 @@ func readChoiceGroups(v interface{}) map[string][]InputChoice {
 
 		panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice."))
 	}
-	panic(fmt.Errorf("Choices arguments must is map[string][]InputChoice or []InputChoice - [%T]%#v", v, v))
+	panic(fmt.Errorf("Choices argumentsof "+name+" must is map[string][]InputChoice or []InputChoice - [%T]%#v", v, v))
 }
 
 // Checkbox creates a default checkbox field with the provided name. It also makes it checked by default based
