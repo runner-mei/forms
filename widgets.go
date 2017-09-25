@@ -214,7 +214,7 @@ func mustLoadTemplate(style, filename string) *template.Template {
 	return templ
 }
 
-var g_id int32 = 0
+var gID int32
 
 var defaultFuncs = template.FuncMap{
 	"toBoolean": func(v interface{}) bool {
@@ -309,7 +309,7 @@ var defaultFuncs = template.FuncMap{
 		return t.Format("2006-01-02 15:04:05")
 	},
 	"generateID": func() string {
-		v := atomic.AddInt32(&g_id, 1)
+		v := atomic.AddInt32(&gID, 1)
 		return "widget_" + strconv.FormatInt(int64(v), 10)
 	},
 	"strIn": func(value string, values []string) bool {
