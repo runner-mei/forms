@@ -217,6 +217,23 @@ func mustLoadTemplate(style, filename string) *template.Template {
 var g_id int32 = 0
 
 var defaultFuncs = template.FuncMap{
+	"toBoolean": func(v interface{}) bool {
+		if v == nil {
+			return false
+		}
+		if b, ok := v.(bool); ok {
+			return b
+		}
+		if s, ok := v.(string); ok {
+			if s == "true" || s == "on" || s == "yes" ||
+				s == "True" || s == "On" || s == "Yes" ||
+				s == "TRUE" || s == "ON" || s == "YES" {
+				return true
+			}
+			return false
+		}
+		panic(fmt.Errorf("unknown type - %T %v", v, v))
+	},
 	"set": func(renderArgs map[string]interface{}, key string, value interface{}) template.JS {
 		renderArgs[key] = value
 		return template.JS("")
