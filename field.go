@@ -509,12 +509,16 @@ var (
 			field.Enabled()
 			return field
 		},
-		"f_setEditMode": func(mode bool, field FieldInterface) FieldInterface {
-			if mode {
-				field.DeleteParam("readonly")
-			} else {
+		"f_setReadOnly": func(bool isReadOnly, field FieldInterface) FieldInterface {
+			if isReadOnly {
 				field.SetParam("readonly", "readonly")
+			} else {
+				field.DeleteParam("readonly")
 			}
+			return field
+		},
+		"f_readOnly": func(field FieldInterface) FieldInterface {
+			field.SetParam("readonly", "readonly")
 			return field
 		},
 		"f_helpText": func(text string, field FieldInterface) FieldInterface {
