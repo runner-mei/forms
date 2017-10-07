@@ -509,7 +509,7 @@ var (
 			field.Enabled()
 			return field
 		},
-		"f_setReadOnly": func(bool isReadOnly, field FieldInterface) FieldInterface {
+		"f_setReadOnly": func(isReadOnly bool, field FieldInterface) FieldInterface {
 			if isReadOnly {
 				field.SetParam("readonly", "readonly")
 			} else {
