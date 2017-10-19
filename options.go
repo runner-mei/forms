@@ -51,6 +51,15 @@ func readChoices(name string, v interface{}) []InputChoice {
 	if choices, ok := v.([]InputChoice); ok {
 		return choices
 	}
+
+	if strMap, ok := v.(map[string]interface{}); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{k, fmt.Sprint(v)})
+		}
+		return choices
+	}
+
 	if s, ok := v.(string); ok {
 		if strings.HasPrefix(s, "[") {
 			var results []InputChoice
