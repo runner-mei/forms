@@ -15,7 +15,7 @@ type FieldSetType struct {
 }
 
 // Render translates a FieldSetType into HTML code and returns it as a template.HTML object.
-func (f *FieldSetType) Render() template.HTML {
+func (f *FieldSetType) Render(theme string) template.HTML {
 	var s string
 	buf := bytes.NewBufferString(s)
 	data := map[string]interface{}{

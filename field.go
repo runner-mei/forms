@@ -2,6 +2,7 @@
 package forms
 
 import (
+	"errors"
 	"fmt"
 	"html/template"
 	"reflect"
@@ -35,7 +36,7 @@ type Field struct {
 // to allow methods chaining.
 type FieldInterface interface {
 	Name() string
-	Render() template.HTML
+	Render(string) template.HTML
 	AddClass(class string) FieldInterface
 	AddData(key, value string) FieldInterface
 	RemoveClass(class string) FieldInterface
@@ -46,7 +47,7 @@ type FieldInterface interface {
 	DeleteParam(key string) FieldInterface
 	AddCSS(key, value string) FieldInterface
 	RemoveCSS(key string) FieldInterface
-	SetStyle(style string) FieldInterface
+	SetTheme(style string) FieldInterface
 	SetLabel(label string) FieldInterface
 	AddLabelClass(class string) FieldInterface
 	RemoveLabelClass(class string) FieldInterface
@@ -92,8 +93,11 @@ func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 	return field
 }
 
-// SetStyle sets the style (e.g.: BASE, BOOTSTRAP) of the field, correctly populating the Widget field.
-func (f *Field) SetStyle(style string) FieldInterface {
+// SetTheme sets the style (e.g.: BASE, BOOTSTRAP) of the field, correctly populating the Widget field.
+func (f *Field) SetTheme(style string) FieldInterface {
+	if f.Widget != nil {
+		panic(errors.New("theme is already set value"))
+	}
 	f.Widget = BaseWidget(style, f.fieldType)
 	return f
 }
@@ -221,9 +225,14 @@ func (f *Field) dataForRender() map[string]interface{} {
 }
 
 // Render packs all data and executes widget render method.
-func (f *Field) Render() template.HTML {
+func (f *Field) Render(theme string) template.HTML {
 	if f.Widget == nil {
-		f.Widget = BaseWidget("bootstrap3", f.fieldType)
+		if theme == "" {
+			theme = BOOTSTRAP
+		}
+		f.Widget = BaseWidget(theme, f.fieldType)
+	} else if theme != "" {
+		f.SetTheme(theme)
 	}
 
 	if f.Widget != nil {
@@ -234,7 +243,7 @@ func (f *Field) Render() template.HTML {
 }
 
 func (f *Field) String() string {
-	return string(f.Render())
+	return string(f.Render(""))
 }
 
 // AddClass adds a class to the field.
@@ -477,8 +486,8 @@ var (
 			field.RemoveCSS(key)
 			return field
 		},
-		"f_setStyle": func(style string, field FieldInterface) FieldInterface {
-			field.SetStyle(style)
+		"f_setTheme": func(style string, field FieldInterface) FieldInterface {
+			field.SetTheme(style)
 			return field
 		},
 		"f_setLabel": func(label string, field FieldInterface) FieldInterface {
@@ -545,8 +554,30 @@ var (
 			field.AddSelected(options...)
 			return field
 		},
-		"render": func(field FieldInterface) template.HTML {
-			return field.Render()
+		"render": func(args ...interface{}) template.HTML {
+			switch len(args) {
+			case 0:
+				panic("render 方法必须有一个 FieldInterface 参数")
+			case 1:
+				field, ok := args[0].(FieldInterface)
+				if !ok {
+					panic("render 方法的参数必须是 FieldInterface 类型")
+				}
+				return field.Render("")
+			case 2:
+				theme, ok := args[0].(string)
+				if !ok {
+					panic("render 方法的第一个参数必须是 string 类型")
+				}
+
+				field, ok := args[1].(FieldInterface)
+				if !ok {
+					panic("render 方法的第二个参数必须是 FieldInterface 类型")
+				}
+				return field.Render(theme)
+			default:
+				panic("render 方法的参数个数太多")
+			}
 		},
 		//"f_addError": func(err string, field FieldInterface) FieldInterface {
 		//	field.AddError(err)

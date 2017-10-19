@@ -10,6 +10,7 @@ const (
 
 var (
 	txt, psw, btn FieldInterface
+	testTheme     = ""
 )
 
 func makeCtx() interface{} {
@@ -18,11 +19,11 @@ func makeCtx() interface{} {
 
 func TestFieldRender(t *testing.T) {
 	field := TextField(makeCtx(), "test", "test")
-	field.AddClass("test").AddClass("class").SetID("testId").SetParam("param1", "val1").AddCSS("css1", "val1").SetStyle(style).Disabled()
+	field.AddClass("test").AddClass("class").SetID("testId").SetParam("param1", "val1").AddCSS("css1", "val1").SetTheme(style).Disabled()
 	field.AddLabelClass("LABEL")
 	field.SetLabel("This is a label")
 	field.AddError("ERROR")
-	t.Log("Rendered field:", field.Render())
+	t.Log("Rendered field:", field.Render(testTheme))
 	txt = field
 }
 
@@ -31,16 +32,16 @@ func TestPasswordRender(t *testing.T) {
 	field.AddClass("test")
 	field.AddClass("class")
 	field.SetID("testId")
-	field.SetStyle(style)
+	field.SetTheme(style)
 	field.SetValue("asd")
-	t.Log("Rendered field:", field.Render())
+	t.Log("Rendered field:", field.Render(testTheme))
 	psw = field
 }
 
 func TestButtonRender(t *testing.T) {
 	field := SubmitButton(makeCtx(), "btn", "Click me!")
-	field.SetStyle(style)
-	t.Log("Rendered button:", field.Render())
+	field.SetTheme(style)
+	t.Log("Rendered button:", field.Render(testTheme))
 	btn = field
 }
 
@@ -49,8 +50,8 @@ func TestRadioButtonRender(t *testing.T) {
 		InputChoice{Value: "choice1", Label: "value1"},
 		InputChoice{Value: "choice2", Label: "value2"},
 	})
-	field.SetStyle(style)
-	t.Log("Rendered radio:", field.Render())
+	field.SetTheme(style)
+	t.Log("Rendered radio:", field.Render(testTheme))
 }
 
 func TestSelectRender(t *testing.T) {
@@ -60,31 +61,31 @@ func TestSelectRender(t *testing.T) {
 			InputChoice{"choice2", "value2"},
 		},
 	}).MultipleChoice().SetLabel("asd").AddSelected("choice1", "choice2")
-	field.SetStyle(style).SetValue("choice1")
-	t.Log("Rendered select:", field.Render())
+	field.SetTheme(style).SetValue("choice1")
+	t.Log("Rendered select:", field.Render(testTheme))
 }
 
 func TestHiddenRender(t *testing.T) {
 	field := HiddenField(makeCtx(), "hidden")
-	field.SetStyle(style)
-	t.Log("Rendered hidden:", field.Render())
+	field.SetTheme(style)
+	t.Log("Rendered hidden:", field.Render(testTheme))
 }
 
 func TestNumberRender(t *testing.T) {
 	field := NumberField(makeCtx(), "number", "input number")
-	field.SetStyle(style)
-	t.Log("Rendered number:", field.Render())
+	field.SetTheme(style)
+	t.Log("Rendered number:", field.Render(testTheme))
 }
 
+/*
 func TestFormRender(t *testing.T) {
 	form := BootstrapForm(POST, "")
 	form.Elements(&FieldSetType{}, txt, psw, btn)
 	// form.AddField(psw)
 	// form.AddField(btn)
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 
-/*
 func TestFormFromSimpleModel(t *testing.T) {
 	type User struct {
 		Username  string
@@ -96,7 +97,7 @@ func TestFormFromSimpleModel(t *testing.T) {
 	u := User{}
 
 	form := BaseFormFromModel(u, POST, "/action.html")
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 
 func TestFormFromModel(t *testing.T) {
@@ -110,7 +111,7 @@ func TestFormFromModel(t *testing.T) {
 	}
 
 	form := BaseFormFromModel(Model{"asd", "lol", 20, time.Now(), "B", false}, POST, "")
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 
 func TestBSFormFromModel(t *testing.T) {
@@ -124,7 +125,7 @@ func TestBSFormFromModel(t *testing.T) {
 	}
 
 	form := BootstrapFormFromModel(Model{"asd", "lol", 20, time.Now(), "B", false}, POST, "")
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 
 func TestInlineCreation(t *testing.T) {
@@ -136,7 +137,7 @@ func TestInlineCreation(t *testing.T) {
 		),
 		SubmitButton(makeCtx(), "btn1", "Submit"),
 	)
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 
 func TestPizzaCreation(t *testing.T) {
@@ -157,6 +158,6 @@ func TestPizzaCreation(t *testing.T) {
 	}
 
 	form := BootstrapFormFromModel(Pizza{Price: 2.2}, POST, "")
-	t.Log("Rendered form:", form.Render())
+	t.Log("Rendered form:", form.Render(testTheme))
 }
 */

@@ -8,12 +8,12 @@ import (
 
 // FormElement interface defines a form object (usually a Field or a FieldSet) that can be rendered as a template.HTML object.
 type Renderable interface {
-	Render() template.HTML
+	Render(theme string) template.HTML
 }
 
 // Render executes the internal template and renders the form, returning the result as a template.HTML object embeddable
 // in any other template.
-func (f *Form) Render() template.HTML {
+func (f *Form) Render(theme string) template.HTML {
 	var s string
 	buf := bytes.NewBufferString(s)
 	data := map[string]interface{}{
@@ -47,7 +47,7 @@ func (f *Form) Elements(elems ...Renderable) *Form {
 }
 
 func (f *Form) addField(field FieldInterface) *Form {
-	field.SetStyle(f.style)
+	field.SetTheme(f.style)
 	f.fields = append(f.fields, field)
 	f.fieldMap[field.Name()] = len(f.fields) - 1
 	return f
@@ -55,7 +55,7 @@ func (f *Form) addField(field FieldInterface) *Form {
 
 func (f *Form) addFieldSet(fs *FieldSetType) *Form {
 	for _, v := range fs.fields {
-		v.SetStyle(f.style)
+		v.SetTheme(f.style)
 		f.containerMap[v.Name()] = fs.name
 	}
 	f.fields = append(f.fields, fs)
