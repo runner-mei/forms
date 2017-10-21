@@ -14,6 +14,32 @@ type InputChoice struct {
 	Label string `json:"label"`
 }
 
+type HierarchyChoice struct {
+	Label    string        `json:"label,omitempty"`
+	Children []InputChoice `json:"children,omitempty"`
+}
+
+func AppendHierarchyChoices(allList, parts []HierarchyChoice) []HierarchyChoice {
+	for pidx := range parts {
+		foundIdx := -1
+		for idx := range allList {
+			if allList[idx].Label == parts[pidx].Label {
+				foundIdx = idx
+				break
+			}
+		}
+
+		if foundIdx >= 0 {
+			if len(parts[pidx].Children) > 0 {
+				allList[foundIdx].Children = append(allList[foundIdx].Children, parts[pidx].Children...)
+			}
+		} else {
+			allList = append(allList, parts[pidx])
+		}
+	}
+	return allList
+}
+
 // RadioField creates a default radio button input field with the provided name and list of choices.
 func RadioField(ctx interface{}, name, label string, choices interface{}) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, RADIO)
@@ -48,6 +74,14 @@ func readChoices(name string, v interface{}) []InputChoice {
 		return []InputChoice{}
 	}
 
+	if strArray, ok := v.([][2]string); ok {
+		choices := []InputChoice{}
+		for _, sa := range strArray {
+			choices = append(choices, InputChoice{sa[0], sa[1]})
+		}
+		return choices
+	}
+
 	if choices, ok := v.([]InputChoice); ok {
 		return choices
 	}
@@ -75,43 +109,78 @@ func readChoices(name string, v interface{}) []InputChoice {
 	panic(fmt.Errorf("Choices arguments of "+name+" must be []InputChoice - [%T]%#v", v, v))
 }
 
-func readChoiceGroups(name string, v interface{}) map[string][]InputChoice {
+func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 	if v == nil {
-		return map[string][]InputChoice{}
+		return []HierarchyChoice{}
 	}
+	if strArray, ok := v.([][2]string); ok {
+		choices := []InputChoice{}
+		for _, sa := range strArray {
+			choices = append(choices, InputChoice{sa[0], sa[1]})
+		}
+
+		return []HierarchyChoice{{Children: choices}}
+	}
+
 	if strMap, ok := v.(map[string]interface{}); ok {
 		choices := []InputChoice{}
 		for k, v := range strMap {
 			choices = append(choices, InputChoice{k, fmt.Sprint(v)})
 		}
 
-		return map[string][]InputChoice{"": choices}
+		return []HierarchyChoice{{Children: choices}}
 	}
 	if choices, ok := v.(map[string][]InputChoice); ok {
-		return choices
+		var results []HierarchyChoice
+		for k, v := range choices {
+			results = append(results, HierarchyChoice{
+				Label:    k,
+				Children: v,
+			})
+		}
+		return results
 	}
 	if choices, ok := v.([]InputChoice); ok {
-		return map[string][]InputChoice{"": choices}
+		return []HierarchyChoice{{Children: choices}}
+	}
+	if choices, ok := v.([]HierarchyChoice); ok {
+		return choices
 	}
 	if s, ok := v.(string); ok {
 		if strings.HasPrefix(s, "{") {
-			var results map[string][]InputChoice
-			if err := json.Unmarshal([]byte(s), &results); err != nil {
+			var values map[string][]InputChoice
+			if err := json.Unmarshal([]byte(s), &values); err != nil {
 				panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice, " + err.Error()))
 			}
-			for _, choices := range results {
+			for _, choices := range values {
 				validateChoices(choices)
+			}
+
+			var results []HierarchyChoice
+			for k, choices := range values {
+				results = append(results, HierarchyChoice{
+					Label:    k,
+					Children: choices,
+				})
 			}
 			return results
 		}
 
 		if strings.HasPrefix(s, "[") {
-			var results []InputChoice
-			if err := json.Unmarshal([]byte(s), &results); err != nil {
+			var choices []InputChoice
+			if err := json.Unmarshal([]byte(s), &choices); err == nil {
+				validateChoices(choices)
+				return []HierarchyChoice{{Children: choices}}
+			}
+
+			var hierarchyChoices []HierarchyChoice
+			if err := json.Unmarshal([]byte(s), &hierarchyChoices); err != nil {
 				panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice, " + err.Error()))
 			}
-			validateChoices(results)
-			return map[string][]InputChoice{"": results}
+			for idx := range hierarchyChoices {
+				validateChoices(hierarchyChoices[idx].Children)
+			}
+			return hierarchyChoices
 		}
 
 		panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice."))

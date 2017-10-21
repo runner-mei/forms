@@ -60,7 +60,7 @@ type FieldInterface interface {
 	SingleChoice() FieldInterface
 	AddSelected(opt ...string) FieldInterface
 	RemoveSelected(opt string) FieldInterface
-	SetSelectChoices(choices map[string][]InputChoice) FieldInterface
+	SetSelectChoices(choices []HierarchyChoice) FieldInterface
 	SetRadioChoices(choices []InputChoice) FieldInterface
 	SetText(text string) FieldInterface
 }
@@ -421,7 +421,7 @@ func (f *Field) RemoveSelected(opt string) FieldInterface {
 // is the default group that is not explicitly rendered) and value is the list of choices belonging to that group.
 // Grouping is only useful for Select fields, while groups are ignored in Radio fields.
 // It has no effect if type is not SELECT.
-func (f *Field) SetSelectChoices(choices map[string][]InputChoice) FieldInterface {
+func (f *Field) SetSelectChoices(choices []HierarchyChoice) FieldInterface {
 	if f.fieldType == SELECT {
 		f.additionalData["choices"] = choices
 	}

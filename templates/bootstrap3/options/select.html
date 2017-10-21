@@ -17,11 +17,12 @@
             {{- end -}}
             {{- range $v :=.tags}} {{$v}}{{end}}>
       {{- $p := . -}}
-      {{- range $k, $v := .choices -}}
-        {{- if $k -}}
-        <optgroup label="{{$k}}">
+      {{- range $v := .choices -}}
+        {{- if $v.Label -}}
+        <optgroup label="{{$v.Label}}">
         {{- end -}}
-        {{- range $v -}}
+
+        {{- range $v.Children -}}
         <option value="{{.Value}}"
                 {{- if strIn "multiple" $p.tags -}}
                   {{- $id :=.Value -}}
@@ -33,7 +34,8 @@
                 {{- end}}>{{raw .Label -}}
         </option>
         {{- end -}}
-        {{- if $k -}}
+        
+        {{- if $v.Label -}}
         </optgroup>
         {{- end -}}
       {{- end -}}
