@@ -141,6 +141,47 @@ func (fv fieldValue) Flash() string {
 	return ""
 }
 func (fv fieldValue) FlashArray() []string {
+	if fv.value == nil {
+		return nil
+	}
+	switch vv := fv.value.(type) {
+	case []string:
+		return vv
+	case []int:
+		var ss []string
+		for _, v := range vv {
+			ss = append(ss, strconv.Itoa(v))
+		}
+		return ss
+	case []int64:
+		var ss []string
+		for _, v := range vv {
+			ss = append(ss, strconv.FormatInt(v, 10))
+		}
+		return ss
+	case []interface{}:
+		var ss []string
+		for _, v := range vv {
+			ss = append(ss, fmt.Sprint(v))
+		}
+		return ss
+	default:
+		vo := reflect.ValueOf(fv.value)
+		if vo.Kind() == reflect.Slice {
+			var ss []string
+			for i := 0; i < vo.Len(); i++ {
+				ss = append(ss, fmt.Sprint(vo.Index(i).Interface()))
+			}
+			return ss
+		} else if vo.Kind() == reflect.Array {
+			var ss []string
+			for i := 0; i < vo.Len(); i++ {
+				ss = append(ss, fmt.Sprint(vo.Index(i).Interface()))
+			}
+			return ss
+		}
+		panic(fmt.Errorf("value isnot a slice or array - %T %#v", fv.value, fv.value))
+	}
 	return nil
 }
 func (fv fieldValue) Value() interface{} {

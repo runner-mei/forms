@@ -61,7 +61,7 @@ func TestSelectRender(t *testing.T) {
 			InputChoice{"choice2", "value2"},
 		},
 	}).MultipleChoice().SetLabel("asd").AddSelected("choice1", "choice2")
-	field.SetTheme(style).SetValue("choice1")
+	field.SetTheme(style)
 	t.Log("Rendered select:", field.Render(testTheme))
 }
 
