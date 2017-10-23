@@ -54,7 +54,7 @@ func TestRadioButtonRender(t *testing.T) {
 	t.Log("Rendered radio:", field.Render(testTheme))
 }
 
-func TestSelectRender(t *testing.T) {
+func TestSelectRender1(t *testing.T) {
 	field := SelectField(makeCtx(), "select", "select one", map[string][]InputChoice{
 		"": []InputChoice{
 			InputChoice{"choice1", "value1"},
@@ -62,6 +62,17 @@ func TestSelectRender(t *testing.T) {
 		},
 	}).MultipleChoice().SetLabel("asd").AddSelected("choice1", "choice2")
 	field.SetTheme(style)
+	t.Log("Rendered select:", field.Render(testTheme))
+}
+
+func TestSelectRender2(t *testing.T) {
+	field := SelectField(makeCtx(), "select", "select one", map[string][]InputChoice{
+		"": []InputChoice{
+			InputChoice{"choice1", "value1"},
+			InputChoice{"choice2", "value2"},
+		},
+	}).MultipleChoice().SetLabel("asd")
+	field.SetTheme(style).SetValue([]string{"choice1", "choice2"})
 	t.Log("Rendered select:", field.Render(testTheme))
 }
 
