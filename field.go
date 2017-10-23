@@ -2,6 +2,7 @@
 package forms
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
@@ -145,6 +146,14 @@ func (fv fieldValue) FlashArray() []string {
 		return nil
 	}
 	switch vv := fv.value.(type) {
+	case string:
+		if strings.HasPrefix(vv, "[") && strings.HasSuffix(vv, "]") {
+			var ss []string
+			if err := json.Unmarshal([]byte(vv), &ss); err != nil {
+				panic(fmt.Errorf("value isnot a json array - %s", vv))
+			}
+			return ss
+		}
 	case []string:
 		return vv
 	case []int:
@@ -180,8 +189,8 @@ func (fv fieldValue) FlashArray() []string {
 			}
 			return ss
 		}
-		panic(fmt.Errorf("value isnot a slice or array - %T %#v", fv.value, fv.value))
 	}
+	panic(fmt.Errorf("value isnot a slice or array - %T %#v", fv.value, fv.value))
 	return nil
 }
 func (fv fieldValue) Value() interface{} {
