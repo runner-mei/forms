@@ -1,6 +1,7 @@
 package forms
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -146,6 +147,45 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 	if choices, ok := v.([]HierarchyChoice); ok {
 		return choices
 	}
+	if bs, ok := v.([]byte); ok {
+		if bytes.HasPrefix(bs, []byte("{")) {
+			var values map[string][]InputChoice
+			if err := json.Unmarshal(bs, &values); err != nil {
+				panic(errors.New("failed to unmarshal `" + string(bs) + "` to map[string][]InputChoice, " + err.Error()))
+			}
+			for _, choices := range values {
+				validateChoices(choices)
+			}
+
+			var results []HierarchyChoice
+			for k, choices := range values {
+				results = append(results, HierarchyChoice{
+					Label:    k,
+					Children: choices,
+				})
+			}
+			return results
+		}
+
+		if bytes.HasPrefix(bs, []byte("[")) {
+			var choices []InputChoice
+			if err := json.Unmarshal(bs, &choices); err == nil {
+				validateChoices(choices)
+				return []HierarchyChoice{{Children: choices}}
+			}
+
+			var hierarchyChoices []HierarchyChoice
+			if err := json.Unmarshal(bs, &hierarchyChoices); err != nil {
+				panic(errors.New("failed to unmarshal `" + string(bs) + "` to []InputChoice or []HierarchyChoice, " + err.Error()))
+			}
+			for idx := range hierarchyChoices {
+				validateChoices(hierarchyChoices[idx].Children)
+			}
+			return hierarchyChoices
+		}
+
+		panic(errors.New("failed to unmarshal `" + string(bs) + "` to []InputChoice or []HierarchyChoice."))
+	}
 	if s, ok := v.(string); ok {
 		if strings.HasPrefix(s, "{") {
 			var values map[string][]InputChoice
@@ -175,7 +215,7 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 
 			var hierarchyChoices []HierarchyChoice
 			if err := json.Unmarshal([]byte(s), &hierarchyChoices); err != nil {
-				panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice, " + err.Error()))
+				panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice or []HierarchyChoice, " + err.Error()))
 			}
 			for idx := range hierarchyChoices {
 				validateChoices(hierarchyChoices[idx].Children)
@@ -183,7 +223,7 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 			return hierarchyChoices
 		}
 
-		panic(errors.New("failed to unmarshal `" + s + "` to map[string][]InputChoice."))
+		panic(errors.New("failed to unmarshal `" + s + "` to []InputChoice or []HierarchyChoice."))
 	}
 	panic(fmt.Errorf("Choices argumentsof "+name+" must is map[string][]InputChoice or []InputChoice - [%T]%#v", v, v))
 }
