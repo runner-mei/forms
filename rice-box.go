@@ -10,8 +10,8 @@ func init() {
 	// define files
 	file2 := &embedded.EmbeddedFile{
 		Filename:    `baseform.html`,
-		FileModTime: time.Unix(1508411267, 0),
-		Content:     string("<form{{if .name}} name=\"{{.name}}\"{{end}}{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}} method=\"{{.method}}\" action=\"{{.action}}\">\n\t{{ range .fields}}{{ .Render \"\" }}{{end}}\n</form>"),
+		FileModTime: time.Unix(1508921518, 0),
+		Content:     string("<form{{if .name}} name=\"{{.name}}\"{{end}}{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}} method=\"{{.method}}\" action=\"{{.action}}\">\r\n\t{{ range .fields}}{{ .Render \"\" }}{{end}}\r\n</form>"),
 	}
 	file4 := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/button.html`,
@@ -30,8 +30,8 @@ func init() {
 	}
 	file8 := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/datetime/datetime.html`,
-		FileModTime: time.Unix(1489735114, 0),
-		Content:     string("{{ define \"main\"}}{{ template \"generic\" . }}{{ end }}"),
+		FileModTime: time.Unix(1509097133, 0),
+		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/datepicker/bootstrap-datepicker.js\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/clockpicker/clockpicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/datepicker/datepicker3.css\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/clockpicker/clockpicker.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n<div class=\"form-group{{if .errors}} has-error{{end}}\">\r\n\t<label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n\t\t\t\t {{- if .id}} for=\"{{.id}}\" {{end}}>\r\n\t\t{{- if .label -}}{{.label}}{{- end -}}\r\n\t</label>\r\n\r\n\t{{if .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\" name=\"{{.name}}-form-group\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n\r\n\t\t<div class=\"col-lg-6\">\r\n\t\t<div class=\"input-group date\">\r\n\t\t\t<span class=\"input-group-addon\"><i class=\"fa fa-calendar\"></i></span>\r\n\t\t\t<input type=\"text\" class=\"form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}\"\r\n\t\t\t\t\t\t name=\"{{.name}}date\"\r\n\t\t\t\t\t\t {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n\t\t\t\t\t\t {{- if .params -}}\r\n\t\t\t\t\t\t {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n\t\t\t\t\t\t {{- end -}}\r\n\t\t\t\t\t\t {{- range $v :=.tags}} {{$v}} {{end -}}\r\n\t\t\t\t\t\t {{- if .value -}} value=\"{{form_date .value}}\" {{end}}>\r\n\t\t\t{{- if or .helptext .errors -}}\r\n\t\t\t<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n          {{- if .errors}}\r\n            <ul>\r\n            {{- range .errors }}\r\n              <li>{{.}}</li>\r\n            {{- end -}}\r\n            </ul>\r\n          {{- end}}\r\n    </span>\r\n\t\t\t{{- end}}\r\n\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"col-lg-6\">\r\n\t\t<div class=\"input-group clockpicker\" data-autoclose=\"true\">\r\n\t\t\t<input type=\"text\" class=\"form-control\" value=\"{{ if .value }}{{ form_time .value }}{{ end }}\" name=\"{{.name}}time\">\r\n\t\t\t<span class=\"input-group-addon\">\r\n\t\t\t\t<span class=\"fa fa-clock-o\"></span>\r\n\t\t\t</span>\r\n\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<input type=\"hidden\" name=\"{{.name}}\" value=\"\">\r\n\t\t<script>\r\n        if (tpt_form_callbacks == null) {\r\n            tpt_form_callbacks = new Array();\r\n        }\r\n        tpt_form_callbacks.push(function () {\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on(\"change\",function () {\r\n                var date = $('[name=\"{{ .name }}date\"]').val();\r\n                var time = $('[name=\"{{ .name }}time\"]').val();\r\n                if (date || time){\r\n                    $('[name=\"{{ .name }}\"]').val(date+\" \"+time);\r\n                }\r\n            });\r\n\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({\r\n                todayBtn: \"linked\",\r\n                todayHighlight: false,\r\n                keyboardNavigation: true,\r\n                forceParse: true,\r\n                calendarWeeks: true,\r\n                autoclose: true,\r\n                format: \"yyyy-mm-dd\"\r\n            });\r\n            $('.clockpicker').clockpicker();\r\n        });\r\n\t\t</script>\r\n\r\n\t</div>\r\n</div>\r\n{{- end}}"),
 	}
 	file9 := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/datetime/time.html`,
@@ -80,7 +80,7 @@ func init() {
 	}
 	filek := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/options/select.html`,
-		FileModTime: time.Unix(1508555331, 0),
+		FileModTime: time.Unix(1508921518, 0),
 		Content:     string("{{- define \"main\"}}\r\n<div class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n      {{- if .id}} for=\"{{.id}}\" {{end -}}>\r\n    {{- if .label}}{{.label}}{{- end}}\r\n  </label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    \r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n</div>\r\n{{- end}}\r\n"),
 	}
 	filel := &embedded.EmbeddedFile{
@@ -105,8 +105,8 @@ func init() {
 	}
 	fileq := &embedded.EmbeddedFile{
 		Filename:    `bootstrapform.html`,
-		FileModTime: time.Unix(1508411247, 0),
-		Content:     string("<form role=\"form\"{{if .name}} name=\"{{.name}}\"{{end}}{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}} method=\"{{.method}}\" action=\"{{.action}}\">\n\t{{ range .fields}}{{ .Render \"\" }}{{end}}\n</form>"),
+		FileModTime: time.Unix(1508921518, 0),
+		Content:     string("<form role=\"form\"{{if .name}} name=\"{{.name}}\"{{end}}{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}} method=\"{{.method}}\" action=\"{{.action}}\">\r\n\t{{ range .fields}}{{ .Render \"\" }}{{end}}\r\n</form>"),
 	}
 	filer := &embedded.EmbeddedFile{
 		Filename:    `fieldset.html`,
@@ -117,7 +117,7 @@ func init() {
 	// define dirs
 	dir1 := &embedded.EmbeddedDir{
 		Filename:   ``,
-		DirModTime: time.Unix(1489735114, 0),
+		DirModTime: time.Unix(1508921518, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2, // baseform.html
 			fileq, // bootstrapform.html
@@ -141,7 +141,7 @@ func init() {
 	}
 	dir6 := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/datetime`,
-		DirModTime: time.Unix(1489735114, 0),
+		DirModTime: time.Unix(1509097133, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file7, // bootstrap3/datetime/date.html
 			file8, // bootstrap3/datetime/datetime.html
@@ -160,7 +160,7 @@ func init() {
 	}
 	dirh := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/options`,
-		DirModTime: time.Unix(1506325216, 0),
+		DirModTime: time.Unix(1508921518, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			filei, // bootstrap3/options/checkbox.html
 			filej, // bootstrap3/options/radiobutton.html
@@ -199,7 +199,7 @@ func init() {
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`templates`, &embedded.EmbeddedBox{
 		Name: `templates`,
-		Time: time.Unix(1489735114, 0),
+		Time: time.Unix(1508921518, 0),
 		Dirs: map[string]*embedded.EmbeddedDir{
 			"":                    dir1,
 			"bootstrap3":          dir3,
