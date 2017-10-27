@@ -48,8 +48,7 @@
 			</span>
 		</div>
 		</div>
-
-		<input type="hidden" name="{{.name}}" value="">
+		<input type="hidden" name="{{.name}}" value="{{ form_date_and_time .value }}">
 		<script>
         if (tpt_form_callbacks == null) {
             tpt_form_callbacks = new Array();

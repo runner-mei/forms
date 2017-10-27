@@ -308,6 +308,16 @@ var defaultFuncs = template.FuncMap{
 		}
 		return t.Format("15:04")
 	},
+	"form_date_and_time": func(value interface{}) string {
+		t, ok := toTime(value)
+		if !ok {
+			return fmt.Sprint(value)
+		}
+		if t.IsZero() {
+			return ""
+		}
+		return t.Format("2006-01-02 15:04")
+	},
 	"form_datetime": func(value interface{}) string {
 		t, ok := toTime(value)
 		if !ok {
