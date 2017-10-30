@@ -22,7 +22,7 @@ func init() {
 	FieldFuncs["textarea_field"] = TextAreaField
 	FieldFuncs["hidden_field"] = HiddenField
 	FieldFuncs["map_field"] = MapField
-	FieldFuncs["static_field"] = StaticField
+	// FieldFuncs["static_field"] = StaticField
 	FieldFuncs["range_field"] = RangeField
 	FieldFuncs["number_field"] = NumberField
 

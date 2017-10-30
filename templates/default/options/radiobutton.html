@@ -1,5 +1,4 @@
 {{- define "main"}}{{ $p := . }}
-
 	<div class="col-lg-{{default .controlWidth 9}}">
   {{ range .choices }}
     <label class="control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
@@ -17,3 +16,4 @@
     </label>
   {{- end}}
 	</div>
+{{- end}}

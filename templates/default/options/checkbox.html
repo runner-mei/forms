@@ -1,6 +1,5 @@
 {{-  define "main"}}
 {{- $p := . }}
-
 	<div class="col-lg-{{default .controlWidth 9}}">
 		<div class="checkbox{{if .errors}} has-error{{end}}">
 			<label class="control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}">
@@ -14,8 +13,11 @@
 				{{- range $v := .tags}} {{$v}}{{end}}>
 				{{.label}}
 			</label>
-			{{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{- end}}
-			{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}
+			{{- if or .helptext .errors }}
+			<span class="help-block">{{if .helptext}}{{ .helptext }}{{- end}}
+			{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}
+			</span>
+			{{- end}}
 		</div>
 	</div>
-
+{{- end}}
