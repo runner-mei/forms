@@ -1,5 +1,5 @@
 {{- define "main"}}{{ $p := . }}
-<div class="form-group">
+<div {{if .id}}id='{{.id}}_div'{{end}} class="form-group">
   {{- if not .nolabel -}}
   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
     {{- if .label}}{{.label}}{{- end}}</label>

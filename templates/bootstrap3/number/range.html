@@ -1,5 +1,5 @@
 {{- define "main" -}}
-<div class="form-group{{if .errors}} has-error{{end}}">
+<div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
   {{- if not .nolabel -}}
   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
   {{- if .id}} for="{{.id}}" {{end}}>{{if .label }}{{.label}}{{end}}</label>
