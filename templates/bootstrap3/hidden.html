@@ -1,3 +1,6 @@
 {{- define "main" -}}
-<input type="hidden" name="{{.name}}" class="{{range .classes}}{{.}} {{end}}"{{if .id}} id="{{.id}}"{{end}}{{ if .value}} value="{{.value}}"{{end}}>
+<input type="hidden" name="{{.name}}"
+           {{- if .params}}
+           {{- range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}
+           {{- end}} class="{{range .classes}}{{.}} {{end}}"{{if .id}} id="{{.id}}"{{end}}{{ if .value}} value="{{.value}}"{{end}}>
 {{- end -}}

@@ -45,8 +45,8 @@ func init() {
 	}
 	fileb := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/hidden.html`,
-		FileModTime: time.Unix(1491998145, 0),
-		Content:     string("{{- define \"main\" -}}\n<input type=\"hidden\" name=\"{{.name}}\" class=\"{{range .classes}}{{.}} {{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\n{{- end -}}"),
+		FileModTime: time.Unix(1510301753, 0),
+		Content:     string("{{- define \"main\" -}}\n<input type=\"hidden\" name=\"{{.name}}\"\n           {{- if .params}}\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\n           {{- end}} class=\"{{range .classes}}{{.}} {{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\n{{- end -}}"),
 	}
 	filec := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/input.html`,
