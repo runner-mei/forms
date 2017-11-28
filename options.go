@@ -60,14 +60,19 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 }
 
 func validateChoices(results []InputChoice) {
+	count := 0
 	for idx := range results {
 		if results[idx].Value == "" {
-			panic(errors.New("Value of InputChoice is empty"))
+			count++
 		}
 
 		if results[idx].Label == "" {
 			results[idx].Label = results[idx].Value
 		}
+	}
+
+	if count > 1 {
+		panic(errors.New("Value of InputChoice is empty"))
 	}
 }
 func readChoices(name string, v interface{}) []InputChoice {
