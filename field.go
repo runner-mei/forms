@@ -236,10 +236,8 @@ func (f *Field) setValue(value FieldValue) {
 			val := value.Value()
 			if b, ok := val.(byte); ok {
 				f.value = string(b)
-			} else {
-				if value.Value() != nil {
-					f.value = fmt.Sprint(value.Value())
-				}
+			} else if val != nil {
+				f.value = fmt.Sprint(val)
 			}
 		}
 	}
