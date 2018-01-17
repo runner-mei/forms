@@ -39,7 +39,7 @@
     {{- end -}}
         </select>
         <div class="input-group-addon {{.btnClass}}"
-    {{- if .btnParams}}{{range $k, $v :=.btnParams}} {{$k}}="{{$v}}" {{end}} {{end}} style="cursor: pointer" id="{{.btnID}}">{{.btnTxt}}</div>
+    {{- if .additionParams}}{{range $k, $v :=.additionParams}} {{$k}}="{{$v}}" {{end}} {{end}} style="cursor: pointer" id="{{.btnID}}">{{.btnTxt}}</div>
 {{- if or .helptext .errors -}}
     <span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
     {{if .errors}}
