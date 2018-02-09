@@ -90,8 +90,8 @@ func init() {
 	}
 	filen := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/passwordinput.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\" {{if .id}} for=\"{{.id}}\" {{end}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n  </div>\r\n</div>{{end -}}"),
+		FileModTime: time.Unix(1518162182, 0),
+		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\" {{if .id}} for=\"{{.id}}\" {{end}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n  </div>\r\n</div>{{end -}}"),
 	}
 	fileo := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/textareainput.html`,
@@ -145,23 +145,23 @@ func init() {
 	}
 	file12 := &embedded.EmbeddedFile{
 		Filename:    `default/options/select.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\"}}\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n{{- end }}"),
+		FileModTime: time.Unix(1518162182, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n{{- end }}"),
 	}
 	file14 := &embedded.EmbeddedFile{
 		Filename:    `default/text/passwordinput.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\"}}\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n{{- end -}}\r\n\r\n"),
+		FileModTime: time.Unix(1518162182, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n</div>\r\n{{- end -}}\r\n\r\n"),
 	}
 	file15 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textareainput.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\"}}\r\n<textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end}}\r\n  {{- end}}\r\n"),
+		FileModTime: time.Unix(1518162182, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n<textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end}}\r\n</div>\r\n  {{- end}}\r\n"),
 	}
 	file16 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textinput.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\"}}\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n           {{- if .params -}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n           {{- end -}}\r\n           {{- if .css -}}\r\n           style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end -}}\r\n           {{- range $v :=.tags}} {{$v -}}\r\n           {{- end -}}\r\n           {{- if .value -}}\r\n           value=\"{{.value}}\"\r\n           {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{- end}}\r\n{{- end}}\r\n\r\n\r\n"),
+		FileModTime: time.Unix(1518162182, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n           {{- if .params -}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n           {{- end -}}\r\n           {{- if .css -}}\r\n           style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end -}}\r\n           {{- range $v :=.tags}} {{$v -}}\r\n           {{- end -}}\r\n           {{- if .value -}}\r\n           value=\"{{.value}}\"\r\n           {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{- end}}\r\n</div>\r\n{{- end}}\r\n\r\n\r\n"),
 	}
 	file17 := &embedded.EmbeddedFile{
 		Filename:    `fieldset.html`,
@@ -235,7 +235,7 @@ func init() {
 	}
 	dirm := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/text`,
-		DirModTime: time.Unix(1513250714, 0),
+		DirModTime: time.Unix(1518162182, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			filen, // bootstrap3/text/passwordinput.html
 			fileo, // bootstrap3/text/textareainput.html
@@ -269,7 +269,7 @@ func init() {
 	}
 	dirz := &embedded.EmbeddedDir{
 		Filename:   `default/options`,
-		DirModTime: time.Unix(1513250714, 0),
+		DirModTime: time.Unix(1518162182, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file10, // default/options/checkbox.html
 			file11, // default/options/radiobutton.html
@@ -279,7 +279,7 @@ func init() {
 	}
 	dir13 := &embedded.EmbeddedDir{
 		Filename:   `default/text`,
-		DirModTime: time.Unix(1513250714, 0),
+		DirModTime: time.Unix(1518162182, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file14, // default/text/passwordinput.html
 			file15, // default/text/textareainput.html
