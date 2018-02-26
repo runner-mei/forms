@@ -639,6 +639,11 @@ var (
 	}
 )
 
+func init() {
+	FieldFuncs["f_addCSS"] = FieldFuncs["f_addCss"]
+	FieldFuncs["f_removeCSS"] = FieldFuncs["f_removeCss"]
+}
+
 func toStringArray(value interface{}, defValue []string) []string {
 	if value == nil {
 		return defValue
