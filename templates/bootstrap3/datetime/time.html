@@ -1,1 +1,45 @@
-{{ define "main"}}{{ template "generic" . }}{{ end }}
+
+{{- define "main"}}
+{{- append .ctx_parent "moreScripts" "/public/js/plugins/clockpicker/clockpicker.js"}}
+{{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/clockpicker/clockpicker.css"}}
+{{- unique .ctx_parent "moreScripts" -}}
+{{- unique .ctx_parent "moreLazyStyles" -}}
+
+<div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
+	<label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
+  {{- if .id}} for="{{.id}}" {{end}}>
+  {{- if .label -}}{{.label}}{{- end -}}
+	</label>
+
+{{if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
+	<div class="col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
+
+		<div class="col-lg-12">
+			<div class="input-group clockpicker" data-autoclose="true">
+				<input type="text" class="form-control" value="{{ if .value }}{{ form_time .value }}{{ end }}" name="{{.name}}time">
+				<span class="input-group-addon">
+				<span class="fa fa-clock-o"></span>
+			</span>
+			</div>
+		</div>
+
+		<input type="hidden" name="{{.name}}" value="{{ form_date_and_time .value }}">
+		<script>
+			if (tpt_form_callbacks == null) {
+				tpt_form_callbacks = new Array();
+			}
+			tpt_form_callbacks.push(function () {
+				$('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on("change",function () {
+					var time = $('[name="{{ .name }}time"]').val();
+					if (time){
+						$('[name="{{ .name }}"]').val("0001-01-01 "+time);
+					}
+				});
+
+				$('.clockpicker').clockpicker();
+			});
+		</script>
+
+	</div>
+</div>
+{{- end}}
