@@ -35,8 +35,8 @@ func init() {
 	}
 	file9 := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/datetime/time.html`,
-		FileModTime: time.Unix(1489735114, 0),
-		Content:     string("{{ define \"main\"}}{{ template \"generic\" . }}{{ end }}"),
+		FileModTime: time.Unix(1522380080, 0),
+		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/clockpicker/clockpicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/clockpicker/clockpicker.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n\t<label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n  {{- if .id}} for=\"{{.id}}\" {{end}}>\r\n  {{- if .label -}}{{.label}}{{- end -}}\r\n\t</label>\r\n\r\n{{if .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\" name=\"{{.name}}-form-group\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n\r\n\t\t<div class=\"col-lg-12\">\r\n\t\t\t<div class=\"input-group clockpicker\" data-autoclose=\"true\">\r\n\t\t\t\t<input type=\"text\" class=\"form-control\" value=\"{{ if .value }}{{ form_time .value }}{{ end }}\" name=\"{{.name}}time\">\r\n\t\t\t\t<span class=\"input-group-addon\">\r\n\t\t\t\t<span class=\"fa fa-clock-o\"></span>\r\n\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<input type=\"hidden\" name=\"{{.name}}\" value=\"{{ form_date_and_time .value }}\">\r\n\t\t<script>\r\n\t\t\tif (tpt_form_callbacks == null) {\r\n\t\t\t\ttpt_form_callbacks = new Array();\r\n\t\t\t}\r\n\t\t\ttpt_form_callbacks.push(function () {\r\n\t\t\t\t$('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on(\"change\",function () {\r\n\t\t\t\t\tvar time = $('[name=\"{{ .name }}time\"]').val();\r\n\t\t\t\t\tif (time){\r\n\t\t\t\t\t\t$('[name=\"{{ .name }}\"]').val(\"0001-01-01 \"+time);\r\n\t\t\t\t\t}\r\n\t\t\t\t});\r\n\r\n\t\t\t\t$('.clockpicker').clockpicker();\r\n\t\t\t});\r\n\t\t</script>\r\n\r\n\t</div>\r\n</div>\r\n{{- end}}"),
 	}
 	filea := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/generic.tmpl`,
@@ -206,7 +206,7 @@ func init() {
 	}
 	dir6 := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/datetime`,
-		DirModTime: time.Unix(1513250714, 0),
+		DirModTime: time.Unix(1522380080, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file7, // bootstrap3/datetime/date.html
 			file8, // bootstrap3/datetime/datetime.html
