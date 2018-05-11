@@ -80,6 +80,14 @@ func readChoices(name string, v interface{}) []InputChoice {
 		return []InputChoice{}
 	}
 
+	if strArray, ok := v.([]string); ok {
+		choices := []InputChoice{}
+		for _, s := range strArray {
+			choices = append(choices, InputChoice{s, s})
+		}
+		return choices
+	}
+
 	if strArray, ok := v.([][2]string); ok {
 		choices := []InputChoice{}
 		for _, sa := range strArray {
@@ -119,6 +127,15 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 	if v == nil {
 		return []HierarchyChoice{}
 	}
+
+	if strArray, ok := v.([]string); ok {
+		choices := []InputChoice{}
+		for _, s := range strArray {
+			choices = append(choices, InputChoice{s, s})
+		}
+		return []HierarchyChoice{{Children: choices}}
+	}
+
 	if strArray, ok := v.([][2]string); ok {
 		choices := []InputChoice{}
 		for _, sa := range strArray {

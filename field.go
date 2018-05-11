@@ -120,6 +120,14 @@ func (f *Field) loadValueIfNeed() {
 	name := f.Name()
 	ctx := f.ctx.(map[string]interface{})
 
+	if _, ok := ctx["errors"]; !ok {
+		ctx["errors"] = map[string]*revel.ValidationError{}
+	}
+
+	if _, ok := ctx["flash"]; !ok {
+		ctx["flash"] = map[string]string{}
+	}
+
 	value := revel.NewField(name, ctx)
 	f.setValue(value)
 
