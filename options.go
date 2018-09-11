@@ -5,14 +5,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"strings"
 )
 
 // InputChoice - Value pair used to define an option for select and redio input fields.
 type InputChoice struct {
-	Value string `json:"value"`
-	Label string `json:"label"`
+	Value string `json:"value" xorm:"value"`
+	Label string `json:"label" xorm:"label"`
 }
 
 type HierarchyChoice struct {
@@ -108,6 +109,22 @@ func readChoices(name string, v interface{}) []InputChoice {
 		return choices
 	}
 
+	if strMap, ok := v.(map[int64]string); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{strconv.FormatInt(k, 10), v})
+		}
+		return choices
+	}
+
+	if strMap, ok := v.(map[int]string); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{strconv.Itoa(k), v})
+		}
+		return choices
+	}
+
 	if s, ok := v.(string); ok {
 		if strings.HasPrefix(s, "[") {
 			var results []InputChoice
@@ -153,6 +170,23 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 
 		return []HierarchyChoice{{Children: choices}}
 	}
+
+	if strMap, ok := v.(map[int64]string); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{strconv.FormatInt(k, 10), v})
+		}
+		return []HierarchyChoice{{Children: choices}}
+	}
+
+	if strMap, ok := v.(map[int]string); ok {
+		choices := []InputChoice{}
+		for k, v := range strMap {
+			choices = append(choices, InputChoice{strconv.Itoa(k), v})
+		}
+		return []HierarchyChoice{{Children: choices}}
+	}
+
 	if choices, ok := v.(map[string][]InputChoice); ok {
 		var results []HierarchyChoice
 		for k, v := range choices {
