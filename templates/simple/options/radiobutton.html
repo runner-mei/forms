@@ -1,0 +1,17 @@
+{{- define "main"}}{{ $p := . }}
+  {{ range .choices }}
+    <label class="control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
+      <input type="radio" name="{{$p.name}}"
+      {{- if $p.classes }} class="{{range $p.classes}}{{.}} {{end}}"
+      {{- end}} value="{{.Value}}" id="{{$p.id}}"
+      {{- if $p.params}}
+        {{- range $k2, $v2 := $p.params}} {{$k2}}="{{$v2}}"
+        {{- end}}
+      {{- end}}
+      {{- if $p.css}} style="{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}"{{end}}
+      {{- if eq $p.value .Value}} checked{{end}}
+      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>
+      {{.Label}}
+    </label>
+  {{- end}}
+{{end}}

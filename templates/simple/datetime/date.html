@@ -1,0 +1,46 @@
+
+{{- define "main"}}
+{{- append .ctx_parent "moreScripts" "/public/js/plugins/datepicker/bootstrap-datepicker.js"}}
+{{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/datepicker/datepicker3.css"}}
+{{- unique .ctx_parent "moreScripts" -}}
+{{- unique .ctx_parent "moreLazyStyles" -}}
+  {{if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
+    <div class="input-group date" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <input type="text" class="form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}"
+            name="{{.name}}"
+            {{- if .id}} id="{{.id}}" {{end -}}
+            {{- if .params -}} 
+              {{- range $k, $v :=.params}} {{$k}}="{{$v}}" {{end -}} 
+            {{- end -}}
+            {{- range $v :=.tags}} {{$v}} {{end -}}
+            {{- if .value -}} value="{{form_date .value}}" {{end}}>
+      {{- if or .helptext .errors -}}
+      <span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
+          {{- if .errors}}
+            <ul>
+            {{- range .errors }}
+              <li>{{.}}</li>
+            {{- end -}}
+            </ul>
+          {{- end}}
+    </span>
+    {{- end}}
+
+    <script>
+      if (tpt_form_callbacks == null) {
+        tpt_form_callbacks = new Array();
+      }
+      tpt_form_callbacks.push(function () {
+            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({
+                todayBtn: "linked",
+                todayHighlight: false,
+                keyboardNavigation: true,
+                forceParse: true,
+                calendarWeeks: true,
+                autoclose: true,
+                format: "yyyy-mm-dd"
+            });
+        });
+    </script>
+{{- end}}
