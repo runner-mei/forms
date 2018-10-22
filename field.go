@@ -405,6 +405,9 @@ func (f *Field) HasTag(tag string) bool {
 
 // SetValue sets the value parameter for the field.
 func (f *Field) SetValue(value interface{}) FieldInterface {
+	if value == nil {
+		return f
+	}
 	f.setValue(fieldValue{value})
 	return f
 }
@@ -617,6 +620,21 @@ var (
 			case 1:
 				field, ok := args[0].(FieldInterface)
 				if !ok {
+
+					renderer, ok := args[0].(interface {
+						Render() template.HTML
+					})
+					if ok {
+						return renderer.Render()
+					}
+
+					rendererString, ok := args[0].(interface {
+						Render() string
+					})
+					if ok {
+						return template.HTML(rendererString.Render())
+					}
+
 					panic("render 方法的参数必须是 FieldInterface 类型")
 				}
 				return field.Render("")
@@ -628,6 +646,20 @@ var (
 
 				field, ok := args[1].(FieldInterface)
 				if !ok {
+					renderer, ok := args[1].(interface {
+						Render(string) template.HTML
+					})
+					if ok {
+						return renderer.Render(theme)
+					}
+
+					rendererString, ok := args[1].(interface {
+						Render(string) string
+					})
+					if ok {
+						return template.HTML(rendererString.Render(theme))
+					}
+
 					panic("render 方法的第二个参数必须是 FieldInterface 类型")
 				}
 				return field.Render(theme)
