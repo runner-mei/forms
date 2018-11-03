@@ -68,7 +68,7 @@ type FieldInterface interface {
 
 // FieldWithType creates an empty field of the given type and identified by name.
 func FieldWithType(ctx interface{}, name, t string) *Field {
-	return &Field{
+	var field = &Field{
 		ctx:            ctx,
 		fieldType:      t,
 		Widget:         nil,
@@ -85,6 +85,14 @@ func FieldWithType(ctx interface{}, name, t string) *Field {
 		errors:         []string{},
 		additionalData: map[string]interface{}{},
 	}
+
+	if params, _ := ctx.(map[string]interface{}); params != nil {
+		mode := params["form_mode"]
+		if smode, _ := mode.(string); smode == "readonly" {
+			field.SetParam("readonly", "readonly")
+		}
+	}
+	return field
 }
 
 // FieldWithTypeWithCtx creates an field of the given type and identified by name.
