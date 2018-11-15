@@ -2,24 +2,21 @@
 {{- $p := . }}
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group">
   {{- if not .nolabel -}}
-   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}"></label>
+   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
+   	{{- if .label -}}{{.label}}{{- end -}}
+   </label>
   {{- end -}}
 	<div class="col-lg-{{default .controlWidth 9}}">
-		<div class="checkbox{{if .errors}} has-error{{end}}">
-			<label class="control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}">
-				<input type="checkbox" name="{{.name}}"{{ if .classes }} class="{{range .classes}}{{.}} {{end}}"{{end}}
-				{{- if toOptionBoolean .value }} checked {{end}}
-				{{- if .id}} id="{{.id}}"{{end}}
-				{{- if .params}}
-				  {{- range $k, $v := .params}} {{$k}}="{{$v}}"{{end}}
-				{{- end}}
-				{{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"{{end}}
-				{{- range $v := .tags}} {{$v}}{{end}}>
-				{{.label}}
-			</label>
-			{{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{- end}}
-			{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}
-		</div>
+		<input type="checkbox" name="{{.name}}"{{ if .classes }} class="{{range .classes}}{{.}} {{end}}"{{end}}
+		{{- if toOptionBoolean .value }} checked {{end}}
+		{{- if .id}} id="{{.id}}"{{end}}
+		{{- if .params}}
+		  {{- range $k, $v := .params}} {{$k}}="{{$v}}"{{end}}
+		{{- end}}
+		{{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"{{end}}
+		{{- range $v := .tags}} {{$v}}{{end}}>
+		{{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{- end}}
+		{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}
 	</div>
 </div>
 {{- end}}

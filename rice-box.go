@@ -70,8 +70,8 @@ func init() {
 	}
 	filei := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/options/checkbox.html`,
-		FileModTime: time.Unix(1542280888, 0),
-		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group\">\r\n  {{- if not .nolabel -}}\r\n   <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\"></label>\r\n  {{- end -}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n\t\t<div class=\"checkbox{{if .errors}} has-error{{end}}\">\r\n\t\t\t<label class=\"control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\">\r\n\t\t\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t\t\t{{- if .params}}\r\n\t\t\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t\t\t{{- end}}\r\n\t\t\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t\t\t{{.label}}\r\n\t\t\t</label>\r\n\t\t\t{{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}\r\n\t\t</div>\r\n\t</div>\r\n</div>\r\n{{- end}}\r\n"),
+		FileModTime: time.Unix(1542281239, 0),
+		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group\">\r\n  {{- if not .nolabel -}}\r\n   <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n   \t{{- if .label -}}{{.label}}{{- end -}}\r\n   </label>\r\n  {{- end -}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t{{- if .params}}\r\n\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t{{- end}}\r\n\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t{{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}\r\n\t</div>\r\n</div>\r\n{{- end}}\r\n"),
 	}
 	filej := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/options/radiobutton.html`,
@@ -100,8 +100,8 @@ func init() {
 	}
 	filep := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/textinput.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n  {{- if .id}} for=\"{{.id}}\" \r\n  {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n           {{- range $v :=.tags}} {{$v}} {{end}}\r\n           {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n  </div>\r\n</div>\r\n{{- end -}}\r\n"),
+		FileModTime: time.Unix(1542281129, 0),
+		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n  {{- if .id}} for=\"{{.id}}\" \r\n  {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{- end -}} {{- end -}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{- end -}}\" {{- end -}}\r\n           {{- range $v :=.tags}} {{$v}} {{- end -}}\r\n           {{- if .value}} value=\"{{.value}}\" {{- end -}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{- if .helptext -}}{{ .helptext }}{{- end -}}\r\n            {{- if .errors -}}<ul>{{- range .errors -}}<li>{{.}}</li>{{- end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n  </div>\r\n</div>\r\n{{- end -}}\r\n"),
 	}
 	fileq := &embedded.EmbeddedFile{
 		Filename:    `bootstrapform.html`,
@@ -310,7 +310,7 @@ func init() {
 	}
 	dirh := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/options`,
-		DirModTime: time.Unix(1513250714, 0),
+		DirModTime: time.Unix(1542281129, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			filei, // bootstrap3/options/checkbox.html
 			filej, // bootstrap3/options/radiobutton.html
@@ -320,7 +320,7 @@ func init() {
 	}
 	dirm := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/text`,
-		DirModTime: time.Unix(1518162182, 0),
+		DirModTime: time.Unix(1542281129, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			filen, // bootstrap3/text/passwordinput.html
 			fileo, // bootstrap3/text/textareainput.html
