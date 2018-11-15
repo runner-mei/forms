@@ -217,7 +217,7 @@ func mustLoadTemplate(style, filename string) *template.Template {
 var gID int32
 
 var defaultFuncs = template.FuncMap{
-	"toBoolean": func(v interface{}) bool {
+	"toOptionBoolean": func(v interface{}) bool {
 		if v == nil {
 			return false
 		}
