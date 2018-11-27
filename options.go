@@ -76,7 +76,8 @@ func validateChoices(results []InputChoice) {
 		panic(errors.New("Value of InputChoice is empty"))
 	}
 }
-func readChoices(name string, v interface{}) []InputChoice {
+
+func tryReadChoices(v interface{}) []InputChoice {
 	if v == nil {
 		return []InputChoice{}
 	}
@@ -98,6 +99,9 @@ func readChoices(name string, v interface{}) []InputChoice {
 	}
 
 	if choices, ok := v.([]InputChoice); ok {
+		if choices == nil {
+			return []InputChoice{}
+		}
 		return choices
 	}
 
@@ -123,6 +127,14 @@ func readChoices(name string, v interface{}) []InputChoice {
 			choices = append(choices, InputChoice{strconv.Itoa(k), v})
 		}
 		return choices
+	}
+	return nil
+}
+
+func readChoices(name string, v interface{}) []InputChoice {
+	opts := tryReadChoices(v)
+	if opts != nil {
+		return opts
 	}
 
 	if s, ok := v.(string); ok {
@@ -141,50 +153,12 @@ func readChoices(name string, v interface{}) []InputChoice {
 }
 
 func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
-	if v == nil {
-		return []HierarchyChoice{}
-	}
-
-	if strArray, ok := v.([]string); ok {
-		choices := []InputChoice{}
-		for _, s := range strArray {
-			choices = append(choices, InputChoice{s, s})
+	opts := tryReadChoices(v)
+	if opts != nil {
+		if len(opts) == 0 {
+			return []HierarchyChoice{}
 		}
-		return []HierarchyChoice{{Children: choices}}
-	}
-
-	if strArray, ok := v.([][2]string); ok {
-		choices := []InputChoice{}
-		for _, sa := range strArray {
-			choices = append(choices, InputChoice{sa[0], sa[1]})
-		}
-
-		return []HierarchyChoice{{Children: choices}}
-	}
-
-	if strMap, ok := v.(map[string]interface{}); ok {
-		choices := []InputChoice{}
-		for k, v := range strMap {
-			choices = append(choices, InputChoice{k, fmt.Sprint(v)})
-		}
-
-		return []HierarchyChoice{{Children: choices}}
-	}
-
-	if strMap, ok := v.(map[int64]string); ok {
-		choices := []InputChoice{}
-		for k, v := range strMap {
-			choices = append(choices, InputChoice{strconv.FormatInt(k, 10), v})
-		}
-		return []HierarchyChoice{{Children: choices}}
-	}
-
-	if strMap, ok := v.(map[int]string); ok {
-		choices := []InputChoice{}
-		for k, v := range strMap {
-			choices = append(choices, InputChoice{strconv.Itoa(k), v})
-		}
-		return []HierarchyChoice{{Children: choices}}
+		return []HierarchyChoice{{Children: opts}}
 	}
 
 	if choices, ok := v.(map[string][]InputChoice); ok {
@@ -196,9 +170,6 @@ func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 			})
 		}
 		return results
-	}
-	if choices, ok := v.([]InputChoice); ok {
-		return []HierarchyChoice{{Children: choices}}
 	}
 	if choices, ok := v.([]HierarchyChoice); ok {
 		return choices
