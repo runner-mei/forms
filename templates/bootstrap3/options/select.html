@@ -1,4 +1,8 @@
 {{- define "main"}}
+
+{{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+{{- unique .ctx_parent "moreScripts" -}}
+
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
   {{- if not .nolabel -}}
   <label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
@@ -45,5 +49,22 @@
     {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
   </div>
+
+  <script>
+    if (tpt_form_callbacks == null) {
+      tpt_form_callbacks = new Array();
+    }
+    tpt_form_callbacks.push(function () {
+        $(function () {
+            if (typeof $.fn.chosen !== "undefined"){
+                $(".chosen").chosen({search_contains:true,width:'100%'});
+            }
+        });
+      });
+  </script>
 </div>
+
+
+
+
 {{- end}}
