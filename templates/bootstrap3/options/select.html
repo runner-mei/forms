@@ -1,7 +1,9 @@
 {{- define "main"}}
 
+{{- if strIn "multiple" $p.tags -}}
 {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
 {{- unique .ctx_parent "moreScripts" -}}
+{{- end - }}
 
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
   {{- if not .nolabel -}}
@@ -50,6 +52,7 @@
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
   </div>
 
+  {{- if strIn "multiple" $p.tags -}}
   <script>
     if (tpt_form_callbacks == null) {
       tpt_form_callbacks = new Array();
@@ -62,6 +65,7 @@
         });
       });
   </script>
+  {{- end -}}
 </div>
 
 
