@@ -64,6 +64,7 @@ type FieldInterface interface {
 	SetSelectChoices(choices []HierarchyChoice) FieldInterface
 	SetRadioChoices(choices []InputChoice) FieldInterface
 	SetText(text string) FieldInterface
+	SetContainNull() FieldInterface
 }
 
 // FieldWithType creates an empty field of the given type and identified by name.
@@ -495,6 +496,53 @@ func (f *Field) SetSelectChoices(choices []HierarchyChoice) FieldInterface {
 	return f
 }
 
+func (f *Field) SetContainNull() FieldInterface {
+	if f.fieldType == SELECT {
+		o := f.additionalData["choices"]
+		if o != nil {
+			if choices, ok := o.([]HierarchyChoice); ok {
+
+				foundIdx := -1
+
+				if len(choices) == 1 {
+					foundIdx = 0
+				} else {
+					for idx := range choices {
+						if choices[idx].Label == "" {
+							foundIdx = idx
+							break
+						}
+					}
+
+					if foundIdx < 0 {
+						copyed := make([]HierarchyChoice, len(choices)+1)
+						copy(copyed[1:], choices)
+						choices = copyed
+
+						foundIdx = 0
+					}
+				}
+
+				found := false
+				for idx := range choices[foundIdx].Children {
+					if choices[foundIdx].Children[idx].Value == "" {
+						found = true
+						break
+					}
+				}
+
+				if !found {
+					copyed := make([]InputChoice, len(choices[foundIdx].Children)+1)
+					copy(copyed[1:], choices[foundIdx].Children)
+					choices[foundIdx].Children = copyed
+					f.additionalData["choices"] = choices
+				}
+			}
+		}
+	}
+	return f
+}
+
 // SetRadioChoices sets an array of InputChoice objects as the possible choices for a radio field. It has no effect if type is not RADIO.
 func (f *Field) SetRadioChoices(choices []InputChoice) FieldInterface {
 	if f.fieldType == RADIO {
@@ -619,6 +667,10 @@ var (
 		},
 		"f_selected": func(options []string, field FieldInterface) FieldInterface {
 			field.AddSelected(options...)
+			return field
+		},
+		"f_containNull": func(field FieldInterface) FieldInterface {
+			field.SetContainNull()
 			return field
 		},
 		"render": func(args ...interface{}) template.HTML {
