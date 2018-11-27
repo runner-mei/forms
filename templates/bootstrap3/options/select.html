@@ -2,7 +2,9 @@
 
 {{- if strIn "multiple" $p.tags -}}
 {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+{{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}
 {{- unique .ctx_parent "moreScripts" -}}
+{{- unique .ctx_parent "moreLazyStyles" -}}
 {{- end - }}
 
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
