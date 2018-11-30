@@ -18,13 +18,14 @@
       {{- end -}}
     {{- end -}}
 
+
+    {{ $id := default  .id (generateID) }}
+
     <select name="{{.name}}"
-      class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
-      {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
-      {{- if .css}}
-      style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
-      {{- end -}}
-      {{- range $v :=.tags}} {{$v}}{{end}}>
+      class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}" id="{{$id}}"
+      {{- if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+      {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}" {{end -}}
+      {{- range $v :=.tags}} {{$v}}{{end}}  onchange="{{$id | js }}_on_change(this)">
 
       {{- if .containNull}}
           <option value=""></option>
@@ -49,6 +50,21 @@
 
       {{- end}}
     </select>
+
+    <script>
+      function {{$id | js}}_on_change(thisInput) {
+
+        //获取当前选中的option
+        var selected = $(thisInput).find('option:selected');
+        if(selected.val()=="new"){
+            //新增按钮  弹出表单对话框
+            $(thisInput).trigger("new", selected.attr("mark"))
+        }
+
+        // 判断当前选择的对象所属表  修改select的name属性值
+        $(thisInput).attr('name', selected.attr("mark"))
+      }
+    </script>
 
 
     {{- if .postText}}<span>{{.postText}}</span>{{end -}}
