@@ -60,6 +60,29 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 	return ret
 }
 
+// MultSourceSelectField creates a default select input field with the provided name and map of choices. Choices for SelectField are grouped
+// by name (if <optgroup> is needed); "" group is the default one and does not trigger a <optgroup></optgroup> rendering.
+func MultSourceSelectField(ctx interface{}, label string) *Field {
+	return FieldWithTypeWithCtx(ctx, "", label, MULI_SOURCE_SELECT)
+}
+
+func (f *Field) AddSource(name, label string, hasNew bool, choices interface{}) *Field {
+	var sources []map[string]interface{}
+	o := f.additionalData["sources"]
+	if o != nil {
+		sources, _ = o.([]map[string]interface{})
+	}
+
+	sources = append(sources, map[string]interface{}{
+		"name":    name,
+		"label":   label,
+		"choices": readChoices(name, choices),
+		"hasNew":  hasNew,
+	})
+	f.additionalData["sources"] = sources
+	return f
+}
+
 func validateChoices(results []InputChoice) {
 	count := 0
 	for idx := range results {

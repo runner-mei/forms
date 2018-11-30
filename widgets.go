@@ -136,6 +136,8 @@ func loadTemplate(style, inputType string) *template.Template {
 		widgetFilename = style + "/text/textareainput.html"
 	case SELECT:
 		widgetFilename = style + "/options/select.html"
+	case MULI_SOURCE_SELECT:
+		widgetFilename = style + "/options/mult_source_select.html"
 	case PASSWORD:
 		widgetFilename = style + "/text/passwordinput.html"
 	case RADIO:

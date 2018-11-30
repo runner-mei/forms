@@ -25,6 +25,7 @@ func init() {
 	FieldFuncs["static_field"] = StaticField
 	FieldFuncs["range_field"] = RangeField
 	FieldFuncs["number_field"] = NumberField
+	FieldFuncs["multsource_select_field"] = MultSourceSelectField
 
 	FieldFuncs["table_column_title"] = func(ctx map[string]interface{}, name, label string) interface{} {
 		return template.HTML("<th><nobr>" + label + "</nobr></th>")

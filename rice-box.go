@@ -74,191 +74,196 @@ func init() {
 		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group\">\r\n  {{- if not .nolabel -}}\r\n   <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n   \t{{- if .label -}}{{.label}}{{- end -}}\r\n   </label>\r\n  {{- end -}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t{{- if .params}}\r\n\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t{{- end}}\r\n\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t{{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}\r\n\t</div>\r\n</div>\r\n{{- end}}\r\n"),
 	}
 	filej := &embedded.EmbeddedFile{
+		Filename:    `bootstrap3/options/mult_source_select.html`,
+		FileModTime: time.Unix(1543562837, 0),
+		Content:     string("{{- define \"main\"}}\r\n\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n      {{- if .id}} for=\"{{.id}}\" {{end -}}>\r\n    {{- if .label}}{{.label}}{{- end}}\r\n  </label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    \r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n\r\n    {{- $name := .name}} \r\n    {{- range $v := .sources -}}\r\n      {{- if $v.value -}}\r\n        {{- $name = $v.name -}}\r\n      {{- end -}}\r\n    {{- end -}}\r\n\r\n    <select name=\"{{.name}}\"\r\n      class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n      {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n      {{- if .css}}\r\n      style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n      {{- end -}}\r\n      {{- range $v :=.tags}} {{$v}}{{end}}>\r\n\r\n      {{- if .containNull}}\r\n          <option value=\"\"></option>\r\n      {{- end}}\r\n\r\n      {{- range $v := .sources}}\r\n\r\n          {{- if $v.label -}}\r\n          <optgroup label=\"{{$v.label}}\">\r\n          {{- end -}}\r\n              {{ if $v.hasNew }}\r\n              <option value=\"new\" mark=\"{{$v.name}}\" >新建</option>\r\n              {{ end }}\r\n\r\n              {{- range $v.choices -}}\r\n              <option value=\"{{.Value}}\" mark=\"{{$v.name}}\" {{- if eq (toString $v.value) (toString .Value) }} selected{{end}}>{{raw .Label -}}</option>\r\n              {{- end -}}\r\n\r\n          {{- if $v.label -}}\r\n          </optgroup>\r\n          {{- end -}}\r\n\r\n      {{- end}}\r\n    </select>\r\n\r\n\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n</div>\r\n\r\n{{- end}}\r\n"),
+	}
+	filek := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/options/radiobutton.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\"}}{{ $p := . }}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n    {{- if .label}}{{.label}}{{- end}}</label>\r\n  {{- end -}}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n  {{ range .choices }}\r\n    <label class=\"control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n      <input type=\"radio\" name=\"{{$p.name}}\"\r\n      {{- if $p.classes }} class=\"{{range $p.classes}}{{.}} {{end}}\"\r\n      {{- end}} value=\"{{.Value}}\" id=\"{{$p.id}}\"\r\n      {{- if $p.params}}\r\n        {{- range $k2, $v2 := $p.params}} {{$k2}}=\"{{$v2}}\"\r\n        {{- end}}\r\n      {{- end}}\r\n      {{- if $p.css}} style=\"{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}\"{{end}}\r\n      {{- if eq $p.value .Value}} checked{{end}}\r\n      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>\r\n      {{.Label}}\r\n    </label>\r\n  {{- end}}\r\n\t</div>\r\n<!-- </div> -->\r\n\r\n</div>{{end}}\r\n"),
 	}
-	filek := &embedded.EmbeddedFile{
+	filel := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/options/select.html`,
 		FileModTime: time.Unix(1543311455, 0),
 		Content:     string("{{- define \"main\"}}\r\n\r\n{{- if strIn \"multiple\" .tags -}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/chosen/chosen.jquery.js\" -}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/chosen/chosen.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n{{- end -}}\r\n\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n      {{- if .id}} for=\"{{.id}}\" {{end -}}>\r\n    {{- if .label}}{{.label}}{{- end}}\r\n  </label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    \r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n\r\n  {{- if strIn \"multiple\" $p.tags -}}\r\n  <script>\r\n    if (tpt_form_callbacks == null) {\r\n      tpt_form_callbacks = new Array();\r\n    }\r\n    tpt_form_callbacks.push(function () {\r\n        $(function () {\r\n            if (typeof $.fn.chosen !== \"undefined\"){\r\n                $(\".chosen\").chosen({search_contains:true,width:'100%'});\r\n            }\r\n        });\r\n      });\r\n  </script>\r\n  {{- end -}}\r\n</div>\r\n\r\n\r\n\r\n\r\n{{- end}}\r\n"),
 	}
-	filel := &embedded.EmbeddedFile{
+	filem := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/static.html`,
 		FileModTime: time.Unix(1489735114, 0),
 		Content:     string("{{define \"main\"}}<div class=\"form-group\">\n{{ if .label }}<label{{ if .labelClasses }} class=\"{{range .labelClasses}}{{.}} {{end}}\"{{end}}{{if .id}} for=\"{{.id}}\"{{end}}>{{.label}}</label>{{end}}\n<p name=\"{{.name}}\" class=\"form-control-static {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</p>\n</div>{{end}}"),
 	}
-	filen := &embedded.EmbeddedFile{
+	fileo := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/passwordinput.html`,
 		FileModTime: time.Unix(1518162182, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n  <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\" {{if .id}} for=\"{{.id}}\" {{end}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n  </div>\r\n</div>{{end -}}"),
 	}
-	fileo := &embedded.EmbeddedFile{
+	filep := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/textareainput.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\"\r\n  {{- if .id}} for=\"{{.id}}\" {{end}}>{{- if .label -}}{{.label}}{{- end}}</label>\r\n  {{- end}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n  <textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end -}}\r\n  </div>\r\n</div>\r\n{{- end -}}"),
 	}
-	filep := &embedded.EmbeddedFile{
+	fileq := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/textinput.html`,
 		FileModTime: time.Unix(1542281129, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n  {{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n  {{- if .id}} for=\"{{.id}}\" \r\n  {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n  {{- end -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{- end -}} {{- end -}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{- end -}}\" {{- end -}}\r\n           {{- range $v :=.tags}} {{$v}} {{- end -}}\r\n           {{- if .value}} value=\"{{.value}}\" {{- end -}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{- if .helptext -}}{{ .helptext }}{{- end -}}\r\n            {{- if .errors -}}<ul>{{- range .errors -}}<li>{{.}}</li>{{- end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n  </div>\r\n</div>\r\n{{- end -}}\r\n"),
 	}
-	fileq := &embedded.EmbeddedFile{
+	filer := &embedded.EmbeddedFile{
 		Filename:    `bootstrapform.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("<form role=\"form\"{{if .name}} name=\"{{.name}}\"{{end}}{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}} method=\"{{.method}}\" action=\"{{.action}}\">\r\n\t{{ range .fields}}{{ .Render \"\" }}{{end}}\r\n</form>"),
 	}
-	filet := &embedded.EmbeddedFile{
+	fileu := &embedded.EmbeddedFile{
 		Filename:    `default/datetime/date.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/datepicker/bootstrap-datepicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/datepicker/datepicker3.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\" name=\"{{.name}}-form-group\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n    <div class=\"input-group date\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-calendar\"></i></span>\r\n      <input type=\"text\" class=\"form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}\"\r\n            name=\"{{.name}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n            {{- if .params -}} \r\n              {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}} \r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}} {{end -}}\r\n            {{- if .value -}} value=\"{{form_date .value}}\" {{end}}>\r\n      {{- if or .helptext .errors -}}\r\n      <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n          {{- if .errors}}\r\n            <ul>\r\n            {{- range .errors }}\r\n              <li>{{.}}</li>\r\n            {{- end -}}\r\n            </ul>\r\n          {{- end}}\r\n    </span>\r\n    {{- end}}\r\n    </div>\r\n\r\n    <script>\r\n      if (tpt_form_callbacks == null) {\r\n        tpt_form_callbacks = new Array();\r\n      }\r\n      tpt_form_callbacks.push(function () {\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({\r\n                todayBtn: \"linked\",\r\n                todayHighlight: false,\r\n                keyboardNavigation: true,\r\n                forceParse: true,\r\n                calendarWeeks: true,\r\n                autoclose: true,\r\n                format: \"yyyy-mm-dd\"\r\n            });\r\n        });\r\n    </script>\r\n  </div>"),
 	}
-	fileu := &embedded.EmbeddedFile{
+	filev := &embedded.EmbeddedFile{
 		Filename:    `default/datetime/datetime.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/datepicker/bootstrap-datepicker.js\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/clockpicker/clockpicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/datepicker/datepicker3.css\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/clockpicker/clockpicker.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\" name=\"{{.name}}-form-group\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n\r\n\t\t<div class=\"col-lg-6\">\r\n\t\t<div class=\"input-group date\">\r\n\t\t\t<span class=\"input-group-addon\"><i class=\"fa fa-calendar\"></i></span>\r\n\t\t\t<input type=\"text\" class=\"form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}\"\r\n\t\t\t\t\t\t name=\"{{.name}}date\"\r\n\t\t\t\t\t\t {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n\t\t\t\t\t\t {{- if .params -}}\r\n\t\t\t\t\t\t {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n\t\t\t\t\t\t {{- end -}}\r\n\t\t\t\t\t\t {{- range $v :=.tags}} {{$v}} {{end -}}\r\n\t\t\t\t\t\t {{- if .value -}} value=\"{{form_date .value}}\" {{end}}>\r\n\t\t\t{{- if or .helptext .errors -}}\r\n\t\t\t<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n          {{- if .errors}}\r\n            <ul>\r\n            {{- range .errors }}\r\n              <li>{{.}}</li>\r\n            {{- end -}}\r\n            </ul>\r\n          {{- end}}\r\n    </span>\r\n\t\t\t{{- end}}\r\n\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"col-lg-6\">\r\n\t\t<div class=\"input-group clockpicker\" data-autoclose=\"true\">\r\n\t\t\t<input type=\"text\" class=\"form-control\" value=\"{{ if .value }}{{ form_time .value }}{{ end }}\" name=\"{{.name}}time\">\r\n\t\t\t<span class=\"input-group-addon\">\r\n\t\t\t\t<span class=\"fa fa-clock-o\"></span>\r\n\t\t\t</span>\r\n\t\t</div>\r\n\t\t</div>\r\n\r\n\t\t<input type=\"hidden\" name=\"{{.name}}\" value=\"\">\r\n\t\t<script>\r\n        if (tpt_form_callbacks == null) {\r\n            tpt_form_callbacks = new Array();\r\n        }\r\n        tpt_form_callbacks.push(function () {\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on(\"change\",function () {\r\n                var date = $('[name=\"{{ .name }}date\"]').val();\r\n                var time = $('[name=\"{{ .name }}time\"]').val();\r\n                if (date || time){\r\n                    $('[name=\"{{ .name }}\"]').val(date+\" \"+time);\r\n                }\r\n            });\r\n\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({\r\n                todayBtn: \"linked\",\r\n                todayHighlight: false,\r\n                keyboardNavigation: true,\r\n                forceParse: true,\r\n                calendarWeeks: true,\r\n                autoclose: true,\r\n                format: \"yyyy-mm-dd\"\r\n            });\r\n            $('.clockpicker').clockpicker();\r\n        });\r\n\t\t</script>\r\n\r\n\t</div>\r\n"),
 	}
-	filev := &embedded.EmbeddedFile{
+	filew := &embedded.EmbeddedFile{
 		Filename:    `default/datetime/time.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{ define \"main\"}}{{ template \"generic\" . }}{{ end }}"),
 	}
-	filex := &embedded.EmbeddedFile{
+	filey := &embedded.EmbeddedFile{
 		Filename:    `default/number/number.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\"}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"number\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end}}\r\n           {{- range $v :=.tags}} {{$v}}\r\n           {{- end}}\r\n           {{- if .value}} value=\"{{.value}}\"\r\n           {{- end}}>\r\n    {{- if or .helptext .errors }}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end}}\r\n            {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>\r\n            {{- end}}\r\n    </span>\r\n    {{- end}}\r\n  </div>\r\n{{- end}}"),
 	}
-	filey := &embedded.EmbeddedFile{
+	filez := &embedded.EmbeddedFile{
 		Filename:    `default/number/range.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\" -}}\r\n  <div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"number\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end}}\r\n           {{- range $v :=.tags}} {{$v}}\r\n           {{- end}}\r\n           {{- if .value}} value=\"{{.value}}\"\r\n           {{- end}}>\r\n    {{- if or .helptext .errors }}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end}}\r\n      {{- if .errors}}\r\n      <ul>\r\n        {{- range .errors }}\r\n         <li>{{.}}</li>\r\n         {{- end}}\r\n      </ul>\r\n      {{- end}}\r\n    </span>\r\n    {{- end}}\r\n  </div>\r\n{{- end}}"),
 	}
-	file10 := &embedded.EmbeddedFile{
+	file11 := &embedded.EmbeddedFile{
 		Filename:    `default/options/checkbox.html`,
 		FileModTime: time.Unix(1542280893, 0),
 		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n\t\t<div class=\"checkbox{{if .errors}} has-error{{end}}\">\r\n\t\t\t<label class=\"control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\">\r\n\t\t\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t\t\t{{- if .params}}\r\n\t\t\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t\t\t{{- end}}\r\n\t\t\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t\t\t{{.label}}\r\n\t\t\t</label>\r\n\t\t\t{{- if or .helptext .errors }}\r\n\t\t\t<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}\r\n\t\t\t</span>\r\n\t\t\t{{- end}}\r\n\t\t</div>\r\n\t</div>\r\n{{- end}}\r\n"),
 	}
-	file11 := &embedded.EmbeddedFile{
+	file12 := &embedded.EmbeddedFile{
 		Filename:    `default/options/radiobutton.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\"}}{{ $p := . }}\r\n\t<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n  {{ range .choices }}\r\n    <label class=\"control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n      <input type=\"radio\" name=\"{{$p.name}}\"\r\n      {{- if $p.classes }} class=\"{{range $p.classes}}{{.}} {{end}}\"\r\n      {{- end}} value=\"{{.Value}}\" id=\"{{$p.id}}\"\r\n      {{- if $p.params}}\r\n        {{- range $k2, $v2 := $p.params}} {{$k2}}=\"{{$v2}}\"\r\n        {{- end}}\r\n      {{- end}}\r\n      {{- if $p.css}} style=\"{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}\"{{end}}\r\n      {{- if eq $p.value .Value}} checked{{end}}\r\n      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>\r\n      {{.Label}}\r\n    </label>\r\n  {{- end}}\r\n\t</div>\r\n{{- end}}"),
 	}
-	file12 := &embedded.EmbeddedFile{
+	file13 := &embedded.EmbeddedFile{
 		Filename:    `default/options/select.html`,
 		FileModTime: time.Unix(1518162182, 0),
 		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n  </div>\r\n{{- end }}"),
 	}
-	file14 := &embedded.EmbeddedFile{
+	file15 := &embedded.EmbeddedFile{
 		Filename:    `default/text/passwordinput.html`,
 		FileModTime: time.Unix(1518162182, 0),
 		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n</div>\r\n{{- end -}}\r\n\r\n"),
 	}
-	file15 := &embedded.EmbeddedFile{
+	file16 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textareainput.html`,
 		FileModTime: time.Unix(1518162182, 0),
 		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n<textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end}}\r\n</div>\r\n  {{- end}}\r\n"),
 	}
-	file16 := &embedded.EmbeddedFile{
+	file17 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textinput.html`,
 		FileModTime: time.Unix(1518162182, 0),
 		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n           {{- if .params -}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n           {{- end -}}\r\n           {{- if .css -}}\r\n           style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end -}}\r\n           {{- range $v :=.tags}} {{$v -}}\r\n           {{- end -}}\r\n           {{- if .value -}}\r\n           value=\"{{.value}}\"\r\n           {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{- end}}\r\n</div>\r\n{{- end}}\r\n\r\n\r\n"),
 	}
-	file17 := &embedded.EmbeddedFile{
+	file18 := &embedded.EmbeddedFile{
 		Filename:    `fieldset.html`,
 		FileModTime: time.Unix(1489735114, 0),
 		Content:     string("<fieldset{{if .classes }} class=\"{{range $v := .classes}} {{$v}}{{end}}\"{{end}}{{ if .tags}}{{range $v := .tags}} {{$v}}{{end}}{{end}}>\n\t{{range .fields}}{{ .Render }}{{end}}\n</fieldset>\n"),
 	}
-	file19 := &embedded.EmbeddedFile{
+	file1a := &embedded.EmbeddedFile{
 		Filename:    `simple/button.html`,
 		FileModTime: time.Unix(1510041316, 0),
 		Content:     string("{{ define \"main\"}}<button type=\"{{.type}}\" name=\"{{.name}}\" class='btn {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}{{if eq .type \"submit\"}}btn-default{{end}}'{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</button>{{end}}"),
 	}
-	file1a := &embedded.EmbeddedFile{
+	file1b := &embedded.EmbeddedFile{
 		Filename:    `simple/cron.html`,
 		FileModTime: time.Unix(1538287169, 0),
 		Content:     string("{{ define \"main\"}}\r\n{{- if .id}}{{set . \"widget_id\" .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n<script>\r\n      if (tpt_form_callbacks == null) {\r\n        tpt_form_callbacks = new Array();\r\n      }\r\n      tpt_form_callbacks.push(function () {\r\n            $('#{{.widget_id}}_cornExpression a').click(function (e) {\r\n                e.preventDefault();\r\n                $(this).tab('show')\r\n            });\r\n    //        function offset(){\r\n    //            var ele = $(\"#offset\");\r\n    //            return ele.val()?\"_\"+ele.val():\"\"\r\n    //        }\r\n            var cornExpression = [];\r\n            $(\"#{{.widget_id}}_month select\").on(\"change\", function () {\r\n                var month_monthDay = $(\"#{{.widget_id}}_month_monthDay\").val(),\r\n                        month_hour = $(\"#{{.widget_id}}_month_hour\").val(),\r\n                        month_minute = $(\"#{{.widget_id}}_month_minute\").val(),\r\n                        cornExpression = [\"0\", month_minute, month_hour, month_monthDay, \"*\", \"?\" ];\r\n                $(\"[name='{{.name}}']\").val(cornExpression.join(\" \"));\r\n            });\r\n            $(\"#{{.widget_id}}_week select\").on(\"change\", function () {\r\n                var week_weekDay = $(\"#{{.widget_id}}_week_weekDay\").val(),\r\n                        week_hour = $(\"#{{.widget_id}}_week_hour\").val(),\r\n                        week_minute = $(\"#{{.widget_id}}_week_minute\").val(),\r\n                        cornExpression = [\"0\", week_minute, week_hour, \"?\", \"*\", week_weekDay ];\r\n                $(\"[name='{{.name}}']\").val(cornExpression.join(\" \"));\r\n            });\r\n            $(\"#{{.widget_id}}_day select\").on(\"change\", function () {\r\n                var day_hour = $(\"#{{.widget_id}}_day_hour\").val(),\r\n                        day_minute = $(\"#{{.widget_id}}_day_minute\").val(),\r\n                        cornExpression = [\"0\", day_minute, day_hour, \"*\", \"*\", \"?\" ];\r\n                $(\"[name='{{.name}}']\").val(cornExpression.join(\" \"));\r\n            });\r\n            $(\"#{{.widget_id}}_hour select\").on(\"change\", function () {\r\n                var hour_hour = $(\"#{{.widget_id}}_hour_hour\").val(),\r\n                        cornExpression = [\"0\", \"0\", \"0/\" + hour_hour, \"*\", \"*\", \"?\" ];\r\n                $(\"[name='{{.name}}']\").val(cornExpression.join(\" \"));\r\n            });\r\n            $(\"#{{.widget_id}}_offset\").on(\"change\", function () {\r\n                $(\".tab-content .active select\").trigger(\"change\")\r\n            });\r\n            $(\"#{{.widget_id}}_cornExpression\").on(\"change\", \"select\", function () {\r\n                $(\"[name='{{.name}}']\").trigger(\"change\")\r\n            });\r\n        });\r\n</script>\r\n\r\n        <div class=\"list-group-item\">\r\n            <ul class=\"nav nav-tabs\" role=\"tablist\" id=\"{{.widget_id}}_cornExpression\">\r\n                <li role=\"presentation\" class=\"active\"><a href=\"#{{.widget_id}}_month\" style=\"color:#555\">每月</a></li>\r\n                <li role=\"presentation\"><a href=\"#{{.widget_id}}_week\" style=\"color:#555\">每周</a></li>\r\n                <li role=\"presentation\"><a href=\"#{{.widget_id}}_day\"  style=\"color:#555\">每日</a></li>\r\n                <li role=\"presentation\"><a href=\"#{{.widget_id}}_hour\" style=\"color:#555\">每时</a></li>\r\n            </ul>\r\n\r\n            <div class=\"tab-content\">\r\n                <div role=\"tabpanel\" class=\"tab-pane active\" id=\"{{.widget_id}}_month\">\r\n                    <span>每月</span>\r\n                    <select id=\"{{.widget_id}}_month_monthDay\">\r\n                        <option value=\"1\">1日</option>\r\n                        <option value=\"2\">2日</option>\r\n                        <option value=\"3\">3日</option>\r\n                        <option value=\"4\">4日</option>\r\n                        <option value=\"5\">5日</option>\r\n                        <option value=\"6\">6日</option>\r\n                        <option value=\"7\">7日</option>\r\n                        <option value=\"8\">8日</option>\r\n                        <option value=\"9\">9日</option>\r\n                        <option value=\"10\">10日</option>\r\n                        <option value=\"11\">11日</option>\r\n                        <option value=\"12\">12日</option>\r\n                        <option value=\"13\">13日</option>\r\n                        <option value=\"14\">14日</option>\r\n                        <option value=\"15\">15日</option>\r\n                        <option value=\"16\">16日</option>\r\n                        <option value=\"17\">17日</option>\r\n                        <option value=\"18\">18日</option>\r\n                        <option value=\"19\">19日</option>\r\n                        <option value=\"20\">20日</option>\r\n                        <option value=\"21\">21日</option>\r\n                        <option value=\"22\">22日</option>\r\n                        <option value=\"23\">23日</option>\r\n                        <option value=\"24\">24日</option>\r\n                        <option value=\"25\">25日</option>\r\n                        <option value=\"26\">26日</option>\r\n                        <option value=\"27\">27日</option>\r\n                        <option value=\"28\">28日</option>\r\n                        <option value=\"29\">29日</option>\r\n                        <option value=\"30\">30日</option>\r\n                        <option value=\"30\">31日</option>\r\n                    </select>\r\n                    <span>的</span>\r\n                    <select id=\"{{.widget_id}}_month_hour\">\r\n                        <option value=\"0\">0时</option>\r\n                        <option value=\"1\">1时</option>\r\n                        <option value=\"2\">2时</option>\r\n                        <option value=\"3\">3时</option>\r\n                        <option value=\"4\">4时</option>\r\n                        <option value=\"5\">5时</option>\r\n                        <option value=\"6\">6时</option>\r\n                        <option value=\"7\">7时</option>\r\n                        <option value=\"8\">8时</option>\r\n                        <option value=\"9\">9时</option>\r\n                        <option value=\"10\">10时</option>\r\n                        <option value=\"11\">11时</option>\r\n                        <option value=\"12\">12时</option>\r\n                        <option value=\"13\">13时</option>\r\n                        <option value=\"14\">14时</option>\r\n                        <option value=\"15\">15时</option>\r\n                        <option value=\"16\">16时</option>\r\n                        <option value=\"17\">17时</option>\r\n                        <option value=\"18\">18时</option>\r\n                        <option value=\"19\">19时</option>\r\n                        <option value=\"20\">20时</option>\r\n                        <option value=\"21\">21时</option>\r\n                        <option value=\"22\">22时</option>\r\n                        <option value=\"23\">23时</option>\r\n                    </select>\r\n                    <span>:</span>\r\n                    <select id=\"{{.widget_id}}_month_minute\">\r\n                        <option value=\"0\">0分</option>\r\n                        <option value=\"1\">1分</option>\r\n                        <option value=\"2\">2分</option>\r\n                        <option value=\"3\">3分</option>\r\n                        <option value=\"4\">4分</option>\r\n                        <option value=\"5\">5分</option>\r\n                        <option value=\"6\">6分</option>\r\n                        <option value=\"7\">7分</option>\r\n                        <option value=\"8\">8分</option>\r\n                        <option value=\"9\">9分</option>\r\n                        <option value=\"10\">10分</option>\r\n                        <option value=\"11\">11分</option>\r\n                        <option value=\"12\">12分</option>\r\n                        <option value=\"13\">13分</option>\r\n                        <option value=\"14\">14分</option>\r\n                        <option value=\"15\">15分</option>\r\n                        <option value=\"16\">16分</option>\r\n                        <option value=\"17\">17分</option>\r\n                        <option value=\"18\">18分</option>\r\n                        <option value=\"19\">19分</option>\r\n                        <option value=\"20\">20分</option>\r\n                        <option value=\"21\">21分</option>\r\n                        <option value=\"22\">22分</option>\r\n                        <option value=\"23\">23分</option>\r\n                        <option value=\"24\">24分</option>\r\n                        <option value=\"25\">25分</option>\r\n                        <option value=\"26\">26分</option>\r\n                        <option value=\"27\">27分</option>\r\n                        <option value=\"28\">28分</option>\r\n                        <option value=\"29\">29分</option>\r\n                        <option value=\"30\">30分</option>\r\n                        <option value=\"31\">31分</option>\r\n                        <option value=\"32\">32分</option>\r\n                        <option value=\"33\">33分</option>\r\n                        <option value=\"34\">34分</option>\r\n                        <option value=\"35\">35分</option>\r\n                        <option value=\"36\">36分</option>\r\n                        <option value=\"37\">37分</option>\r\n                        <option value=\"38\">38分</option>\r\n                        <option value=\"39\">39分</option>\r\n                        <option value=\"40\">40分</option>\r\n                        <option value=\"41\">41分</option>\r\n                        <option value=\"42\">42分</option>\r\n                        <option value=\"43\">43分</option>\r\n                        <option value=\"44\">44分</option>\r\n                        <option value=\"45\">45分</option>\r\n                        <option value=\"46\">46分</option>\r\n                        <option value=\"47\">47分</option>\r\n                        <option value=\"48\">48分</option>\r\n                        <option value=\"49\">49分</option>\r\n                        <option value=\"50\">50分</option>\r\n                        <option value=\"51\">51分</option>\r\n                        <option value=\"52\">52分</option>\r\n                        <option value=\"53\">53分</option>\r\n                        <option value=\"54\">54分</option>\r\n                        <option value=\"55\">55分</option>\r\n                        <option value=\"56\">56分</option>\r\n                        <option value=\"57\">57分</option>\r\n                        <option value=\"58\">58分</option>\r\n                        <option value=\"59\">59分</option>\r\n                    </select>\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane\" id=\"{{.widget_id}}_week\">\r\n                    <span>每周:</span>\r\n                    <select id=\"{{.widget_id}}_week_weekDay\">\r\n                        <option value=\"SUN\">星期日</option>\r\n                        <option value=\"MON\">星期一</option>\r\n                        <option value=\"TUE\">星期二</option>\r\n                        <option value=\"WED\">星期三</option>\r\n                        <option value=\"THU\">星期四</option>\r\n                        <option value=\"FIR\">星期五</option>\r\n                        <option value=\"SAT\">星期六</option>\r\n                    </select>\r\n                    <span>的</span>\r\n                    <select id=\"{{.widget_id}}_week_hour\">\r\n                        <option value=\"0\">0时</option>\r\n                        <option value=\"1\">1时</option>\r\n                        <option value=\"2\">2时</option>\r\n                        <option value=\"3\">3时</option>\r\n                        <option value=\"4\">4时</option>\r\n                        <option value=\"5\">5时</option>\r\n                        <option value=\"6\">6时</option>\r\n                        <option value=\"7\">7时</option>\r\n                        <option value=\"8\">8时</option>\r\n                        <option value=\"9\">9时</option>\r\n                        <option value=\"10\">10时</option>\r\n                        <option value=\"11\">11时</option>\r\n                        <option value=\"12\">12时</option>\r\n                        <option value=\"13\">13时</option>\r\n                        <option value=\"14\">14时</option>\r\n                        <option value=\"15\">15时</option>\r\n                        <option value=\"16\">16时</option>\r\n                        <option value=\"17\">17时</option>\r\n                        <option value=\"18\">18时</option>\r\n                        <option value=\"19\">19时</option>\r\n                        <option value=\"20\">20时</option>\r\n                        <option value=\"21\">21时</option>\r\n                        <option value=\"22\">22时</option>\r\n                        <option value=\"23\">23时</option>\r\n                    </select>\r\n                    <span>:</span>\r\n                    <select id=\"{{.widget_id}}_week_minute\">\r\n                        <option value=\"0\">0分</option>\r\n                        <option value=\"1\">1分</option>\r\n                        <option value=\"2\">2分</option>\r\n                        <option value=\"3\">3分</option>\r\n                        <option value=\"4\">4分</option>\r\n                        <option value=\"5\">5分</option>\r\n                        <option value=\"6\">6分</option>\r\n                        <option value=\"7\">7分</option>\r\n                        <option value=\"8\">8分</option>\r\n                        <option value=\"9\">9分</option>\r\n                        <option value=\"10\">10分</option>\r\n                        <option value=\"11\">11分</option>\r\n                        <option value=\"12\">12分</option>\r\n                        <option value=\"13\">13分</option>\r\n                        <option value=\"14\">14分</option>\r\n                        <option value=\"15\">15分</option>\r\n                        <option value=\"16\">16分</option>\r\n                        <option value=\"17\">17分</option>\r\n                        <option value=\"18\">18分</option>\r\n                        <option value=\"19\">19分</option>\r\n                        <option value=\"20\">20分</option>\r\n                        <option value=\"21\">21分</option>\r\n                        <option value=\"22\">22分</option>\r\n                        <option value=\"23\">23分</option>\r\n                        <option value=\"24\">24分</option>\r\n                        <option value=\"25\">25分</option>\r\n                        <option value=\"26\">26分</option>\r\n                        <option value=\"27\">27分</option>\r\n                        <option value=\"28\">28分</option>\r\n                        <option value=\"29\">29分</option>\r\n                        <option value=\"30\">30分</option>\r\n                        <option value=\"31\">31分</option>\r\n                        <option value=\"32\">32分</option>\r\n                        <option value=\"33\">33分</option>\r\n                        <option value=\"34\">34分</option>\r\n                        <option value=\"35\">35分</option>\r\n                        <option value=\"36\">36分</option>\r\n                        <option value=\"37\">37分</option>\r\n                        <option value=\"38\">38分</option>\r\n                        <option value=\"39\">39分</option>\r\n                        <option value=\"40\">40分</option>\r\n                        <option value=\"41\">41分</option>\r\n                        <option value=\"42\">42分</option>\r\n                        <option value=\"43\">43分</option>\r\n                        <option value=\"44\">44分</option>\r\n                        <option value=\"45\">45分</option>\r\n                        <option value=\"46\">46分</option>\r\n                        <option value=\"47\">47分</option>\r\n                        <option value=\"48\">48分</option>\r\n                        <option value=\"49\">49分</option>\r\n                        <option value=\"50\">50分</option>\r\n                        <option value=\"51\">51分</option>\r\n                        <option value=\"52\">52分</option>\r\n                        <option value=\"53\">53分</option>\r\n                        <option value=\"54\">54分</option>\r\n                        <option value=\"55\">55分</option>\r\n                        <option value=\"56\">56分</option>\r\n                        <option value=\"57\">57分</option>\r\n                        <option value=\"58\">58分</option>\r\n                        <option value=\"59\">59分</option>\r\n                    </select>\r\n\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane\" id=\"{{.widget_id}}_day\">\r\n                    <span>每天 的</span>\r\n                    <select id=\"{{.widget_id}}_day_hour\">\r\n                        <option value=\"0\">0时</option>\r\n                        <option value=\"1\">1时</option>\r\n                        <option value=\"2\">2时</option>\r\n                        <option value=\"3\">3时</option>\r\n                        <option value=\"4\">4时</option>\r\n                        <option value=\"5\">5时</option>\r\n                        <option value=\"6\">6时</option>\r\n                        <option value=\"7\">7时</option>\r\n                        <option value=\"8\">8时</option>\r\n                        <option value=\"9\">9时</option>\r\n                        <option value=\"10\">10时</option>\r\n                        <option value=\"11\">11时</option>\r\n                        <option value=\"12\">12时</option>\r\n                        <option value=\"13\">13时</option>\r\n                        <option value=\"14\">14时</option>\r\n                        <option value=\"15\">15时</option>\r\n                        <option value=\"16\">16时</option>\r\n                        <option value=\"17\">17时</option>\r\n                        <option value=\"18\">18时</option>\r\n                        <option value=\"19\">19时</option>\r\n                        <option value=\"20\">20时</option>\r\n                        <option value=\"21\">21时</option>\r\n                        <option value=\"22\">22时</option>\r\n                        <option value=\"23\">23时</option>\r\n                    </select>\r\n                    <span>:</span>\r\n                    <select id=\"{{.widget_id}}_day_minute\">\r\n                        <option value=\"0\">0分</option>\r\n                        <option value=\"1\">1分</option>\r\n                        <option value=\"2\">2分</option>\r\n                        <option value=\"3\">3分</option>\r\n                        <option value=\"4\">4分</option>\r\n                        <option value=\"5\">5分</option>\r\n                        <option value=\"6\">6分</option>\r\n                        <option value=\"7\">7分</option>\r\n                        <option value=\"8\">8分</option>\r\n                        <option value=\"9\">9分</option>\r\n                        <option value=\"10\">10分</option>\r\n                        <option value=\"11\">11分</option>\r\n                        <option value=\"12\">12分</option>\r\n                        <option value=\"13\">13分</option>\r\n                        <option value=\"14\">14分</option>\r\n                        <option value=\"15\">15分</option>\r\n                        <option value=\"16\">16分</option>\r\n                        <option value=\"17\">17分</option>\r\n                        <option value=\"18\">18分</option>\r\n                        <option value=\"19\">19分</option>\r\n                        <option value=\"20\">20分</option>\r\n                        <option value=\"21\">21分</option>\r\n                        <option value=\"22\">22分</option>\r\n                        <option value=\"23\">23分</option>\r\n                        <option value=\"24\">24分</option>\r\n                        <option value=\"25\">25分</option>\r\n                        <option value=\"26\">26分</option>\r\n                        <option value=\"27\">27分</option>\r\n                        <option value=\"28\">28分</option>\r\n                        <option value=\"29\">29分</option>\r\n                        <option value=\"30\">30分</option>\r\n                        <option value=\"31\">31分</option>\r\n                        <option value=\"32\">32分</option>\r\n                        <option value=\"33\">33分</option>\r\n                        <option value=\"34\">34分</option>\r\n                        <option value=\"35\">35分</option>\r\n                        <option value=\"36\">36分</option>\r\n                        <option value=\"37\">37分</option>\r\n                        <option value=\"38\">38分</option>\r\n                        <option value=\"39\">39分</option>\r\n                        <option value=\"40\">40分</option>\r\n                        <option value=\"41\">41分</option>\r\n                        <option value=\"42\">42分</option>\r\n                        <option value=\"43\">43分</option>\r\n                        <option value=\"44\">44分</option>\r\n                        <option value=\"45\">45分</option>\r\n                        <option value=\"46\">46分</option>\r\n                        <option value=\"47\">47分</option>\r\n                        <option value=\"48\">48分</option>\r\n                        <option value=\"49\">49分</option>\r\n                        <option value=\"50\">50分</option>\r\n                        <option value=\"51\">51分</option>\r\n                        <option value=\"52\">52分</option>\r\n                        <option value=\"53\">53分</option>\r\n                        <option value=\"54\">54分</option>\r\n                        <option value=\"55\">55分</option>\r\n                        <option value=\"56\">56分</option>\r\n                        <option value=\"57\">57分</option>\r\n                        <option value=\"58\">58分</option>\r\n                        <option value=\"59\">59分</option>\r\n                    </select>\r\n                </div>\r\n                <div role=\"tabpanel\" class=\"tab-pane\" id=\"{{.widget_id}}_hour\">\r\n                    <span>每隔</span>\r\n                    <select id=\"{{.widget_id}}_hour_hour\">\r\n                        <option value=\"1\">1时</option>\r\n                        <option value=\"2\">2时</option>\r\n                        <option value=\"3\">3时</option>\r\n                        <option value=\"4\">4时</option>\r\n                        <option value=\"5\">5时</option>\r\n                        <option value=\"6\">6时</option>\r\n                        <option value=\"7\">7时</option>\r\n                        <option value=\"8\">8时</option>\r\n                        <option value=\"9\">9时</option>\r\n                        <option value=\"10\">10时</option>\r\n                        <option value=\"11\">11时</option>\r\n                        <option value=\"12\">12时</option>\r\n                        <option value=\"13\">13时</option>\r\n                        <option value=\"14\">14时</option>\r\n                        <option value=\"15\">15时</option>\r\n                        <option value=\"16\">16时</option>\r\n                        <option value=\"17\">17时</option>\r\n                        <option value=\"18\">18时</option>\r\n                        <option value=\"19\">19时</option>\r\n                        <option value=\"20\">20时</option>\r\n                        <option value=\"21\">21时</option>\r\n                        <option value=\"22\">22时</option>\r\n                        <option value=\"23\">23时</option>\r\n                    </select>\r\n                    <span>小时</span>\r\n                </div>\r\n            </div>\r\n\r\n            <div style=\"height: 10px\"></div>\r\n            <div>\r\n                <input type=\"text\" readonly name=\"{{.name}}\" class=\"{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n                       {{- if .id}} id=\"{{.id}}\" {{end}}\r\n                       {{- if .params}}\r\n                         {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}\r\n                         {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n                         {{- end}}\r\n                         {{- range $v :=.tags}} {{$v}}{{end}}\r\n                         {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n                {{- if or .helptext .errors }}\r\n                <span class=\"help-block\">\r\n                  {{- if .helptext}}{{ .helptext }}{{end}}\r\n                  {{- if .errors}}\r\n                  <ul>\r\n                    {{- range .errors }}\r\n                    <li>{{.}}</li>\r\n                    {{- end}}\r\n                  </ul>\r\n                  {{- end}}\r\n                </span>\r\n                {{- end}}\r\n            </div>\r\n        </div>\r\n{{- end}}"),
 	}
-	file1c := &embedded.EmbeddedFile{
+	file1d := &embedded.EmbeddedFile{
 		Filename:    `simple/datetime/date.html`,
 		FileModTime: time.Unix(1538288057, 0),
 		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/datepicker/bootstrap-datepicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/datepicker/datepicker3.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n  {{if .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n    <div class=\"input-group date\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n      <span class=\"input-group-addon\"><i class=\"fa fa-calendar\"></i></span>\r\n      <input type=\"text\" class=\"form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}\"\r\n            name=\"{{.name}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n            {{- if .params -}} \r\n              {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}} \r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}} {{end -}}\r\n            {{- if .value -}} value=\"{{form_date .value}}\" {{end}}>\r\n      {{- if or .helptext .errors -}}\r\n      <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n          {{- if .errors}}\r\n            <ul>\r\n            {{- range .errors }}\r\n              <li>{{.}}</li>\r\n            {{- end -}}\r\n            </ul>\r\n          {{- end}}\r\n    </span>\r\n    {{- end}}\r\n\r\n    <script>\r\n      if (tpt_form_callbacks == null) {\r\n        tpt_form_callbacks = new Array();\r\n      }\r\n      tpt_form_callbacks.push(function () {\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({\r\n                todayBtn: \"linked\",\r\n                todayHighlight: false,\r\n                keyboardNavigation: true,\r\n                forceParse: true,\r\n                calendarWeeks: true,\r\n                autoclose: true,\r\n                format: \"yyyy-mm-dd\"\r\n            });\r\n        });\r\n    </script>\r\n{{- end}}"),
 	}
-	file1d := &embedded.EmbeddedFile{
+	file1e := &embedded.EmbeddedFile{
 		Filename:    `simple/datetime/datetime.html`,
 		FileModTime: time.Unix(1538288048, 0),
 		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/datepicker/bootstrap-datepicker.js\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/clockpicker/clockpicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/datepicker/datepicker3.css\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/clockpicker/clockpicker.css\"}}\r\n{{- unique .ctx_parent \"moreScripts\" -}}\r\n{{- unique .ctx_parent \"moreLazyStyles\" -}}\r\n\t{{if .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n\t\t<div class=\"input-group date class_{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n\t\t\t<span class=\"input-group-addon\"><i class=\"fa fa-calendar\"></i></span>\r\n\t\t\t<input type=\"text\" class=\"form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}\"\r\n\t\t\t\t\t\t name=\"{{.name}}date\"\r\n\t\t\t\t\t\t {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n\t\t\t\t\t\t {{- if .params -}}\r\n\t\t\t\t\t\t {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n\t\t\t\t\t\t {{- end -}}\r\n\t\t\t\t\t\t {{- range $v :=.tags}} {{$v}} {{end -}}\r\n\t\t\t\t\t\t {{- if .value -}} value=\"{{form_date .value}}\" {{end}}>\r\n\t\t\t{{- if or .helptext .errors -}}\r\n\t\t\t<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n          {{- if .errors}}\r\n            <ul>\r\n            {{- range .errors }}\r\n              <li>{{.}}</li>\r\n            {{- end -}}\r\n            </ul>\r\n          {{- end}}\r\n      </span>\r\n\t\t\t{{- end}}\r\n\t\t</div>\r\n\r\n  \t\t<div class=\"input-group clockpicker class_{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\" data-autoclose=\"true\">>\r\n  \t\t\t<input type=\"text\" class=\"form-control\" value=\"{{ if .value }}{{ form_time .value }}{{ end }}\" name=\"{{.name}}time\">\r\n  \t\t\t<span class=\"input-group-addon\">\r\n  \t\t\t\t<span class=\"fa fa-clock-o\"></span>\r\n  \t\t\t</span>\r\n  \t\t</div>\r\n\t\t<input type=\"hidden\" name=\"{{.name}}\" value=\"{{ form_date_and_time .value }}\">\r\n\t\t<script>\r\n        if (tpt_form_callbacks == null) {\r\n            tpt_form_callbacks = new Array();\r\n        }\r\n        tpt_form_callbacks.push(function () {\r\n            $('.class_{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on(\"change\",function () {\r\n                var date = $('[name=\"{{ .name }}date\"]').val();\r\n                var time = $('[name=\"{{ .name }}time\"]').val();\r\n                if (date || time){\r\n                    $('[name=\"{{ .name }}\"]').val(date+\" \"+time);\r\n                }\r\n            });\r\n\r\n            $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} .input-group.date').datepicker({\r\n                todayBtn: \"linked\",\r\n                todayHighlight: false,\r\n                keyboardNavigation: true,\r\n                forceParse: true,\r\n                calendarWeeks: true,\r\n                autoclose: true,\r\n                format: \"yyyy-mm-dd\"\r\n            });\r\n            $('.clockpicker').clockpicker();\r\n        });\r\n\t\t</script>\r\n</div>\r\n{{- end}}"),
 	}
-	file1e := &embedded.EmbeddedFile{
+	file1f := &embedded.EmbeddedFile{
 		Filename:    `simple/datetime/time.html`,
 		FileModTime: time.Unix(1538287642, 0),
 		Content:     string("\r\n{{- define \"main\"}}\r\n{{- append .ctx_parent \"moreScripts\" \"/public/js/plugins/clockpicker/clockpicker.js\"}}\r\n{{- append .ctx_parent \"moreLazyStyles\" \"/public/css/plugins/clockpicker/clockpicker.css\"}}\r\n\r\n{{if .id}}{{else}}{{generateID | set . \"widget_id\" }} {{end}}\r\n\t\t\t<div class=\"input-group clockpicker\" data-autoclose=\"true\" id=\"{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}\">\r\n\t\t\t\t<input type=\"text\" class=\"form-control\" value=\"{{ if .value }}{{ form_time .value }}{{ end }}\" name=\"{{.name}}time\">\r\n\t\t\t\t<span class=\"input-group-addon\">\r\n\t\t\t\t\t<span class=\"fa fa-clock-o\"></span>\r\n\t\t\t\t</span>\r\n\t\t\t</div>\r\n\t\t\t<input type=\"hidden\" name=\"{{.name}}\" value=\"{{ form_date_and_time .value }}\">\r\n\t\t\t<script>\r\n\t\t\t\tif (tpt_form_callbacks == null) {\r\n\t\t\t\t\ttpt_form_callbacks = new Array();\r\n\t\t\t\t}\r\n\t\t\t\ttpt_form_callbacks.push(function () {\r\n\t\t\t\t\t$('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on(\"change\",function () {\r\n\t\t\t\t\t\tvar time = $('[name=\"{{ .name }}time\"]').val();\r\n\t\t\t\t\t\tif (time){\r\n\t\t\t\t\t\t\t$('[name=\"{{ .name }}\"]').val(\"0001-01-01 \"+time);\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t});\r\n\r\n\t\t\t\t\t$('.clockpicker').clockpicker();\r\n\t\t\t\t});\r\n\t\t\t</script>\r\n{{- end}}"),
 	}
-	file1f := &embedded.EmbeddedFile{
+	file1g := &embedded.EmbeddedFile{
 		Filename:    `simple/generic.tmpl`,
 		FileModTime: time.Unix(1538287128, 0),
 		Content:     string("<input type=\"{{.type}}\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\n{{if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end}}\n{{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}"),
 	}
-	file1g := &embedded.EmbeddedFile{
+	file1h := &embedded.EmbeddedFile{
 		Filename:    `simple/hidden.html`,
 		FileModTime: time.Unix(1513250714, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<input type=\"hidden\" name=\"{{.name}}\"\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}} class=\"{{range .classes}}{{.}} {{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\r\n{{- end -}}"),
 	}
-	file1h := &embedded.EmbeddedFile{
+	file1i := &embedded.EmbeddedFile{
 		Filename:    `simple/input.html`,
 		FileModTime: time.Unix(1489735114, 0),
 		Content:     string("{{ define \"main\"}}{{ template \"generic\" . }}{{ end }}"),
 	}
-	file1j := &embedded.EmbeddedFile{
+	file1k := &embedded.EmbeddedFile{
 		Filename:    `simple/number/number.html`,
 		FileModTime: time.Unix(1538287386, 0),
 		Content:     string("{{- define \"main\"}}\r\n    <input type=\"number\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end}}\r\n           {{- range $v :=.tags}} {{$v}}\r\n           {{- end}}\r\n           {{- if .value}} value=\"{{.value}}\"\r\n           {{- end}}>\r\n    {{- if or .helptext .errors }}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end}}\r\n            {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>\r\n            {{- end}}\r\n    </span>\r\n    {{- end}}\r\n{{- end}}"),
 	}
-	file1k := &embedded.EmbeddedFile{
+	file1l := &embedded.EmbeddedFile{
 		Filename:    `simple/number/range.html`,
 		FileModTime: time.Unix(1538287371, 0),
 		Content:     string("{{- define \"main\" -}}\r\n    <input type=\"number\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end}}\r\n           {{- range $v :=.tags}} {{$v}}\r\n           {{- end}}\r\n           {{- if .value}} value=\"{{.value}}\"\r\n           {{- end}}>\r\n    {{- if or .helptext .errors }}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end}}\r\n      {{- if .errors}}\r\n      <ul>\r\n        {{- range .errors }}\r\n         <li>{{.}}</li>\r\n         {{- end}}\r\n      </ul>\r\n      {{- end}}\r\n    </span>\r\n    {{- end}}\r\n{{- end}}"),
 	}
-	file1m := &embedded.EmbeddedFile{
+	file1n := &embedded.EmbeddedFile{
 		Filename:    `simple/options/checkbox.html`,
 		FileModTime: time.Unix(1542280899, 0),
 		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n\t\t\t<label class=\"control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\">\r\n\t\t\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t\t\t{{- if .params}}\r\n\t\t\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t\t\t{{- end}}\r\n\t\t\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t\t\t{{.label}}\r\n\t\t\t</label>\r\n\t\t\t{{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}\r\n{{- end}}\r\n"),
 	}
-	file1n := &embedded.EmbeddedFile{
+	file1o := &embedded.EmbeddedFile{
 		Filename:    `simple/options/radiobutton.html`,
 		FileModTime: time.Unix(1538287324, 0),
 		Content:     string("{{- define \"main\"}}{{ $p := . }}\r\n  {{ range .choices }}\r\n    <label class=\"control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n      <input type=\"radio\" name=\"{{$p.name}}\"\r\n      {{- if $p.classes }} class=\"{{range $p.classes}}{{.}} {{end}}\"\r\n      {{- end}} value=\"{{.Value}}\" id=\"{{$p.id}}\"\r\n      {{- if $p.params}}\r\n        {{- range $k2, $v2 := $p.params}} {{$k2}}=\"{{$v2}}\"\r\n        {{- end}}\r\n      {{- end}}\r\n      {{- if $p.css}} style=\"{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}\"{{end}}\r\n      {{- if eq $p.value .Value}} checked{{end}}\r\n      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>\r\n      {{.Label}}\r\n    </label>\r\n  {{- end}}\r\n{{end}}\r\n"),
 	}
-	file1o := &embedded.EmbeddedFile{
+	file1p := &embedded.EmbeddedFile{
 		Filename:    `simple/options/select.html`,
 		FileModTime: time.Unix(1538287273, 0),
 		Content:     string("{{- define \"main\"}}\r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n{{- end}}\r\n"),
 	}
-	file1p := &embedded.EmbeddedFile{
+	file1q := &embedded.EmbeddedFile{
 		Filename:    `simple/static.html`,
 		FileModTime: time.Unix(1538287077, 0),
 		Content:     string("{{define \"main\"}}\n<p name=\"{{.name}}\" class=\"form-control-static {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</p>"),
 	}
-	file1r := &embedded.EmbeddedFile{
+	file1s := &embedded.EmbeddedFile{
 		Filename:    `simple/text/passwordinput.html`,
 		FileModTime: time.Unix(1538287232, 0),
 		Content:     string("{{- define \"main\" -}}\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n{{end -}}"),
 	}
-	file1s := &embedded.EmbeddedFile{
+	file1t := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textareainput.html`,
 		FileModTime: time.Unix(1538287215, 0),
 		Content:     string("{{- define \"main\" -}}\r\n  <textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end -}}\r\n{{- end -}}"),
 	}
-	file1t := &embedded.EmbeddedFile{
+	file1u := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textinput.html`,
 		FileModTime: time.Unix(1538287201, 0),
 		Content:     string("{{- define \"main\" -}}\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n           {{- range $v :=.tags}} {{$v}} {{end}}\r\n           {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n{{- end -}}\r\n"),
 	}
-	file1w := &embedded.EmbeddedFile{
+	file1x := &embedded.EmbeddedFile{
 		Filename:    `with_button/options/select.html`,
 		FileModTime: time.Unix(1516597067, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n{{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n    {{- if .id}} for=\"{{.id}}\"\r\n    {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n{{- end -}}\r\n    <div class=\"input-group col-lg-{{default .controlWidth 9}}\" style=\"padding-left: 15px;padding-right: 15px\">\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n    {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n    {{- if .css}}\r\n        style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n    {{- end -}}\r\n    {{- range $v :=.tags}} {{$v}}{{end}}>\r\n    {{- $p := . -}}\r\n    {{- range $v := .choices -}}\r\n    {{- if $v.Label -}}\r\n    <optgroup label=\"{{$v.Label}}\">\r\n    {{- end -}}\r\n\r\n    {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n        {{- if strIn \"multiple\" $p.tags -}}\r\n        {{- $id :=.Value -}}\r\n        {{- range $k2, $p2 :=$p.multValues -}}\r\n                {{- if eq $k2 $id}}selected{{end -}}\r\n        {{- end -}}\r\n        {{- else -}}\r\n        {{- if eq $p.value .Value}} selected{{end -}}\r\n        {{- end}}>{{raw .Label -}}\r\n        </option>\r\n    {{- end -}}\r\n\r\n    {{- if $v.Label -}}\r\n    </optgroup>\r\n    {{- end -}}\r\n    {{- end -}}\r\n        </select>\r\n        <div class=\"input-group-addon {{.btnClass}}\"\r\n    {{- if .additionParams}}{{range $k, $v :=.additionParams}} {{$k}}=\"{{$v}}\" {{end}} {{end}} style=\"cursor: pointer\" id=\"{{.btnID}}\">{{.btnTxt}}</div>\r\n{{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{if .errors}}\r\n        <ul>\r\n        {{ range .errors }}\r\n            <li>{{.}}</li>\r\n        {{end -}}\r\n        </ul>\r\n    {{end -}}\r\n    </span>\r\n{{end -}}\r\n</div>\r\n</div>\r\n{{- end -}}\r\n"),
 	}
-	file1y := &embedded.EmbeddedFile{
+	file1z := &embedded.EmbeddedFile{
 		Filename:    `with_button/text/textinput.html`,
 		FileModTime: time.Unix(1516107542, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n{{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n    {{- if .id}} for=\"{{.id}}\"\r\n    {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n{{- end -}}\r\n    <div class=\"input-group col-lg-{{default .controlWidth 9}}\" style=\"padding-left: 15px;padding-right: 15px\">\r\n        <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n        {{- if .id}} id=\"{{.id}}\" {{end}}\r\n        {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n        {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n        {{- range $v :=.tags}} {{$v}} {{end}}\r\n        {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n            <div class=\"input-group-addon {{.btnClass}}\"\r\n        {{- if .btnParams}}{{range $k, $v :=.btnParams}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n                 style=\"cursor: pointer\" id=\"{{.btnID}}\">{{.btnTxt}}</div>\r\n        {{- if or .helptext .errors -}}\r\n            <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}\r\n                <ul>\r\n                {{ range .errors }}\r\n                    <li>{{.}}</li>\r\n                {{end -}}\r\n                </ul>\r\n            {{end -}}\r\n    </span>\r\n        {{end -}}\r\n    </div>\r\n</div>\r\n{{- end -}}\r\n"),
@@ -270,8 +275,8 @@ func init() {
 		DirModTime: time.Unix(1538287023, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file2,  // baseform.html
-			fileq,  // bootstrapform.html
-			file17, // fieldset.html
+			filer,  // bootstrapform.html
+			file18, // fieldset.html
 
 		},
 	}
@@ -285,7 +290,7 @@ func init() {
 			fileb, // bootstrap3/hidden.html
 			filec, // bootstrap3/input.html
 			filed, // bootstrap3/mapinput.html
-			filel, // bootstrap3/static.html
+			filem, // bootstrap3/static.html
 
 		},
 	}
@@ -310,138 +315,139 @@ func init() {
 	}
 	dirh := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/options`,
-		DirModTime: time.Unix(1542281129, 0),
+		DirModTime: time.Unix(1543562636, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			filei, // bootstrap3/options/checkbox.html
-			filej, // bootstrap3/options/radiobutton.html
-			filek, // bootstrap3/options/select.html
+			filej, // bootstrap3/options/mult_source_select.html
+			filek, // bootstrap3/options/radiobutton.html
+			filel, // bootstrap3/options/select.html
 
 		},
 	}
-	dirm := &embedded.EmbeddedDir{
+	dirn := &embedded.EmbeddedDir{
 		Filename:   `bootstrap3/text`,
 		DirModTime: time.Unix(1542281129, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			filen, // bootstrap3/text/passwordinput.html
-			fileo, // bootstrap3/text/textareainput.html
-			filep, // bootstrap3/text/textinput.html
+			fileo, // bootstrap3/text/passwordinput.html
+			filep, // bootstrap3/text/textareainput.html
+			fileq, // bootstrap3/text/textinput.html
 
 		},
 	}
-	dirr := &embedded.EmbeddedDir{
+	dirs := &embedded.EmbeddedDir{
 		Filename:   `default`,
 		DirModTime: time.Unix(1513250714, 0),
 		ChildFiles: []*embedded.EmbeddedFile{},
 	}
-	dirs := &embedded.EmbeddedDir{
+	dirt := &embedded.EmbeddedDir{
 		Filename:   `default/datetime`,
 		DirModTime: time.Unix(1513250714, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			filet, // default/datetime/date.html
-			fileu, // default/datetime/datetime.html
-			filev, // default/datetime/time.html
+			fileu, // default/datetime/date.html
+			filev, // default/datetime/datetime.html
+			filew, // default/datetime/time.html
 
 		},
 	}
-	dirw := &embedded.EmbeddedDir{
+	dirx := &embedded.EmbeddedDir{
 		Filename:   `default/number`,
 		DirModTime: time.Unix(1513250714, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			filex, // default/number/number.html
-			filey, // default/number/range.html
+			filey, // default/number/number.html
+			filez, // default/number/range.html
 
 		},
 	}
-	dirz := &embedded.EmbeddedDir{
+	dir10 := &embedded.EmbeddedDir{
 		Filename:   `default/options`,
 		DirModTime: time.Unix(1518162182, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file10, // default/options/checkbox.html
-			file11, // default/options/radiobutton.html
-			file12, // default/options/select.html
+			file11, // default/options/checkbox.html
+			file12, // default/options/radiobutton.html
+			file13, // default/options/select.html
 
 		},
 	}
-	dir13 := &embedded.EmbeddedDir{
+	dir14 := &embedded.EmbeddedDir{
 		Filename:   `default/text`,
 		DirModTime: time.Unix(1518162182, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file14, // default/text/passwordinput.html
-			file15, // default/text/textareainput.html
-			file16, // default/text/textinput.html
+			file15, // default/text/passwordinput.html
+			file16, // default/text/textareainput.html
+			file17, // default/text/textinput.html
 
 		},
 	}
-	dir18 := &embedded.EmbeddedDir{
+	dir19 := &embedded.EmbeddedDir{
 		Filename:   `simple`,
 		DirModTime: time.Unix(1538287085, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file19, // simple/button.html
-			file1a, // simple/cron.html
-			file1f, // simple/generic.tmpl
-			file1g, // simple/hidden.html
-			file1h, // simple/input.html
-			file1p, // simple/static.html
+			file1a, // simple/button.html
+			file1b, // simple/cron.html
+			file1g, // simple/generic.tmpl
+			file1h, // simple/hidden.html
+			file1i, // simple/input.html
+			file1q, // simple/static.html
 
 		},
 	}
-	dir1b := &embedded.EmbeddedDir{
+	dir1c := &embedded.EmbeddedDir{
 		Filename:   `simple/datetime`,
 		DirModTime: time.Unix(1538287018, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1c, // simple/datetime/date.html
-			file1d, // simple/datetime/datetime.html
-			file1e, // simple/datetime/time.html
+			file1d, // simple/datetime/date.html
+			file1e, // simple/datetime/datetime.html
+			file1f, // simple/datetime/time.html
 
 		},
 	}
-	dir1i := &embedded.EmbeddedDir{
+	dir1j := &embedded.EmbeddedDir{
 		Filename:   `simple/number`,
 		DirModTime: time.Unix(1538287018, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1j, // simple/number/number.html
-			file1k, // simple/number/range.html
+			file1k, // simple/number/number.html
+			file1l, // simple/number/range.html
 
 		},
 	}
-	dir1l := &embedded.EmbeddedDir{
+	dir1m := &embedded.EmbeddedDir{
 		Filename:   `simple/options`,
 		DirModTime: time.Unix(1538287018, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1m, // simple/options/checkbox.html
-			file1n, // simple/options/radiobutton.html
-			file1o, // simple/options/select.html
+			file1n, // simple/options/checkbox.html
+			file1o, // simple/options/radiobutton.html
+			file1p, // simple/options/select.html
 
 		},
 	}
-	dir1q := &embedded.EmbeddedDir{
+	dir1r := &embedded.EmbeddedDir{
 		Filename:   `simple/text`,
 		DirModTime: time.Unix(1538287018, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1r, // simple/text/passwordinput.html
-			file1s, // simple/text/textareainput.html
-			file1t, // simple/text/textinput.html
+			file1s, // simple/text/passwordinput.html
+			file1t, // simple/text/textareainput.html
+			file1u, // simple/text/textinput.html
 
 		},
 	}
-	dir1u := &embedded.EmbeddedDir{
+	dir1v := &embedded.EmbeddedDir{
 		Filename:   `with_button`,
 		DirModTime: time.Unix(1516107542, 0),
 		ChildFiles: []*embedded.EmbeddedFile{},
 	}
-	dir1v := &embedded.EmbeddedDir{
+	dir1w := &embedded.EmbeddedDir{
 		Filename:   `with_button/options`,
 		DirModTime: time.Unix(1516597067, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1w, // with_button/options/select.html
+			file1x, // with_button/options/select.html
 
 		},
 	}
-	dir1x := &embedded.EmbeddedDir{
+	dir1y := &embedded.EmbeddedDir{
 		Filename:   `with_button/text`,
 		DirModTime: time.Unix(1516107542, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1y, // with_button/text/textinput.html
+			file1z, // with_button/text/textinput.html
 
 		},
 	}
@@ -449,51 +455,51 @@ func init() {
 	// link ChildDirs
 	dir1.ChildDirs = []*embedded.EmbeddedDir{
 		dir3,  // bootstrap3
-		dirr,  // default
-		dir18, // simple
-		dir1u, // with_button
+		dirs,  // default
+		dir19, // simple
+		dir1v, // with_button
 
 	}
 	dir3.ChildDirs = []*embedded.EmbeddedDir{
 		dir6, // bootstrap3/datetime
 		dire, // bootstrap3/number
 		dirh, // bootstrap3/options
-		dirm, // bootstrap3/text
+		dirn, // bootstrap3/text
 
 	}
 	dir6.ChildDirs = []*embedded.EmbeddedDir{}
 	dire.ChildDirs = []*embedded.EmbeddedDir{}
 	dirh.ChildDirs = []*embedded.EmbeddedDir{}
-	dirm.ChildDirs = []*embedded.EmbeddedDir{}
-	dirr.ChildDirs = []*embedded.EmbeddedDir{
-		dirs,  // default/datetime
-		dirw,  // default/number
-		dirz,  // default/options
-		dir13, // default/text
+	dirn.ChildDirs = []*embedded.EmbeddedDir{}
+	dirs.ChildDirs = []*embedded.EmbeddedDir{
+		dirt,  // default/datetime
+		dirx,  // default/number
+		dir10, // default/options
+		dir14, // default/text
 
 	}
-	dirs.ChildDirs = []*embedded.EmbeddedDir{}
-	dirw.ChildDirs = []*embedded.EmbeddedDir{}
-	dirz.ChildDirs = []*embedded.EmbeddedDir{}
-	dir13.ChildDirs = []*embedded.EmbeddedDir{}
-	dir18.ChildDirs = []*embedded.EmbeddedDir{
-		dir1b, // simple/datetime
-		dir1i, // simple/number
-		dir1l, // simple/options
-		dir1q, // simple/text
+	dirt.ChildDirs = []*embedded.EmbeddedDir{}
+	dirx.ChildDirs = []*embedded.EmbeddedDir{}
+	dir10.ChildDirs = []*embedded.EmbeddedDir{}
+	dir14.ChildDirs = []*embedded.EmbeddedDir{}
+	dir19.ChildDirs = []*embedded.EmbeddedDir{
+		dir1c, // simple/datetime
+		dir1j, // simple/number
+		dir1m, // simple/options
+		dir1r, // simple/text
 
 	}
-	dir1b.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1i.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1l.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1q.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1u.ChildDirs = []*embedded.EmbeddedDir{
-		dir1v, // with_button/options
-		dir1x, // with_button/text
+	dir1c.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1j.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1m.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1r.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1v.ChildDirs = []*embedded.EmbeddedDir{
+		dir1w, // with_button/options
+		dir1y, // with_button/text
 
 	}
-	dir1v.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1x.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1w.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1y.ChildDirs = []*embedded.EmbeddedDir{}
 
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`templates`, &embedded.EmbeddedBox{
@@ -505,73 +511,74 @@ func init() {
 			"bootstrap3/datetime": dir6,
 			"bootstrap3/number":   dire,
 			"bootstrap3/options":  dirh,
-			"bootstrap3/text":     dirm,
-			"default":             dirr,
-			"default/datetime":    dirs,
-			"default/number":      dirw,
-			"default/options":     dirz,
-			"default/text":        dir13,
-			"simple":              dir18,
-			"simple/datetime":     dir1b,
-			"simple/number":       dir1i,
-			"simple/options":      dir1l,
-			"simple/text":         dir1q,
-			"with_button":         dir1u,
-			"with_button/options": dir1v,
-			"with_button/text":    dir1x,
+			"bootstrap3/text":     dirn,
+			"default":             dirs,
+			"default/datetime":    dirt,
+			"default/number":      dirx,
+			"default/options":     dir10,
+			"default/text":        dir14,
+			"simple":              dir19,
+			"simple/datetime":     dir1c,
+			"simple/number":       dir1j,
+			"simple/options":      dir1m,
+			"simple/text":         dir1r,
+			"with_button":         dir1v,
+			"with_button/options": dir1w,
+			"with_button/text":    dir1y,
 		},
 		Files: map[string]*embedded.EmbeddedFile{
-			"baseform.html":                       file2,
-			"bootstrap3/button.html":              file4,
-			"bootstrap3/cron.html":                file5,
-			"bootstrap3/datetime/date.html":       file7,
-			"bootstrap3/datetime/datetime.html":   file8,
-			"bootstrap3/datetime/time.html":       file9,
-			"bootstrap3/generic.tmpl":             filea,
-			"bootstrap3/hidden.html":              fileb,
-			"bootstrap3/input.html":               filec,
-			"bootstrap3/mapinput.html":            filed,
-			"bootstrap3/number/number.html":       filef,
-			"bootstrap3/number/range.html":        fileg,
-			"bootstrap3/options/checkbox.html":    filei,
-			"bootstrap3/options/radiobutton.html": filej,
-			"bootstrap3/options/select.html":      filek,
-			"bootstrap3/static.html":              filel,
-			"bootstrap3/text/passwordinput.html":  filen,
-			"bootstrap3/text/textareainput.html":  fileo,
-			"bootstrap3/text/textinput.html":      filep,
-			"bootstrapform.html":                  fileq,
-			"default/datetime/date.html":          filet,
-			"default/datetime/datetime.html":      fileu,
-			"default/datetime/time.html":          filev,
-			"default/number/number.html":          filex,
-			"default/number/range.html":           filey,
-			"default/options/checkbox.html":       file10,
-			"default/options/radiobutton.html":    file11,
-			"default/options/select.html":         file12,
-			"default/text/passwordinput.html":     file14,
-			"default/text/textareainput.html":     file15,
-			"default/text/textinput.html":         file16,
-			"fieldset.html":                       file17,
-			"simple/button.html":                  file19,
-			"simple/cron.html":                    file1a,
-			"simple/datetime/date.html":           file1c,
-			"simple/datetime/datetime.html":       file1d,
-			"simple/datetime/time.html":           file1e,
-			"simple/generic.tmpl":                 file1f,
-			"simple/hidden.html":                  file1g,
-			"simple/input.html":                   file1h,
-			"simple/number/number.html":           file1j,
-			"simple/number/range.html":            file1k,
-			"simple/options/checkbox.html":        file1m,
-			"simple/options/radiobutton.html":     file1n,
-			"simple/options/select.html":          file1o,
-			"simple/static.html":                  file1p,
-			"simple/text/passwordinput.html":      file1r,
-			"simple/text/textareainput.html":      file1s,
-			"simple/text/textinput.html":          file1t,
-			"with_button/options/select.html":     file1w,
-			"with_button/text/textinput.html":     file1y,
+			"baseform.html":                              file2,
+			"bootstrap3/button.html":                     file4,
+			"bootstrap3/cron.html":                       file5,
+			"bootstrap3/datetime/date.html":              file7,
+			"bootstrap3/datetime/datetime.html":          file8,
+			"bootstrap3/datetime/time.html":              file9,
+			"bootstrap3/generic.tmpl":                    filea,
+			"bootstrap3/hidden.html":                     fileb,
+			"bootstrap3/input.html":                      filec,
+			"bootstrap3/mapinput.html":                   filed,
+			"bootstrap3/number/number.html":              filef,
+			"bootstrap3/number/range.html":               fileg,
+			"bootstrap3/options/checkbox.html":           filei,
+			"bootstrap3/options/mult_source_select.html": filej,
+			"bootstrap3/options/radiobutton.html":        filek,
+			"bootstrap3/options/select.html":             filel,
+			"bootstrap3/static.html":                     filem,
+			"bootstrap3/text/passwordinput.html":         fileo,
+			"bootstrap3/text/textareainput.html":         filep,
+			"bootstrap3/text/textinput.html":             fileq,
+			"bootstrapform.html":                         filer,
+			"default/datetime/date.html":                 fileu,
+			"default/datetime/datetime.html":             filev,
+			"default/datetime/time.html":                 filew,
+			"default/number/number.html":                 filey,
+			"default/number/range.html":                  filez,
+			"default/options/checkbox.html":              file11,
+			"default/options/radiobutton.html":           file12,
+			"default/options/select.html":                file13,
+			"default/text/passwordinput.html":            file15,
+			"default/text/textareainput.html":            file16,
+			"default/text/textinput.html":                file17,
+			"fieldset.html":                              file18,
+			"simple/button.html":                         file1a,
+			"simple/cron.html":                           file1b,
+			"simple/datetime/date.html":                  file1d,
+			"simple/datetime/datetime.html":              file1e,
+			"simple/datetime/time.html":                  file1f,
+			"simple/generic.tmpl":                        file1g,
+			"simple/hidden.html":                         file1h,
+			"simple/input.html":                          file1i,
+			"simple/number/number.html":                  file1k,
+			"simple/number/range.html":                   file1l,
+			"simple/options/checkbox.html":               file1n,
+			"simple/options/radiobutton.html":            file1o,
+			"simple/options/select.html":                 file1p,
+			"simple/static.html":                         file1q,
+			"simple/text/passwordinput.html":             file1s,
+			"simple/text/textareainput.html":             file1t,
+			"simple/text/textinput.html":                 file1u,
+			"with_button/options/select.html":            file1x,
+			"with_button/text/textinput.html":            file1z,
 		},
 	})
 }

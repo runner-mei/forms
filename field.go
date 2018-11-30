@@ -126,7 +126,6 @@ func (f *Field) loadValueIfNeed() {
 		return
 	}
 
-	name := f.Name()
 	ctx := f.ctx.(map[string]interface{})
 
 	if _, ok := ctx["errors"]; !ok {
@@ -137,6 +136,26 @@ func (f *Field) loadValueIfNeed() {
 		ctx["flash"] = map[string]string{}
 	}
 
+	if f.fieldType == MULI_SOURCE_SELECT {
+		var sources []map[string]interface{}
+		o := f.additionalData["sources"]
+		if o != nil {
+			sources, _ = o.([]map[string]interface{})
+		}
+
+		for _, src := range sources {
+			name := src["name"].(string)
+			value := revel.NewField(name, ctx)
+			if cvalue := value.Value(); !isZero(reflect.ValueOf(cvalue)) {
+				src["value"] = cvalue
+			} else if flash := value.Flash(); flash != "" {
+				src["value"] = flash
+			}
+		}
+		return
+	}
+
+	name := f.Name()
 	value := revel.NewField(name, ctx)
 	f.setValue(value)
 
@@ -417,6 +436,9 @@ func (f *Field) SetValue(value interface{}) FieldInterface {
 	if value == nil {
 		return f
 	}
+	if f.fieldType == MULI_SOURCE_SELECT {
+		panic(f.fieldType + " cannot set value")
+	}
 	f.setValue(fieldValue{value})
 	return f
 }
@@ -490,7 +512,7 @@ func (f *Field) RemoveSelected(opt string) FieldInterface {
 // Grouping is only useful for Select fields, while groups are ignored in Radio fields.
 // It has no effect if type is not SELECT.
 func (f *Field) SetSelectChoices(choices []HierarchyChoice) FieldInterface {
-	if f.fieldType == SELECT {
+	if f.fieldType == SELECT || f.fieldType == MULI_SOURCE_SELECT {
 		f.additionalData["choices"] = choices
 	}
 	return f
@@ -539,6 +561,8 @@ func (f *Field) SetContainNull() FieldInterface {
 				}
 			}
 		}
+	} else if f.fieldType == MULI_SOURCE_SELECT {
+		f.additionalData["containNull"] = true
 	}
 	return f
 }
@@ -673,6 +697,11 @@ var (
 			field.SetContainNull()
 			return field
 		},
+
+		"f_addSource": func(name, label string, hasNew bool, choices interface{}, field FieldInterface) FieldInterface {
+			return field.(*Field).AddSource(name, label, hasNew, choices)
+		},
+
 		"render": func(args ...interface{}) template.HTML {
 			switch len(args) {
 			case 0:

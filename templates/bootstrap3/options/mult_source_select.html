@@ -1,0 +1,61 @@
+{{- define "main"}}
+
+<div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
+  {{- if not .nolabel -}}
+  <label class="col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}"
+      {{- if .id}} for="{{.id}}" {{end -}}>
+    {{- if .label}}{{.label}}{{- end}}
+  </label>
+  {{- end -}}
+  <div class="col-lg-{{default .controlWidth 9}}">
+    
+    {{- if .preText}}<span>{{.preText}}</span>{{end -}}
+
+    {{- $name := .name}} 
+    {{- range $v := .sources -}}
+      {{- if $v.value -}}
+        {{- $name = $v.name -}}
+      {{- end -}}
+    {{- end -}}
+
+    <select name="{{.name}}"
+      class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+      {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+      {{- if .css}}
+      style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+      {{- end -}}
+      {{- range $v :=.tags}} {{$v}}{{end}}>
+
+      {{- if .containNull}}
+          <option value=""></option>
+      {{- end}}
+
+      {{- range $v := .sources}}
+
+          {{- if $v.label -}}
+          <optgroup label="{{$v.label}}">
+          {{- end -}}
+              {{ if $v.hasNew }}
+              <option value="new" mark="{{$v.name}}" >新建</option>
+              {{ end }}
+
+              {{- range $v.choices -}}
+              <option value="{{.Value}}" mark="{{$v.name}}" {{- if eq (toString $v.value) (toString .Value) }} selected{{end}}>{{raw .Label -}}</option>
+              {{- end -}}
+
+          {{- if $v.label -}}
+          </optgroup>
+          {{- end -}}
+
+      {{- end}}
+    </select>
+
+
+    {{- if .postText}}<span>{{.postText}}</span>{{end -}}
+
+    {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
+    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
+  </div>
+</div>
+
+{{- end}}
