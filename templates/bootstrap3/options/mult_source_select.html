@@ -14,7 +14,7 @@
     {{- $name := .name}} 
     {{- range $v := .sources -}}
       {{- if $v.value -}}
-        {{- $name = $v.name -}}
+        {{- $name := $v.name -}}
       {{- end -}}
     {{- end -}}
 

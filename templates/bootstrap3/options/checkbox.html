@@ -7,14 +7,26 @@
    </label>
   {{- end -}}
 	<div class="col-lg-{{default .controlWidth 9}}">
-		<input type="checkbox" name="{{.name}}"{{ if .classes }} class="{{range .classes}}{{.}} {{end}}"{{end}}
-		{{- if toOptionBoolean .value }} checked {{end}}
-		{{- if .id}} id="{{.id}}"{{end}}
-		{{- if .params}}
-		  {{- range $k, $v := .params}} {{$k}}="{{$v}}"{{end}}
-		{{- end}}
-		{{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"{{end}}
-		{{- range $v := .tags}} {{$v}}{{end}}>
+
+		{{if and .ctx_parent.form_mode (ne "new" (print .ctx_parent.form_mode) ) .unmodifiable}}
+            <p class="form-control-static">
+				{{- if toOptionBoolean .value -}}
+				  是
+				{{- else -}}
+				  否
+				{{- end -}}
+			</p>
+        	<input type="hidden" {{- if toOptionBoolean .value }} value="on" {{end}} name="{{.name}}"{{ if .classes }} class="{{range .classes}}{{.}} {{end}}"{{end}} />
+		{{else}}
+        	<input type="checkbox" name="{{.name}}"{{ if .classes }} class="{{range .classes}}{{.}} {{end}}"{{end}}
+			{{- if toOptionBoolean .value }} checked {{end}}
+			{{- if .id}} id="{{.id}}"{{end}}
+			{{- if .params}}
+			  {{- range $k, $v := .params}} {{$k}}="{{$v}}"{{end -}}
+			{{- end}}
+			{{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"{{end -}}
+			{{- range $v := .tags}} {{$v}}{{end -}}>
+		{{end}}
 		{{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{- end}}
 		{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}
 	</div>

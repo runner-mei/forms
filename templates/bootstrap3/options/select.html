@@ -18,36 +18,60 @@
     
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
 
-    <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
-            {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
-            {{- if .css}}
-            style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+    {{- $p := . -}}
+    {{- if and .ctx_parent.form_mode (ne "new" (print .ctx_parent.form_mode) ) .unmodifiable -}}
+        <p class="form-control-static">
+            {{- range $v := .choices -}}
+                {{- range $v.Children -}}
+                    {{- if strIn "multiple" $p.tags -}}
+                        {{- $id :=.Value -}}
+                        {{- $label :=.Label -}}
+                        {{- range $k2, $p2 :=$p.multValues -}}
+                            {{- if eq $k2 $id}}{{$label}} <br />  {{end -}}
+                        {{- end -}}
+                    {{- else -}}
+                        {{- if eq $p.value .Value}} {{.Label}}{{end -}}
+                    {{- end}}
+                {{- end -}}
             {{- end -}}
-            {{- range $v :=.tags}} {{$v}}{{end}}>
-      {{- $p := . -}}
-      {{- range $v := .choices -}}
-        {{- if $v.Label -}}
-        <optgroup label="{{$v.Label}}">
+        </p>
+        <input type="hidden" name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+        {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+        {{- if .css}}
+          style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
         {{- end -}}
+        {{- range $v :=.tags}} {{$v}}{{end}} value="{{$p.value}}" />
+    {{- else -}}
+        <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+                {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+                {{- if .css}}
+                style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+                {{- end -}}
+                {{- range $v :=.tags}} {{$v}}{{end}}>
+          {{- range $v := .choices -}}
+            {{- if $v.Label -}}
+            <optgroup label="{{$v.Label}}">
+            {{- end -}}
 
-        {{- range $v.Children -}}
-        <option value="{{.Value}}"
-                {{- if strIn "multiple" $p.tags -}}
-                  {{- $id :=.Value -}}
-                  {{- range $k2, $p2 :=$p.multValues -}}
-                    {{- if eq $k2 $id}}selected{{end -}}
-                  {{- end -}}
-                {{- else -}}
-                  {{- if eq $p.value .Value}} selected{{end -}}
-                {{- end}}>{{raw .Label -}}
-        </option>
-        {{- end -}}
-        
-        {{- if $v.Label -}}
-        </optgroup>
-        {{- end -}}
-      {{- end -}}
-    </select>
+            {{- range $v.Children -}}
+            <option value="{{.Value}}"
+                    {{- if strIn "multiple" $p.tags -}}
+                      {{- $id :=.Value -}}
+                      {{- range $k2, $p2 :=$p.multValues -}}
+                        {{- if eq $k2 $id}}selected{{end -}}
+                      {{- end -}}
+                    {{- else -}}
+                      {{- if eq $p.value .Value}} selected{{end -}}
+                    {{- end}}>{{raw .Label -}}
+            </option>
+            {{- end -}}
+
+            {{- if $v.Label -}}
+            </optgroup>
+            {{- end -}}
+          {{- end -}}
+        </select>
+    {{- end -}}
     {{- if .postText}}<span>{{.postText}}</span>{{end -}}
 
     {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}

@@ -89,7 +89,7 @@ func FieldWithType(ctx interface{}, name, t string) *Field {
 
 	if params, _ := ctx.(map[string]interface{}); params != nil {
 		mode := params["form_mode"]
-		if smode, _ := mode.(string); smode == "readonly" {
+		if smode, _ := mode.(string); smode == "view" {
 			field.SetParam("readonly", "readonly")
 		}
 	}
@@ -257,12 +257,16 @@ func (f *Field) setValue(value FieldValue) {
 			}
 		}
 	} else if SELECT == f.fieldType && f.IsMultipleChoice() {
-		if flashArray := value.FlashArray(); len(flashArray) > 0 {
-			f.AddSelected(flashArray...)
+		if vl, ok := value.Value().(string); ok {
+			f.AddSelected(vl)
 		} else {
-			opts := toStringArray(value.Value(), nil)
-			if len(opts) != 0 {
-				f.AddSelected(opts...)
+			if flashArray := value.FlashArray(); len(flashArray) > 0 {
+				f.AddSelected(flashArray...)
+			} else {
+				opts := toStringArray(value.Value(), nil)
+				if len(opts) != 0 {
+					f.AddSelected(opts...)
+				}
 			}
 		}
 	} else {
