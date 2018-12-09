@@ -36,6 +36,7 @@ type Field struct {
 // FieldInterface defines the interface an object must implement to be used in a form. Every method returns a FieldInterface object
 // to allow methods chaining.
 type FieldInterface interface {
+	SetName(name string) FieldInterface
 	Name() string
 	Render(string) template.HTML
 	AddClass(class string) FieldInterface
@@ -115,6 +116,12 @@ func (f *Field) SetTheme(style string) FieldInterface {
 // Name returns the name of the field.
 func (f *Field) Name() string {
 	return strings.TrimSuffix(f.name, "[]")
+}
+
+// SetName set the name of the field.
+func (f *Field) SetName(name string) FieldInterface {
+	f.name = name
+	return f
 }
 
 func (f *Field) loadValueIfNeed() {
@@ -383,8 +390,8 @@ func (f *Field) SetParam(key, value string) FieldInterface {
 }
 
 // SetIntParam adds a parameter (defined as key-value pair) in the field.
-func (f *Field) SetIntParam(key string, value int) FieldInterface {
-	f.params[key] = strconv.FormatInt(int64(value), 10)
+func (f *Field) SetIntParam(key string, value int64) FieldInterface {
+	f.params[key] = strconv.FormatInt(value, 10)
 	return f
 }
 
@@ -593,12 +600,28 @@ func (f *Field) SetText(text string) FieldInterface {
 
 var (
 	FieldFuncs = template.FuncMap{
+		"f_setName": func(name string, field FieldInterface) FieldInterface {
+			field.SetName(name)
+			return field
+		},
+		"f_setLabel": func(label string, field FieldInterface) FieldInterface {
+			field.SetLabel(label)
+			return field
+		},
 		"f_addClass": func(class string, field FieldInterface) FieldInterface {
 			field.AddClass(class)
 			return field
 		},
 		"f_removeClass": func(class string, field FieldInterface) FieldInterface {
 			field.RemoveClass(class)
+			return field
+		},
+		"f_addLabelClass": func(class string, field FieldInterface) FieldInterface {
+			field.AddLabelClass(class)
+			return field
+		},
+		"f_removeLabelClass": func(class string, field FieldInterface) FieldInterface {
+			field.RemoveLabelClass(class)
 			return field
 		},
 		"f_addTag": func(class string, field FieldInterface) FieldInterface {
@@ -631,18 +654,6 @@ var (
 		},
 		"f_setTheme": func(style string, field FieldInterface) FieldInterface {
 			field.SetTheme(style)
-			return field
-		},
-		"f_setLabel": func(label string, field FieldInterface) FieldInterface {
-			field.SetLabel(label)
-			return field
-		},
-		"f_addLabelClass": func(class string, field FieldInterface) FieldInterface {
-			field.AddLabelClass(class)
-			return field
-		},
-		"f_removeLabelClass": func(class string, field FieldInterface) FieldInterface {
-			field.RemoveLabelClass(class)
 			return field
 		},
 		"f_setValue": func(value interface{}, field FieldInterface) FieldInterface {

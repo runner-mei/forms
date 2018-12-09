@@ -4,7 +4,9 @@
 // classes, id, generic parameters (in key-value form) and stylesheet options.
 package forms
 
-import "html/template"
+import (
+	"html/template"
+)
 
 // Form methods: POST or GET.
 const (
