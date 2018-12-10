@@ -3,7 +3,6 @@ package forms
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"html/template"
 	"reflect"
@@ -15,9 +14,10 @@ import (
 
 // Field is a generic type containing all data associated to an input field.
 type Field struct {
-	ctx            interface{}
-	fieldType      string
-	Widget         Widget // Public Widget field for widget customization
+	ctx       interface{}
+	fieldType string
+	theme     string
+	// Widget         Widget // Public Widget field for widget customization
 	name           string
 	classes        stringSet
 	id             string
@@ -71,9 +71,9 @@ type FieldInterface interface {
 // FieldWithType creates an empty field of the given type and identified by name.
 func FieldWithType(ctx interface{}, name, t string) *Field {
 	var field = &Field{
-		ctx:            ctx,
-		fieldType:      t,
-		Widget:         nil,
+		ctx:       ctx,
+		fieldType: t,
+		// Widget:         nil,
 		name:           name,
 		classes:        stringSet{},
 		id:             "",
@@ -102,15 +102,6 @@ func FieldWithTypeWithCtx(ctx interface{}, name, label, typ string) *Field {
 	field := FieldWithType(ctx, name, typ)
 	field.SetLabel(label)
 	return field
-}
-
-// SetTheme sets the style (e.g.: BASE, BOOTSTRAP) of the field, correctly populating the Widget field.
-func (f *Field) SetTheme(style string) FieldInterface {
-	if f.Widget != nil {
-		panic(errors.New("theme is already set value"))
-	}
-	f.Widget = BaseWidget(style, f.fieldType)
-	return f
 }
 
 // Name returns the name of the field.
@@ -319,22 +310,32 @@ func (f *Field) dataForRender() map[string]interface{} {
 	return data
 }
 
+// SetTheme sets the style (e.g.: BASE, BOOTSTRAP) of the field, correctly populating the Widget field.
+func (f *Field) SetTheme(style string) FieldInterface {
+	if style == "" {
+		return f
+	}
+	f.theme = style
+	return f
+}
+
 // Render packs all data and executes widget render method.
 func (f *Field) Render(theme string) template.HTML {
-	if f.Widget == nil {
-		if theme == "" {
-			theme = BOOTSTRAP
-		}
-		f.Widget = BaseWidget(theme, f.fieldType)
-	} else if theme != "" {
-		f.SetTheme(theme)
+
+	if theme == "" {
+		theme = f.theme
+	}
+	if theme == "" {
+		theme = BOOTSTRAP
 	}
 
-	if f.Widget != nil {
-		data := f.dataForRender()
-		return template.HTML(f.Widget.Render(data))
+	var widget = BaseWidget(theme, f.fieldType)
+	if widget == nil {
+		return template.HTML("field template is not found.")
 	}
-	return template.HTML("field template is not found.")
+
+	data := f.dataForRender()
+	return template.HTML(widget.Render(data))
 }
 
 func (f *Field) String() string {
