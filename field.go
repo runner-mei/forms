@@ -112,6 +112,13 @@ func (f *Field) Name() string {
 // SetName set the name of the field.
 func (f *Field) SetName(name string) FieldInterface {
 	f.name = name
+
+	if f.fieldType == SELECT && f.IsMultipleChoice() {
+		// fix name if necessary
+		if !strings.HasSuffix(name, "[]") {
+			f.name = name + "[]"
+		}
+	}
 	return f
 }
 
@@ -440,6 +447,9 @@ func (f *Field) RemoveTag(tag string) FieldInterface {
 
 // HasTag has a no-value parameter in the field.
 func (f *Field) HasTag(tag string) bool {
+	if f.tags.length() == 0 {
+		return false
+	}
 	return f.tags.has(tag)
 }
 

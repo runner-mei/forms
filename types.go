@@ -64,6 +64,10 @@ func CreateURL(widget string) string {
 
 type stringSet []string
 
+func (set stringSet) length() int {
+	return len([]string(set))
+}
+
 func (set stringSet) add(value string) stringSet {
 	for _, s := range set {
 		if s == value {

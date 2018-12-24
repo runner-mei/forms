@@ -79,6 +79,8 @@
   </div>
 
   {{- if strIn "multiple" $p.tags -}}
+  {{- if not .ctx_parent.___hasChosen___ -}}
+  {{- set .ctx_parent "___hasChosen___" true -}}
   <script>
     if (tpt_form_callbacks == null) {
       tpt_form_callbacks = new Array();
@@ -91,6 +93,7 @@
         });
       });
   </script>
+  {{- end -}}
   {{- end -}}
 </div>
 
