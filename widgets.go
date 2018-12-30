@@ -74,7 +74,11 @@ func init() {
 func (w *widget) Render(data interface{}) string {
 	bs := bytesCache.Get().([]byte)
 	buf := bytes.NewBuffer(bs)
-	w.template.ExecuteTemplate(buf, "main", data)
+	err := w.template.ExecuteTemplate(buf, "main", data)
+	if err != nil {
+		bytesCache.Put(bs)
+		panic(err)
+	}
 	s := buf.String()
 	bytesCache.Put(bs)
 	return s
@@ -178,6 +182,8 @@ func loadTemplate(style, inputType string) *template.Template {
 		IMAGE,
 		MONTH:
 		widgetFilename = style + "/input.html"
+	case "unmodifiable":
+		widgetFilename = style + "/unmodifiable.html"
 	default:
 		widgetFilename = style + "/input.html"
 	}
@@ -353,9 +359,30 @@ var defaultFuncs = template.FuncMap{
 	},
 }
 
+func toBoolean(v interface{}) bool {
+	if v == nil {
+		return false
+	}
+	if b, ok := v.(bool); ok {
+		return b
+	}
+	if s, ok := v.(string); ok {
+		if s == "true" || s == "on" || s == "yes" ||
+			s == "True" || s == "On" || s == "Yes" ||
+			s == "TRUE" || s == "ON" || s == "YES" {
+			return true
+		}
+	}
+	return false
+}
+
 func toTime(v interface{}) (time.Time, bool) {
 	if t, ok := v.(time.Time); ok {
 		return t, true
+	}
+
+	if t, ok := v.(*time.Time); ok {
+		return *t, true
 	}
 
 	s, ok := v.(string)
@@ -367,7 +394,9 @@ func toTime(v interface{}) (time.Time, bool) {
 	}
 	for _, layout := range []string{
 		"2006-01-02 15:04:05.999999999 -0700 MST",
+		"2006-01-02 15:04:05.999999999 -0700 -0700",
 		"2006-01-02 15:04:05 -0700 MST",
+		"2006-01-02 15:04:05 -0700 -0700",
 		time.RFC3339,
 		time.RFC3339Nano,
 		"2006-01-02",

@@ -328,7 +328,6 @@ func (f *Field) SetTheme(style string) FieldInterface {
 
 // Render packs all data and executes widget render method.
 func (f *Field) Render(theme string) template.HTML {
-
 	if theme == "" {
 		theme = f.theme
 	}
@@ -336,7 +335,22 @@ func (f *Field) Render(theme string) template.HTML {
 		theme = BOOTSTRAP
 	}
 
-	var widget = BaseWidget(theme, f.fieldType)
+	fieldType := f.fieldType
+
+	if f.additionalData != nil {
+		unmodifiable := toBoolean(f.additionalData["unmodifiable"])
+
+		if unmodifiable {
+			args, ok := f.ctx.(map[string]interface{})
+			if ok {
+				if mode := args["form_mode"]; mode != nil && mode.(string) != "new" {
+					fieldType = "unmodifiable"
+				}
+			}
+		}
+	}
+
+	var widget = BaseWidget(theme, fieldType)
 	if widget == nil {
 		return template.HTML("field template is not found.")
 	}
