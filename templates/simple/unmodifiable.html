@@ -1,0 +1,57 @@
+    <p class="form-control-static">
+      {{- if .choices}}
+        {{- range $v := .choices -}}
+          {{- range $v.Children -}}
+              {{- if strIn "multiple" $.tags -}}
+                  {{- $id :=.Value -}}
+                  {{- $label :=.Label -}}
+                  {{- range $k2, $p2 :=$.multValues -}}
+                      {{- if eq $k2 $id}}{{$label}} <br />  {{end -}}
+                  {{- end -}}
+              {{- else -}}
+                  {{- if eq $.value .Value}} {{.Label}}{{end -}}
+              {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- else if eq .type "checkbox" -}}
+        {{- if toOptionBoolean .value -}}是{{else}}否{{end}}
+      {{- else if eq .type "date" -}}
+        {{- form_date .value -}}
+      {{- else if eq .type "datetime" -}}
+        {{- form_datetime .value -}}
+      {{- else if eq .type "datetime-local" -}}
+        {{- form_datetime .value -}}
+      {{- else -}}
+        {{.value}}
+      {{- end -}}
+    </p>
+
+    {{- if strIn "multiple" $.tags -}}
+      {{- range $id, $p2 :=$.multValues -}}
+        <input type="hidden" name="{{$.name}}" class="form-control {{if $.classes }}{{range $.classes}}{{.}} {{end}}{{end}}"
+        {{- if $.params}}{{range $k, $v := $.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+        {{- if $.css}}
+          style="{{range $k, $v := $.css}}{{$k}}: {{$v}}; {{end}}"
+        {{- end -}}
+        {{- range $v :=$.tags}} {{$v}}{{end}} value="{{$id}}" />
+      {{- end -}}
+    {{- else -}}
+      <input type="hidden" name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+      {{- if .id}} id="{{.id}}" {{end}}
+      {{- if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+      {{- if .css}}
+        style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
+      {{- end -}}
+      {{- range $v :=.tags}} {{$v}}{{end}} value="{{.value}}" />
+    {{- end -}}
+
+    {{- if or .helptext .errors -}}
+    <span class="help-block">
+      {{- if .helptext -}}{{ .helptext }}{{- end -}}
+      {{- if .errors -}}
+      <ul>
+        {{- range .errors -}}<li>{{.}}</li>{{- end -}}
+      </ul>
+      {{- end -}}
+    </span>
+    {{end -}}
