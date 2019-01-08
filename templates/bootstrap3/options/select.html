@@ -64,7 +64,10 @@
     tpt_form_callbacks.push(function () {
         $(function () {
             if (typeof $.fn.chosen !== "undefined"){
-                $(".chosen").chosen({search_contains:true,width:'100%'});
+              $(".chosen").each(function(){
+                var disabled = $(this).attr("readonly") === "readonly";
+                $(this).prop("disabled", true).chosen({search_contains:true,width:'100%',disabled:disabled});
+              })
             }
         });
       });
