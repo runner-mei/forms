@@ -39,7 +39,7 @@
                       {{- end -}}
                     {{- else -}}
                       {{- if eq $p.value .Value}} selected{{end -}}
-                    {{- end}}>{{raw .Label -}}
+                    {{- end}}>{{.Label -}}
             </option>
             {{- end -}}
 
