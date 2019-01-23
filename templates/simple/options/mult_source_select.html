@@ -1,0 +1,61 @@
+{{- define "main"}}
+    {{- if .preText}}<span>{{.preText}}</span>{{end -}}
+
+    {{- $name := .name}} 
+    {{- range $v := .sources -}}
+      {{- if $v.value -}}
+        {{- $name := $v.name -}}
+      {{- end -}}
+    {{- end -}}
+
+
+    {{ $id := default  .id (generateID) }}
+
+    <select name="{{.name}}"
+      class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}" id="{{$id}}"
+      {{- if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
+      {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}" {{end -}}
+      {{- range $v :=.tags}} {{$v}}{{end}}  onchange="{{$id | js }}_on_change(this)">
+
+      {{- if .containNull}}
+          <option value=""></option>
+      {{- end}}
+
+      {{- range $v := .sources}}
+        {{if or $v.choices $v.hasNew }}
+          {{- if $v.label -}}
+          <optgroup label="{{$v.label}}">
+          {{- end -}}
+              {{ if $v.hasNew }}
+              <option value="new" mark="{{$v.name}}" >新建</option>
+              {{ end }}
+
+              {{- range $v.choices -}}
+              <option value="{{.Value}}" mark="{{$v.name}}" {{- if eq (toString $v.value) (toString .Value) }} selected{{end}}>{{raw .Label -}}</option>
+              {{- end -}}
+
+          {{- if $v.label -}}
+          </optgroup>
+          {{- end -}}
+        {{- end -}}
+
+      {{- end}}
+    </select>
+
+    <script>
+      function {{$id | js}}_on_change(thisInput) {
+        //获取当前选中的option
+        var selected = $(thisInput).find('option:selected');
+        if(selected.val()=="new"){
+            //新增按钮  弹出表单对话框
+            $(thisInput).trigger("new", selected.attr("mark"))
+        }
+
+        // 判断当前选择的对象所属表  修改select的name属性值
+        $(thisInput).attr('name', selected.attr("mark"))
+      }
+    </script>
+
+    {{- if .postText}}<span>{{.postText}}</span>{{end -}}
+
+{{- end}}

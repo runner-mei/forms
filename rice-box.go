@@ -234,46 +234,51 @@ func init() {
 		Content:     string("{{-  define \"main\"}}\r\n{{- $p := . }}\r\n\t\t\t<label class=\"control-label {{ if .labelClasses }}{{range .labelClasses}} {{.}}{{end}}{{end}}\">\r\n\t\t\t\t<input type=\"checkbox\" name=\"{{.name}}\"{{ if .classes }} class=\"{{range .classes}}{{.}} {{end}}\"{{end}}\r\n\t\t\t\t{{- if toOptionBoolean .value }} checked {{end}}\r\n\t\t\t\t{{- if .id}} id=\"{{.id}}\"{{end}}\r\n\t\t\t\t{{- if .params}}\r\n\t\t\t\t  {{- range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}\r\n\t\t\t\t{{- end}}\r\n\t\t\t\t{{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}\r\n\t\t\t\t{{- range $v := .tags}} {{$v}}{{end}}>\r\n\t\t\t\t{{.label}}\r\n\t\t\t</label>\r\n\t\t\t{{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{- end}}\r\n\t\t\t{{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end}}\r\n{{- end}}\r\n"),
 	}
 	file1p := &embedded.EmbeddedFile{
+		Filename:    `simple/options/mult_source_select.html`,
+		FileModTime: time.Unix(1548235524, 0),
+		Content:     string("{{- define \"main\"}}\r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n\r\n    {{- $name := .name}} \r\n    {{- range $v := .sources -}}\r\n      {{- if $v.value -}}\r\n        {{- $name := $v.name -}}\r\n      {{- end -}}\r\n    {{- end -}}\r\n\r\n\r\n    {{ $id := default  .id (generateID) }}\r\n\r\n    <select name=\"{{.name}}\"\r\n      class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\" id=\"{{$id}}\"\r\n      {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n      {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end -}}\r\n      {{- range $v :=.tags}} {{$v}}{{end}}  onchange=\"{{$id | js }}_on_change(this)\">\r\n\r\n      {{- if .containNull}}\r\n          <option value=\"\"></option>\r\n      {{- end}}\r\n\r\n      {{- range $v := .sources}}\r\n        {{if or $v.choices $v.hasNew }}\r\n          {{- if $v.label -}}\r\n          <optgroup label=\"{{$v.label}}\">\r\n          {{- end -}}\r\n              {{ if $v.hasNew }}\r\n              <option value=\"new\" mark=\"{{$v.name}}\" >新建</option>\r\n              {{ end }}\r\n\r\n              {{- range $v.choices -}}\r\n              <option value=\"{{.Value}}\" mark=\"{{$v.name}}\" {{- if eq (toString $v.value) (toString .Value) }} selected{{end}}>{{raw .Label -}}</option>\r\n              {{- end -}}\r\n\r\n          {{- if $v.label -}}\r\n          </optgroup>\r\n          {{- end -}}\r\n        {{- end -}}\r\n\r\n      {{- end}}\r\n    </select>\r\n\r\n    <script>\r\n      function {{$id | js}}_on_change(thisInput) {\r\n        //获取当前选中的option\r\n        var selected = $(thisInput).find('option:selected');\r\n        if(selected.val()==\"new\"){\r\n            //新增按钮  弹出表单对话框\r\n            $(thisInput).trigger(\"new\", selected.attr(\"mark\"))\r\n        }\r\n\r\n        // 判断当前选择的对象所属表  修改select的name属性值\r\n        $(thisInput).attr('name', selected.attr(\"mark\"))\r\n      }\r\n    </script>\r\n\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n{{- end}}\r\n"),
+	}
+	file1q := &embedded.EmbeddedFile{
 		Filename:    `simple/options/radiobutton.html`,
 		FileModTime: time.Unix(1538287324, 0),
 		Content:     string("{{- define \"main\"}}{{ $p := . }}\r\n  {{ range .choices }}\r\n    <label class=\"control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}\">\r\n      <input type=\"radio\" name=\"{{$p.name}}\"\r\n      {{- if $p.classes }} class=\"{{range $p.classes}}{{.}} {{end}}\"\r\n      {{- end}} value=\"{{.Value}}\" id=\"{{$p.id}}\"\r\n      {{- if $p.params}}\r\n        {{- range $k2, $v2 := $p.params}} {{$k2}}=\"{{$v2}}\"\r\n        {{- end}}\r\n      {{- end}}\r\n      {{- if $p.css}} style=\"{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}\"{{end}}\r\n      {{- if eq $p.value .Value}} checked{{end}}\r\n      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>\r\n      {{.Label}}\r\n    </label>\r\n  {{- end}}\r\n{{end}}\r\n"),
 	}
-	file1q := &embedded.EmbeddedFile{
+	file1r := &embedded.EmbeddedFile{
 		Filename:    `simple/options/select.html`,
 		FileModTime: time.Unix(1538287273, 0),
 		Content:     string("{{- define \"main\"}}\r\n    {{- if .preText}}<span>{{.preText}}</span>{{end -}}\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n            {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n            {{- if .css}}\r\n            style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n            {{- end -}}\r\n            {{- range $v :=.tags}} {{$v}}{{end}}>\r\n      {{- $p := . -}}\r\n      {{- range $v := .choices -}}\r\n        {{- if $v.Label -}}\r\n        <optgroup label=\"{{$v.Label}}\">\r\n        {{- end -}}\r\n\r\n        {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n                {{- if strIn \"multiple\" $p.tags -}}\r\n                  {{- $id :=.Value -}}\r\n                  {{- range $k2, $p2 :=$p.multValues -}}\r\n                    {{- if eq $k2 $id}}selected{{end -}}\r\n                  {{- end -}}\r\n                {{- else -}}\r\n                  {{- if eq $p.value .Value}} selected{{end -}}\r\n                {{- end}}>{{raw .Label -}}\r\n        </option>\r\n        {{- end -}}\r\n        \r\n        {{- if $v.Label -}}\r\n        </optgroup>\r\n        {{- end -}}\r\n      {{- end -}}\r\n    </select>\r\n    {{- if .postText}}<span>{{.postText}}</span>{{end -}}\r\n\r\n    {{- if or .helptext .errors }}<span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}\r\n{{- end}}\r\n"),
 	}
-	file1r := &embedded.EmbeddedFile{
+	file1s := &embedded.EmbeddedFile{
 		Filename:    `simple/static.html`,
 		FileModTime: time.Unix(1538287077, 0),
 		Content:     string("{{define \"main\"}}\n<p name=\"{{.name}}\" class=\"form-control-static {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</p>"),
 	}
-	file1t := &embedded.EmbeddedFile{
+	file1u := &embedded.EmbeddedFile{
 		Filename:    `simple/text/passwordinput.html`,
 		FileModTime: time.Unix(1538287232, 0),
 		Content:     string("{{- define \"main\" -}}\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n{{end -}}"),
 	}
-	file1u := &embedded.EmbeddedFile{
+	file1v := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textareainput.html`,
 		FileModTime: time.Unix(1538287215, 0),
 		Content:     string("{{- define \"main\" -}}\r\n  <textarea name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}>{{.text}}</textarea>\r\n  {{- if or .helptext .errors -}}\r\n  <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n  </span>\r\n  {{- end -}}\r\n{{- end -}}"),
 	}
-	file1v := &embedded.EmbeddedFile{
+	file1w := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textinput.html`,
 		FileModTime: time.Unix(1538287201, 0),
 		Content:     string("{{- define \"main\" -}}\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n           {{- range $v :=.tags}} {{$v}} {{end}}\r\n           {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n{{- end -}}\r\n"),
 	}
-	file1w := &embedded.EmbeddedFile{
+	file1x := &embedded.EmbeddedFile{
 		Filename:    `simple/unmodifiable.html`,
 		FileModTime: time.Unix(1546157494, 0),
 		Content:     string("    <p class=\"form-control-static\">\n      {{- if .choices}}\n        {{- range $v := .choices -}}\n          {{- range $v.Children -}}\n              {{- if strIn \"multiple\" $.tags -}}\n                  {{- $id :=.Value -}}\n                  {{- $label :=.Label -}}\n                  {{- range $k2, $p2 :=$.multValues -}}\n                      {{- if eq $k2 $id}}{{$label}} <br />  {{end -}}\n                  {{- end -}}\n              {{- else -}}\n                  {{- if eq $.value .Value}} {{.Label}}{{end -}}\n              {{- end -}}\n          {{- end -}}\n        {{- end -}}\n      {{- else if eq .type \"checkbox\" -}}\n        {{- if toOptionBoolean .value -}}是{{else}}否{{end}}\n      {{- else if eq .type \"date\" -}}\n        {{- form_date .value -}}\n      {{- else if eq .type \"datetime\" -}}\n        {{- form_datetime .value -}}\n      {{- else if eq .type \"datetime-local\" -}}\n        {{- form_datetime .value -}}\n      {{- else -}}\n        {{.value}}\n      {{- end -}}\n    </p>\n\n    {{- if strIn \"multiple\" $.tags -}}\n      {{- range $id, $p2 :=$.multValues -}}\n        <input type=\"hidden\" name=\"{{$.name}}\" class=\"form-control {{if $.classes }}{{range $.classes}}{{.}} {{end}}{{end}}\"\n        {{- if $.params}}{{range $k, $v := $.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\n        {{- if $.css}}\n          style=\"{{range $k, $v := $.css}}{{$k}}: {{$v}}; {{end}}\"\n        {{- end -}}\n        {{- range $v :=$.tags}} {{$v}}{{end}} value=\"{{$id}}\" />\n      {{- end -}}\n    {{- else -}}\n      <input type=\"hidden\" name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\n      {{- if .id}} id=\"{{.id}}\" {{end}}\n      {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\n      {{- if .css}}\n        style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\n      {{- end -}}\n      {{- range $v :=.tags}} {{$v}}{{end}} value=\"{{.value}}\" />\n    {{- end -}}\n\n    {{- if or .helptext .errors -}}\n    <span class=\"help-block\">\n      {{- if .helptext -}}{{ .helptext }}{{- end -}}\n      {{- if .errors -}}\n      <ul>\n        {{- range .errors -}}<li>{{.}}</li>{{- end -}}\n      </ul>\n      {{- end -}}\n    </span>\n    {{end -}}"),
 	}
-	file1z := &embedded.EmbeddedFile{
+	file20 := &embedded.EmbeddedFile{
 		Filename:    `with_button/options/select.html`,
 		FileModTime: time.Unix(1516597067, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n{{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n    {{- if .id}} for=\"{{.id}}\"\r\n    {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n{{- end -}}\r\n    <div class=\"input-group col-lg-{{default .controlWidth 9}}\" style=\"padding-left: 15px;padding-right: 15px\">\r\n    <select name=\"{{.name}}\" class=\"form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"\r\n    {{- if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end -}}\r\n    {{- if .css}}\r\n        style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n    {{- end -}}\r\n    {{- range $v :=.tags}} {{$v}}{{end}}>\r\n    {{- $p := . -}}\r\n    {{- range $v := .choices -}}\r\n    {{- if $v.Label -}}\r\n    <optgroup label=\"{{$v.Label}}\">\r\n    {{- end -}}\r\n\r\n    {{- range $v.Children -}}\r\n        <option value=\"{{.Value}}\"\r\n        {{- if strIn \"multiple\" $p.tags -}}\r\n        {{- $id :=.Value -}}\r\n        {{- range $k2, $p2 :=$p.multValues -}}\r\n                {{- if eq $k2 $id}}selected{{end -}}\r\n        {{- end -}}\r\n        {{- else -}}\r\n        {{- if eq $p.value .Value}} selected{{end -}}\r\n        {{- end}}>{{raw .Label -}}\r\n        </option>\r\n    {{- end -}}\r\n\r\n    {{- if $v.Label -}}\r\n    </optgroup>\r\n    {{- end -}}\r\n    {{- end -}}\r\n        </select>\r\n        <div class=\"input-group-addon {{.btnClass}}\"\r\n    {{- if .additionParams}}{{range $k, $v :=.additionParams}} {{$k}}=\"{{$v}}\" {{end}} {{end}} style=\"cursor: pointer\" id=\"{{.btnID}}\">{{.btnTxt}}</div>\r\n{{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n    {{if .errors}}\r\n        <ul>\r\n        {{ range .errors }}\r\n            <li>{{.}}</li>\r\n        {{end -}}\r\n        </ul>\r\n    {{end -}}\r\n    </span>\r\n{{end -}}\r\n</div>\r\n</div>\r\n{{- end -}}\r\n"),
 	}
-	file21 := &embedded.EmbeddedFile{
+	file22 := &embedded.EmbeddedFile{
 		Filename:    `with_button/text/textinput.html`,
 		FileModTime: time.Unix(1516107542, 0),
 		Content:     string("{{- define \"main\" -}}\r\n<div {{if .id}}id='{{.id}}_div'{{end}} class=\"form-group{{if .errors}} has-error{{end}}\">\r\n{{- if not .nolabel -}}\r\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\r\n    {{range .labelClasses}} {{.}}{{end}}\r\n    {{- end}}\"\r\n    {{- if .id}} for=\"{{.id}}\"\r\n    {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\r\n{{- end -}}\r\n    <div class=\"input-group col-lg-{{default .controlWidth 9}}\" style=\"padding-left: 15px;padding-right: 15px\">\r\n        <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n        {{- if .id}} id=\"{{.id}}\" {{end}}\r\n        {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n        {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n        {{- range $v :=.tags}} {{$v}} {{end}}\r\n        {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n            <div class=\"input-group-addon {{.btnClass}}\"\r\n        {{- if .btnParams}}{{range $k, $v :=.btnParams}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n                 style=\"cursor: pointer\" id=\"{{.btnID}}\">{{.btnTxt}}</div>\r\n        {{- if or .helptext .errors -}}\r\n            <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}\r\n                <ul>\r\n                {{ range .errors }}\r\n                    <li>{{.}}</li>\r\n                {{end -}}\r\n                </ul>\r\n            {{end -}}\r\n    </span>\r\n        {{end -}}\r\n    </div>\r\n</div>\r\n{{- end -}}\r\n"),
@@ -398,8 +403,8 @@ func init() {
 			file1h, // simple/generic.tmpl
 			file1i, // simple/hidden.html
 			file1j, // simple/input.html
-			file1r, // simple/static.html
-			file1w, // simple/unmodifiable.html
+			file1s, // simple/static.html
+			file1x, // simple/unmodifiable.html
 
 		},
 	}
@@ -424,42 +429,43 @@ func init() {
 	}
 	dir1n := &embedded.EmbeddedDir{
 		Filename:   `simple/options`,
-		DirModTime: time.Unix(1538287018, 0),
+		DirModTime: time.Unix(1548235292, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
 			file1o, // simple/options/checkbox.html
-			file1p, // simple/options/radiobutton.html
-			file1q, // simple/options/select.html
+			file1p, // simple/options/mult_source_select.html
+			file1q, // simple/options/radiobutton.html
+			file1r, // simple/options/select.html
 
 		},
 	}
-	dir1s := &embedded.EmbeddedDir{
+	dir1t := &embedded.EmbeddedDir{
 		Filename:   `simple/text`,
 		DirModTime: time.Unix(1538287018, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1t, // simple/text/passwordinput.html
-			file1u, // simple/text/textareainput.html
-			file1v, // simple/text/textinput.html
+			file1u, // simple/text/passwordinput.html
+			file1v, // simple/text/textareainput.html
+			file1w, // simple/text/textinput.html
 
 		},
 	}
-	dir1x := &embedded.EmbeddedDir{
+	dir1y := &embedded.EmbeddedDir{
 		Filename:   `with_button`,
 		DirModTime: time.Unix(1516107542, 0),
 		ChildFiles: []*embedded.EmbeddedFile{},
 	}
-	dir1y := &embedded.EmbeddedDir{
+	dir1z := &embedded.EmbeddedDir{
 		Filename:   `with_button/options`,
 		DirModTime: time.Unix(1516597067, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file1z, // with_button/options/select.html
+			file20, // with_button/options/select.html
 
 		},
 	}
-	dir20 := &embedded.EmbeddedDir{
+	dir21 := &embedded.EmbeddedDir{
 		Filename:   `with_button/text`,
 		DirModTime: time.Unix(1516107542, 0),
 		ChildFiles: []*embedded.EmbeddedFile{
-			file21, // with_button/text/textinput.html
+			file22, // with_button/text/textinput.html
 
 		},
 	}
@@ -469,7 +475,7 @@ func init() {
 		dir3,  // bootstrap3
 		dirt,  // default
 		dir1a, // simple
-		dir1x, // with_button
+		dir1y, // with_button
 
 	}
 	dir3.ChildDirs = []*embedded.EmbeddedDir{
@@ -498,20 +504,20 @@ func init() {
 		dir1d, // simple/datetime
 		dir1k, // simple/number
 		dir1n, // simple/options
-		dir1s, // simple/text
+		dir1t, // simple/text
 
 	}
 	dir1d.ChildDirs = []*embedded.EmbeddedDir{}
 	dir1k.ChildDirs = []*embedded.EmbeddedDir{}
 	dir1n.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1s.ChildDirs = []*embedded.EmbeddedDir{}
-	dir1x.ChildDirs = []*embedded.EmbeddedDir{
-		dir1y, // with_button/options
-		dir20, // with_button/text
+	dir1t.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1y.ChildDirs = []*embedded.EmbeddedDir{
+		dir1z, // with_button/options
+		dir21, // with_button/text
 
 	}
-	dir1y.ChildDirs = []*embedded.EmbeddedDir{}
-	dir20.ChildDirs = []*embedded.EmbeddedDir{}
+	dir1z.ChildDirs = []*embedded.EmbeddedDir{}
+	dir21.ChildDirs = []*embedded.EmbeddedDir{}
 
 	// register embeddedBox
 	embedded.RegisterEmbeddedBox(`templates`, &embedded.EmbeddedBox{
@@ -533,10 +539,10 @@ func init() {
 			"simple/datetime":     dir1d,
 			"simple/number":       dir1k,
 			"simple/options":      dir1n,
-			"simple/text":         dir1s,
-			"with_button":         dir1x,
-			"with_button/options": dir1y,
-			"with_button/text":    dir20,
+			"simple/text":         dir1t,
+			"with_button":         dir1y,
+			"with_button/options": dir1z,
+			"with_button/text":    dir21,
 		},
 		Files: map[string]*embedded.EmbeddedFile{
 			"baseform.html":                              file2,
@@ -584,15 +590,16 @@ func init() {
 			"simple/number/number.html":                  file1l,
 			"simple/number/range.html":                   file1m,
 			"simple/options/checkbox.html":               file1o,
-			"simple/options/radiobutton.html":            file1p,
-			"simple/options/select.html":                 file1q,
-			"simple/static.html":                         file1r,
-			"simple/text/passwordinput.html":             file1t,
-			"simple/text/textareainput.html":             file1u,
-			"simple/text/textinput.html":                 file1v,
-			"simple/unmodifiable.html":                   file1w,
-			"with_button/options/select.html":            file1z,
-			"with_button/text/textinput.html":            file21,
+			"simple/options/mult_source_select.html":     file1p,
+			"simple/options/radiobutton.html":            file1q,
+			"simple/options/select.html":                 file1r,
+			"simple/static.html":                         file1s,
+			"simple/text/passwordinput.html":             file1u,
+			"simple/text/textareainput.html":             file1v,
+			"simple/text/textinput.html":                 file1w,
+			"simple/unmodifiable.html":                   file1x,
+			"with_button/options/select.html":            file20,
+			"with_button/text/textinput.html":            file22,
 		},
 	})
 }
