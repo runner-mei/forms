@@ -13,8 +13,8 @@
 
     {{- $name := .name}} 
     {{- range $v := .sources -}}
-      {{- if $v.value -}}
-        {{- $name := $v.name -}}
+      {{- if eq (toString $v.value) (toString .Value) -}}
+        {{- $name = $v.name -}}
       {{- end -}}
     {{- end -}}
 
@@ -32,7 +32,7 @@
       {{- end}}
 
       {{- range $v := .sources}}
-
+        {{if or $v.choices $v.hasNew }}
           {{- if $v.label -}}
           <optgroup label="{{$v.label}}">
           {{- end -}}
@@ -47,7 +47,7 @@
           {{- if $v.label -}}
           </optgroup>
           {{- end -}}
-
+        {{- end -}}
       {{- end}}
     </select>
 
