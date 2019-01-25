@@ -1,17 +1,17 @@
 {{- define "main"}}
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
 
-    {{- $name := .name}} 
-    {{- range $v := .sources -}}
+    {{- $name := .name}}
+    {{- range $v := .sources}}
+    {{- range $v.choices -}}
       {{- if eq (toString $v.value) (toString .Value) -}}
         {{- $name = $v.name -}}
       {{- end -}}
     {{- end -}}
+    {{- end -}}
+    {{- $id := default  .id (generateID) -}}
 
-
-    {{ $id := default  .id (generateID) }}
-
-    <select name="{{.name}}"
+    <select name="{{$name}}"
       class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}" id="{{$id}}"
       {{- if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
       {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}" {{end -}}
