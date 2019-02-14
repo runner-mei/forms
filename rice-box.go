@@ -45,8 +45,8 @@ func init() {
 	}
 	fileb := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/hidden.html`,
-		FileModTime: time.Unix(1542363512, 0),
-		Content:     string("{{- define \"main\" -}}\r\n<input type=\"hidden\" name=\"{{.name}}\"\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}} {{if .classes}}class=\"{{range .classes}}{{.}} {{end}}\"{{end}} {{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\r\n{{- end -}}"),
+		FileModTime: time.Unix(1550129045, 0),
+		Content:     string("{{- define \"main\" -}}\r\n<input type=\"hidden\" name=\"{{.name}}\"\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}} {{if .classes}}class=\"{{range .classes}}{{.}} {{end}}\"{{end}} {{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}} />\r\n{{- end -}}"),
 	}
 	filec := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/input.html`,
@@ -160,8 +160,8 @@ func init() {
 	}
 	file16 := &embedded.EmbeddedFile{
 		Filename:    `default/text/passwordinput.html`,
-		FileModTime: time.Unix(1518162182, 0),
-		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n</div>\r\n{{- end -}}\r\n\r\n"),
+		FileModTime: time.Unix(1550129025, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}} />\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n</div>\r\n{{- end -}}\r\n\r\n"),
 	}
 	file17 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textareainput.html`,
@@ -170,8 +170,8 @@ func init() {
 	}
 	file18 := &embedded.EmbeddedFile{
 		Filename:    `default/text/textinput.html`,
-		FileModTime: time.Unix(1518162182, 0),
-		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n           {{- if .params -}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n           {{- end -}}\r\n           {{- if .css -}}\r\n           style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end -}}\r\n           {{- range $v :=.tags}} {{$v -}}\r\n           {{- end -}}\r\n           {{- if .value -}}\r\n           value=\"{{.value}}\"\r\n           {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{- end}}\r\n</div>\r\n{{- end}}\r\n\r\n\r\n"),
+		FileModTime: time.Unix(1550128996, 0),
+		Content:     string("{{- define \"main\"}}\r\n<div class=\"col-lg-{{default .controlWidth 9}}\">\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end -}}\r\n           {{- if .params -}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end -}}\r\n           {{- end -}}\r\n           {{- if .css -}}\r\n           style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"\r\n           {{- end -}}\r\n           {{- range $v :=.tags}} {{$v -}}\r\n           {{- end -}}\r\n           {{- if .value -}}\r\n           value=\"{{.value}}\"\r\n           {{end}} />\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{- end}}\r\n</div>\r\n{{- end}}\r\n\r\n\r\n"),
 	}
 	file19 := &embedded.EmbeddedFile{
 		Filename:    `fieldset.html`,
@@ -210,8 +210,8 @@ func init() {
 	}
 	file1i := &embedded.EmbeddedFile{
 		Filename:    `simple/hidden.html`,
-		FileModTime: time.Unix(1513250714, 0),
-		Content:     string("{{- define \"main\" -}}\r\n<input type=\"hidden\" name=\"{{.name}}\"\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}} class=\"{{range .classes}}{{.}} {{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}}>\r\n{{- end -}}"),
+		FileModTime: time.Unix(1550129037, 0),
+		Content:     string("{{- define \"main\" -}}\r\n<input type=\"hidden\" name=\"{{.name}}\"\r\n           {{- if .params}}\r\n           {{- range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}\r\n           {{- end}} class=\"{{range .classes}}{{.}} {{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{ if .value}} value=\"{{.value}}\"{{end}} />\r\n{{- end -}}"),
 	}
 	file1j := &embedded.EmbeddedFile{
 		Filename:    `simple/input.html`,
@@ -255,8 +255,8 @@ func init() {
 	}
 	file1u := &embedded.EmbeddedFile{
 		Filename:    `simple/text/passwordinput.html`,
-		FileModTime: time.Unix(1538287232, 0),
-		Content:     string("{{- define \"main\" -}}\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n{{end -}}"),
+		FileModTime: time.Unix(1550129017, 0),
+		Content:     string("{{- define \"main\" -}}\r\n    <input autocomplete=\"new-password\" type=\"password\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\" {{if .id}} id=\"{{.id}}\" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}{{range $v :=.tags}} {{$v}}{{end}}{{if .value}} value=\"{{.value}}\" {{end}} />\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">\r\n      {{- if .helptext}}{{ .helptext }}{{end -}}\r\n      {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end -}}\r\n    </span>\r\n    {{- end -}}\r\n{{end -}}"),
 	}
 	file1v := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textareainput.html`,
@@ -265,8 +265,8 @@ func init() {
 	}
 	file1w := &embedded.EmbeddedFile{
 		Filename:    `simple/text/textinput.html`,
-		FileModTime: time.Unix(1538287201, 0),
-		Content:     string("{{- define \"main\" -}}\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n           {{- range $v :=.tags}} {{$v}} {{end}}\r\n           {{- if .value}} value=\"{{.value}}\" {{end}}>\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n{{- end -}}\r\n"),
+		FileModTime: time.Unix(1550129005, 0),
+		Content:     string("{{- define \"main\" -}}\r\n    <input type=\"text\" name=\"{{.name}}\" class=\"form-control{{ if .classes }} {{range .classes}}{{.}} {{end}}{{end}}\"\r\n           {{- if .id}} id=\"{{.id}}\" {{end}}\r\n           {{- if .params}}{{range $k, $v :=.params}} {{$k}}=\"{{$v}}\" {{end}} {{end}}\r\n           {{- if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\" {{end}}\r\n           {{- range $v :=.tags}} {{$v}} {{end}}\r\n           {{- if .value}} value=\"{{.value}}\" {{end}} />\r\n    {{- if or .helptext .errors -}}\r\n    <span class=\"help-block\">{{if .helptext}}{{ .helptext }}{{end -}}\r\n            {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}\r\n              </ul>{{end -}}\r\n    </span>\r\n    {{end -}}\r\n{{- end -}}\r\n"),
 	}
 	file1x := &embedded.EmbeddedFile{
 		Filename:    `simple/unmodifiable.html`,
