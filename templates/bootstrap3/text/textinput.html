@@ -13,7 +13,7 @@
            {{- if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{- end -}} {{- end -}}
            {{- if .css}} style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{- end -}}" {{- end -}}
            {{- range $v :=.tags}} {{$v}} {{- end -}}
-           {{- if .value}} value="{{.value}}" {{- end -}} />
+           {{- if .value}} value="{{.value}}" {{- end -}} autocomplete="off" />
     {{- if or .helptext .errors -}}
     <span class="help-block">{{- if .helptext -}}{{ .helptext }}{{- end -}}
             {{- if .errors -}}<ul>{{- range .errors -}}<li>{{.}}</li>{{- end -}}
