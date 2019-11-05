@@ -12,7 +12,7 @@
 		{{- if .label -}}{{.label}}{{- end -}}
 	</label>
 
-	{{if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
+	{{- if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
 	<div class="col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
 
 	  <div class="row">

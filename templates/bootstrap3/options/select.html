@@ -1,11 +1,27 @@
 {{- define "main"}}
 
 {{- if strIn "multiple" .tags -}}
-{{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
-{{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}
-{{- unique .ctx_parent "moreScripts" -}}
-{{- unique .ctx_parent "moreLazyStyles" -}}
+  {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+  {{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}
+  {{- unique .ctx_parent "moreScripts" -}}
+  {{- unique .ctx_parent "moreLazyStyles" -}}
 {{- end -}}
+
+{{- range .classes}}
+  {{- if eq . "bar-rating" }}
+    {{- append $.ctx_parent "moreScripts" "/public/js/plugins/barrating/jquery.barrating.min.js" -}}
+    {{- append $.ctx_parent "moreLazyStyles" "/public/css/plugins/barrating/fontawesome-stars.css" -}}
+    {{- unique $.ctx_parent "moreScripts" -}}
+    {{- unique $.ctx_parent "moreLazyStyles" -}}
+  {{- end -}}  
+  {{- if eq . "chosen" }}
+    {{- append $.ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+    {{- append $.ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css" -}}
+    {{- unique $.ctx_parent "moreScripts" -}}
+    {{- unique $.ctx_parent "moreLazyStyles" -}}
+  {{- end -}}
+{{- end}}
+  
 
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
   {{- if not .nolabel -}}
@@ -73,6 +89,47 @@
       });
   </script>
   {{- end -}}
+  {{- end -}}
+  
+  {{- range .classes}}
+      {{- if eq .  "chosen" }}
+      {{-   if not $.ctx_parent.___hasChosen___ -}}
+      {{-     set $.ctx_parent "___hasChosen___" true -}}
+      <script>
+        if (tpt_form_callbacks == null) {
+          tpt_form_callbacks = new Array();
+        }
+        tpt_form_callbacks.push(function () {
+            $(function () {
+                if (typeof $.fn.chosen !== "undefined"){
+                  $(".chosen").each(function(){
+                    var disabled = $(this).attr("readonly") === "readonly";
+                    $(this).prop("disabled", disabled).chosen({search_contains:true,width:'100%',disabled:disabled});
+                  })
+                }
+            });
+          });
+      </script>
+      {{-   end -}}
+      {{- end -}}
+  
+      {{-   if eq . "bar-rating" }}
+      {{-     if not $.ctx_parent.___hasBarRating___ -}}
+      {{-        set $.ctx_parent "___hasBarRating___" true -}}
+      <script type="text/javascript">
+        if (tpt_form_callbacks == null) {
+          tpt_form_callbacks = new Array();
+        }
+        tpt_form_callbacks.push(function () {
+            $(function () {
+                $('.bar-rating').barrating({
+                  theme: 'fontawesome-stars'
+                });
+            });
+          });
+      </script>
+      {{-     end -}}
+      {{-   end -}}
   {{- end -}}
 </div>
 
