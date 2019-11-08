@@ -108,7 +108,12 @@ func tryReadChoices(v interface{}) []InputChoice {
 	if strArray, ok := v.([]string); ok {
 		choices := []InputChoice{}
 		for _, s := range strArray {
-			choices = append(choices, InputChoice{s, s})
+			vls := strings.Split(s, ";")
+			if len(vls) == 2 {
+				choices = append(choices, InputChoice{vls[1], vls[0]})
+			} else {
+				choices = append(choices, InputChoice{s, s})
+			}
 		}
 		return choices
 	}
