@@ -1,6 +1,6 @@
 {{- define "main"}}
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
-    <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+    <select name="{{.name}}" class="{{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
             {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
             {{- if .css}}
             style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"

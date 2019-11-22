@@ -175,6 +175,10 @@ func readChoices(name string, v interface{}) []InputChoice {
 	panic(fmt.Errorf("Choices arguments of "+name+" must be []InputChoice - [%T]%#v", v, v))
 }
 
+func ToChoices(name string, v interface{}) []InputChoice {
+	return readChoices(name, v)
+}
+
 func readChoiceGroups(name string, v interface{}) []HierarchyChoice {
 	opts := tryReadChoices(v)
 	if opts != nil {
