@@ -24,6 +24,7 @@ type Field struct {
 	params         map[string]string
 	css            map[string]string
 	label          string
+	optText         string
 	labelClasses   stringSet
 	tags           stringSet
 	valueLoaded    bool
@@ -51,6 +52,7 @@ type FieldInterface interface {
 	RemoveCSS(key string) FieldInterface
 	SetTheme(style string) FieldInterface
 	SetLabel(label string) FieldInterface
+	SetOptText(optText string) FieldInterface
 	AddLabelClass(class string) FieldInterface
 	RemoveLabelClass(class string) FieldInterface
 	SetValue(value interface{}) FieldInterface
@@ -80,6 +82,7 @@ func FieldWithType(ctx interface{}, name, t string) *Field {
 		params:         map[string]string{},
 		css:            map[string]string{},
 		label:          "",
+		optText:          "",
 		labelClasses:   stringSet{},
 		tags:           stringSet{},
 		value:          "",
@@ -306,6 +309,7 @@ func (f *Field) dataForRender() map[string]interface{} {
 		"type":         f.fieldType,
 		"label":        f.label,
 		"labelClasses": f.labelClasses,
+		"optText": 			f.optText,
 		"tags":         f.tags,
 		"value":        f.value,
 		"helptext":     f.helptext,
@@ -390,6 +394,12 @@ func (f *Field) SetID(id string) FieldInterface {
 // SetLabel saves the label to be rendered along with the field.
 func (f *Field) SetLabel(label string) FieldInterface {
 	f.label = label
+	return f
+}
+
+// SetLabel saves the label to be rendered along with the field.
+func (f *Field) SetOptText(optText string) FieldInterface {
+	f.optText = optText
 	return f
 }
 
@@ -631,6 +641,10 @@ var (
 		},
 		"f_setLabel": func(label string, field FieldInterface) FieldInterface {
 			field.SetLabel(label)
+			return field
+		},
+		"f_SetOptText": func(label string, field FieldInterface) FieldInterface {
+			field.SetOptText(label)
 			return field
 		},
 		"f_addClass": func(class string, field FieldInterface) FieldInterface {
