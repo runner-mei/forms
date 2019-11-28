@@ -643,7 +643,7 @@ var (
 			field.SetLabel(label)
 			return field
 		},
-		"f_SetOptText": func(label string, field FieldInterface) FieldInterface {
+		"f_setOptText": func(label string, field FieldInterface) FieldInterface {
 			field.SetOptText(label)
 			return field
 		},
