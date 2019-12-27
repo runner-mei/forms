@@ -8,7 +8,7 @@
   {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>
   {{- end -}}
   <div class="col-lg-{{default .controlWidth 9}}">
-    <p class="form-control-static">
+    <p class="form-control form-control-static">
       {{- if .choices}}
         {{- range $v := .choices -}}
           {{- range $v.Children -}}
