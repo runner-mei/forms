@@ -24,7 +24,7 @@ type Field struct {
 	params         map[string]string
 	css            map[string]string
 	label          string
-	optText         string
+	optText        string
 	labelClasses   stringSet
 	tags           stringSet
 	valueLoaded    bool
@@ -82,7 +82,7 @@ func FieldWithType(ctx interface{}, name, t string) *Field {
 		params:         map[string]string{},
 		css:            map[string]string{},
 		label:          "",
-		optText:          "",
+		optText:        "",
 		labelClasses:   stringSet{},
 		tags:           stringSet{},
 		value:          "",
@@ -309,7 +309,7 @@ func (f *Field) dataForRender() map[string]interface{} {
 		"type":         f.fieldType,
 		"label":        f.label,
 		"labelClasses": f.labelClasses,
-		"optText": 			f.optText,
+		"optText":      f.optText,
 		"tags":         f.tags,
 		"value":        f.value,
 		"helptext":     f.helptext,

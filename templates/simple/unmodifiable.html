@@ -1,3 +1,5 @@
+  {{define "main"}}
+    
     <p class="form-control-static">
       {{- if .choices}}
         {{- range $v := .choices -}}
@@ -55,3 +57,4 @@
       {{- end -}}
     </span>
     {{end -}}
+{{end}}
