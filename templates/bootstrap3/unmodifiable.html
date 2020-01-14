@@ -7,7 +7,10 @@
   {{- if .id}} for="{{.id}}" 
   {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>
   {{- end -}}
-  <div class="col-lg-{{default .controlWidth 9}}">
+  <div class="col-lg-{{default .controlWidth 9}}" {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
+      {{- $i := toInt $v -}}
+      style="height: {{mul $i 15}}px"
+    {{- end}}{{end}}{{end}}>
     <p class="form-control form-control-static">
       {{- if .choices}}
         {{- range $v := .choices -}}

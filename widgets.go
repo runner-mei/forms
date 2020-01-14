@@ -357,6 +357,25 @@ var defaultFuncs = template.FuncMap{
 	"raw": func(text string) template.HTML {
 		return template.HTML(text)
 	},
+
+	// Skips sanitation on the parameter.  Do not use with dynamic data.
+	"toInt": func(text interface{}) int {
+		i, err := strconv.Atoi(fmt.Sprint(text))
+		if err != nil {
+			panic(err)
+		}
+		return i
+	},
+
+	// Skips sanitation on the parameter.  Do not use with dynamic data.
+	"mul": func(a, b int) int {
+		return a * b
+	},
+
+	// Skips sanitation on the parameter.  Do not use with dynamic data.
+	"add": func(a, b int) int {
+		return a + b
+	},
 }
 
 func toBoolean(v interface{}) bool {

@@ -1,6 +1,9 @@
   {{define "main"}}
     
-    <p class="form-control-static">
+    <p class="form-control-static" {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
+      {{- $i := toInt $v -}}
+      style="height: {{mul $i 15}}px"
+    {{- end}}{{end}}{{end}}>
       {{- if .choices}}
         {{- range $v := .choices -}}
           {{- range $v.Children -}}

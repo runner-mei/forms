@@ -630,6 +630,10 @@ func (f *Field) SetText(text string) FieldInterface {
 		f.fieldType == TEXTAREA {
 		f.additionalData["text"] = text
 	}
+	if f.fieldType == TEXTAREA {
+		f.additionalData["text"] = text
+		f.value = text
+	}
 	return f
 }
 
