@@ -25,6 +25,12 @@
         {{- unique $ctx_parent "moreScripts" -}}
         {{- unique $ctx_parent "moreLazyStyles" -}}
       {{- end -}}
+      {{- if eq . "select2" }}
+        {{- append $ctx_parent "moreScripts" "/public/js/plugins/select2/select2.full.min.js" -}}
+        {{- append $ctx_parent "moreLazyStyles" "/public/css/plugins/select2/select2.min.css" -}}
+        {{- unique $ctx_parent "moreScripts" -}}
+        {{- unique $ctx_parent "moreLazyStyles" -}}
+      {{- end -}}
       {{- if eq . "editable-select" }}
         {{- $isEditable = true}}
         {{- append $ctx_parent "moreScripts" "/public/js/plugins/jquery-editable-select/jquery-editable-select.min.js" -}}
@@ -119,8 +125,8 @@
   
   {{- range .classes}}
       {{- if eq .  "chosen" }}
-      {{-   if not $.ctx_parent.___hasChosen___ -}}
-      {{-     set $.ctx_parent "___hasChosen___" true -}}
+      {{-   if not $ctx_parent.___hasChosen___ -}}
+      {{-     set $ctx_parent "___hasChosen___" true -}}
       <script>
         if (tpt_form_callbacks == null) {
           tpt_form_callbacks = new Array();
@@ -139,10 +145,34 @@
       {{-   end -}}
       {{- end -}}
   
+      {{- if eq .  "select2" }}
+      {{-   if not $ctx_parent.___hasSelect2___ -}}
+      {{-     set $ctx_parent "___hasSelect2___" true -}}
+      <script>
+        if (tpt_form_callbacks == null) {
+          tpt_form_callbacks = new Array();
+        }
+        tpt_form_callbacks.push(function () {
+            $(function () {
+                if (typeof $.fn.select2 !== "undefined"){
+                  $(".select2").each(function(){
+                    var disabled = $(this).attr("readonly") === "readonly";
+                    $(this).prop("disabled", disabled).select2({
+                      // search_contains:true,
+                      width:'100%',
+                      disabled:disabled});
+                  })
+                }
+            });
+          });
+      </script>
+      {{-   end -}}
+      {{- end -}}
+
 
       {{-   if eq . "bar-rating" }}
-      {{-     if not $.ctx_parent.___hasBarRating___ -}}
-      {{-        set $.ctx_parent "___hasBarRating___" true -}}
+      {{-     if not $ctx_parent.___hasBarRating___ -}}
+      {{-        set $ctx_parent "___hasBarRating___" true -}}
       <script type="text/javascript">
         if (tpt_form_callbacks == null) {
           tpt_form_callbacks = new Array();
@@ -160,8 +190,8 @@
 
 
       {{-   if eq . "editable-select" }}
-      {{-     if not $.ctx_parent.___hasEditable___ -}}
-      {{-        set $.ctx_parent "___hasEditable___" true -}}
+      {{-     if not $ctx_parent.___hasEditable___ -}}
+      {{-        set $ctx_parent "___hasEditable___" true -}}
       <script type="text/javascript">
         if (tpt_form_callbacks == null) {
           tpt_form_callbacks = new Array();
