@@ -13,19 +13,42 @@
     {{- end}}{{end}}{{end}}>
     <p class="form-control form-control-static">
       {{- if .choices}}
-        {{- range $v := .choices -}}
-          {{- range $v.Children -}}
-              {{- if strIn "multiple" $.tags -}}
-                  {{- $id :=.Value -}}
-                  {{- $label :=.Label -}}
-                  {{- range $k2, $p2 :=$.multValues -}}
-                      {{- if eq $k2 $id}}{{$label}} <br />  {{end -}}
+
+
+        {{- if strIn "multiple" $.tags -}}
+            {{- range $k2, $p2 :=$.multValues -}}
+
+                {{- $valueExists := false}}
+                {{- range $v := .choices -}}
+                  {{- range $v.Children -}}
+                    {{- if eq $k2 .Value}} 
+                      {{- .Label}}<br/>
+                      {{- $valueExists = true}}
+                    {{- end -}}
                   {{- end -}}
-              {{- else -}}
-                  {{- if eq $.value .Value}} {{.Label}}{{end -}}
+                {{- end -}}
+                {{- if not $valueExists }}
+                  {{- $k2 }}
+                {{- end}}
+
+            {{- end -}}
+        {{- else -}}
+
+            {{- $valueExists := false}}
+            {{- range $v := .choices -}}
+              {{- range $v.Children -}}
+                {{- if eq $.value .Value}} 
+                  {{- .Label}} 
+                  {{- $valueExists = true}}
+                {{- end -}}
               {{- end -}}
-          {{- end -}}
+            {{- end -}}
+            {{- if not $valueExists }}
+              {{- $.value }}
+            {{- end}}
+
         {{- end -}}
+
       {{- else if eq .type "checkbox" -}}
         {{- if toOptionBoolean .value -}}是{{else}}否{{end}}
       {{- else if eq .type "date" -}}

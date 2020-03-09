@@ -1,26 +1,38 @@
 {{- define "main"}}
 
-{{- if strIn "multiple" .tags -}}
-  {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
-  {{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}
-  {{- unique .ctx_parent "moreScripts" -}}
-  {{- unique .ctx_parent "moreLazyStyles" -}}
-{{- end -}}
+    {{- if strIn "multiple" .tags -}}
+      {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+      {{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}
+      {{- unique .ctx_parent "moreScripts" -}}
+      {{- unique .ctx_parent "moreLazyStyles" -}}
+    {{- end -}}
 
-{{- range .classes}}
-  {{- if eq . "bar-rating" }}
-    {{- append $.ctx_parent "moreScripts" "/public/js/plugins/barrating/jquery.barrating.min.js" -}}
-    {{- append $.ctx_parent "moreLazyStyles" "/public/css/plugins/barrating/fontawesome-stars.css" -}}
-    {{- unique $.ctx_parent "moreScripts" -}}
-    {{- unique $.ctx_parent "moreLazyStyles" -}}
-  {{- end -}}  
-  {{- if eq . "chosen" }}
-    {{- append $.ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
-    {{- append $.ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css" -}}
-    {{- unique $.ctx_parent "moreScripts" -}}
-    {{- unique $.ctx_parent "moreLazyStyles" -}}
-  {{- end -}}
-{{- end}}
+    {{- $isEditable := false}}
+    {{- $ctx_parent := $.ctx_parent}}
+    {{- if $ctx_parent.ctx_parent}}
+      {{- $ctx_parent = $ctx_parent.ctx_parent}}
+    {{- end}}
+    {{- range .classes}}
+      {{- if eq . "bar-rating" }}
+        {{- append $ctx_parent "moreScripts" "/public/js/plugins/barrating/jquery.barrating.min.js" -}}
+        {{- append $ctx_parent "moreLazyStyles" "/public/css/plugins/barrating/fontawesome-stars.css" -}}
+        {{- unique $ctx_parent "moreScripts" -}}
+        {{- unique $ctx_parent "moreLazyStyles" -}}
+      {{- end -}}
+      {{- if eq . "chosen" }}
+        {{- append $ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
+        {{- append $ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css" -}}
+        {{- unique $ctx_parent "moreScripts" -}}
+        {{- unique $ctx_parent "moreLazyStyles" -}}
+      {{- end -}}
+      {{- if eq . "editable-select" }}
+        {{- $isEditable = true}}
+        {{- append $ctx_parent "moreScripts" "/public/js/plugins/jquery-editable-select/jquery-editable-select.min.js" -}}
+        {{- append $ctx_parent "moreLazyStyles" "/public/css/plugins/jquery-editable-select/jquery-editable-select.min.css" -}}
+        {{- unique $ctx_parent "moreScripts" -}}
+        {{- unique $ctx_parent "moreLazyStyles" -}}
+      {{- end -}}
+    {{- end}}
   
 
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group{{if .errors}} has-error{{end}}">
@@ -41,6 +53,9 @@
                 style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
                 {{- end -}}
                 {{- range $v :=.tags}} {{$v}}{{end}}>
+
+
+          {{- $valueExists := false -}}
           {{- range $v := .choices -}}
             {{- if $v.Label -}}
             <optgroup label="{{$v.Label}}">
@@ -51,10 +66,10 @@
                     {{- if strIn "multiple" $p.tags -}}
                       {{- $id :=.Value -}}
                       {{- range $k2, $p2 :=$p.multValues -}}
-                        {{- if eq $k2 $id}}selected{{end -}}
+                        {{- if eq $k2 $id}}selected {{- $valueExists = true -}}{{end -}}
                       {{- end -}}
                     {{- else -}}
-                      {{- if eq $p.value .Value}} selected{{end -}}
+                      {{- if eq $p.value .Value}} selected {{- $valueExists = true -}}{{end -}}
                     {{- end}}>{{.Label -}}
             </option>
             {{- end -}}
@@ -63,6 +78,17 @@
             </optgroup>
             {{- end -}}
           {{- end -}}
+
+          {{- if and $isEditable (not $valueExists) }}
+            {{- if strIn "multiple" $p.tags -}}
+              {{- range $k2, $p2 :=$p.multValues -}}
+              <option value="{{$k2}}" selected> {{$k2}} </option>
+              {{- end -}}
+            {{- else -}}
+              <option value="{{$p.value}}" selected> {{$p.value}} </option>
+            {{- end -}}
+          {{- end -}}
+
         </select>
     {{- if .postText}}<span>{{.postText}}</span>{{end -}}
 
@@ -113,6 +139,7 @@
       {{-   end -}}
       {{- end -}}
   
+
       {{-   if eq . "bar-rating" }}
       {{-     if not $.ctx_parent.___hasBarRating___ -}}
       {{-        set $.ctx_parent "___hasBarRating___" true -}}
@@ -125,6 +152,23 @@
                 $('.bar-rating').barrating({
                   theme: 'fontawesome-stars'
                 });
+            });
+          });
+      </script>
+      {{-     end -}}
+      {{-   end -}}
+
+
+      {{-   if eq . "editable-select" }}
+      {{-     if not $.ctx_parent.___hasEditable___ -}}
+      {{-        set $.ctx_parent "___hasEditable___" true -}}
+      <script type="text/javascript">
+        if (tpt_form_callbacks == null) {
+          tpt_form_callbacks = new Array();
+        }
+        tpt_form_callbacks.push(function () {
+            $(function () {
+                $('.editable-select').editableSelect();
             });
           });
       </script>
