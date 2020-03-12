@@ -41,7 +41,10 @@
             {{- end -}}
             {{- range $v :=.tags}} {{$v}}{{end}}>
 
+      {{- if or (not $.customDatasource) (not $.customDatasourceAJAX) }}
+
       {{- $valueExists := false}}
+
       {{- $p := . -}}
       {{- range $v := .choices -}}
         {{- if $v.Label -}}
@@ -76,13 +79,13 @@
         {{- end -}}
       {{- end -}}
 
+
+      {{- end -}}
     </select>
     {{- if .postText}}<span>{{.postText}}</span>{{end -}}
 
     {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
-
-
 
     {{- range .classes}}
         {{- if eq .  "chosen" }}
@@ -108,7 +111,47 @@
 
 
         {{- if eq .  "select2" }}
-        {{-   if not $ctx_parent.___hasSelect2___ -}}
+        {{- if $.customDatasourceAJAX }}
+           <script>
+              if (tpt_form_callbacks == null) {
+                tpt_form_callbacks = new Array();
+              }
+              tpt_form_callbacks.push(function () {
+                  $(function () {
+                      if (typeof $.fn.select2 !== "undefined"){
+                        $("#{{$.id}}").each(function() {
+                          var disabled = $(this).attr("readonly") === "readonly";
+                          $(this).prop("disabled", disabled).select2({
+                            ajax: {{$.customDatasourceAJAX | js}},
+                            {{- if $.customMatcher}} matcher: {{$.customMatcher | js}}, {{end}} 
+                            width:'100%',
+                            disabled:disabled});
+                        })
+                      }
+                  });
+                });
+            </script>
+        {{- else if $.customDatasource }}
+           <script>
+              if (tpt_form_callbacks == null) {
+                tpt_form_callbacks = new Array();
+              }
+              tpt_form_callbacks.push(function () {
+                  $(function () {
+                      if (typeof $.fn.select2 !== "undefined"){
+                        $("#{{$.id}}").each(function() {
+                          var disabled = $(this).attr("readonly") === "readonly";
+                          $(this).prop("disabled", disabled).select2({
+                            data: {{$.customDatasource | js}},
+                            {{- if $.customMatcher}} matcher: {{$.customMatcher | js}}, {{end}} 
+                            width:'100%',
+                            disabled:disabled});
+                        })
+                      }
+                  });
+                });
+            </script>
+        {{- else if not $ctx_parent.___hasSelect2___ -}}
         {{-     set $ctx_parent "___hasSelect2___" true -}}
         <script>
           if (tpt_form_callbacks == null) {
@@ -117,7 +160,7 @@
           tpt_form_callbacks.push(function () {
               $(function () {
                   if (typeof $.fn.select2 !== "undefined"){
-                    $(".select2").each(function(){
+                    $(".select2").each(function() {
                       var disabled = $(this).attr("readonly") === "readonly";
                       $(this).prop("disabled", disabled).select2({
                         // search_contains:true,

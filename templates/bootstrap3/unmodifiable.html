@@ -11,7 +11,7 @@
       {{- $i := toInt $v -}}
       style="height: {{mul $i 15}}px"
     {{- end}}{{end}}{{end}}>
-    <p class="form-control form-control-static">
+    <p class="form-control form-control-static" {{- if .id}} id="{{.id}}-p" {{end}}>
       {{- if .choices}}
 
 

@@ -141,6 +141,22 @@ func tryReadChoices(v interface{}) []InputChoice {
 		return choices
 	}
 
+	if objectArray, ok := v.([]map[string]interface{}); ok {
+		choices := []InputChoice{}
+		for _, values := range objectArray {
+			id := values["value"]
+			if id == nil {
+				id = values["id"]
+			}
+			label := values["label"]
+			if label == nil {
+				label = values["text"]
+			}
+			choices = append(choices, InputChoice{fmt.Sprint(id), fmt.Sprint(label)})
+		}
+		return choices
+	}
+
 	if strMap, ok := v.(map[int64]string); ok {
 		choices := []InputChoice{}
 		for k, v := range strMap {
