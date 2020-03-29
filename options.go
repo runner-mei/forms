@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+type OptionSetReader interface {
+	Read() (nogroup bool, options interface{})
+}
+
 // InputChoice - Value pair used to define an option for select and redio input fields.
 type InputChoice struct {
 	Value string `json:"value" xorm:"value"`
@@ -46,7 +50,18 @@ func AppendHierarchyChoices(allList, parts []HierarchyChoice) []HierarchyChoice 
 func RadioField(ctx interface{}, name, label string, choices interface{}) *Field {
 	ret := FieldWithTypeWithCtx(ctx, name, label, RADIO)
 	ret.additionalData["choices"] = []InputChoice{}
-	ret.SetRadioChoices(readChoices(name, choices))
+
+	reader, ok := choices.(OptionSetReader)
+	if ok {
+		nogroup, values := reader.Read()
+		if !nogroup {
+			panic(errors.New("choices is invalid arguments on the '" + name + "'"))
+		}
+		ret.additionalData["nogroup"] = nogroup
+		ret.additionalData["choices"] = values
+	} else {
+		ret.SetRadioChoices(readChoices(name, choices))
+	}
 	return ret
 }
 
@@ -56,7 +71,15 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 	ret := FieldWithTypeWithCtx(ctx, name, label, SELECT)
 	ret.additionalData["choices"] = map[string][]InputChoice{}
 	ret.additionalData["multValues"] = map[string]struct{}{}
-	ret.SetSelectChoices(readChoiceGroups(name, choices))
+
+	reader, ok := choices.(OptionSetReader)
+	if ok {
+		nogroup, values := reader.Read()
+		ret.additionalData["nogroup"] = nogroup
+		ret.additionalData["choices"] = values
+	} else {
+		ret.SetSelectChoices(readChoiceGroups(name, choices))
+	}
 	return ret
 }
 
@@ -121,7 +144,7 @@ func tryReadChoices(v interface{}) []InputChoice {
 	if strArray, ok := v.([][2]string); ok {
 		choices := []InputChoice{}
 		for _, sa := range strArray {
-			choices = append(choices, InputChoice{sa[0], sa[1]})
+			choices = append(choices, InputChoice{Value: sa[0], Label: sa[1]})
 		}
 		return choices
 	}

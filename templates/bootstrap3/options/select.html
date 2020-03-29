@@ -8,8 +8,8 @@
     {{- end -}}
 
     {{- $isEditable := false}}
-    {{- $ctx_parent := $.ctx_parent}}
-    {{- if $ctx_parent.ctx_parent}}
+    {{- $ctx_parent := .ctx_parent}}
+    {{- if and $ctx_parent $ctx_parent.ctx_parent}}
       {{- $ctx_parent = $ctx_parent.ctx_parent}}
     {{- end}}
     {{- range .classes}}
@@ -52,7 +52,6 @@
     
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
 
-    {{- $p := . -}}
         <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
                 {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
                 {{- if .css}}
@@ -63,36 +62,56 @@
       {{- if or (not $.customDatasource) (not $.customDatasourceAJAX) }}
 
           {{- $valueExists := false -}}
+
+          {{- if .nogroup -}}
           {{- range $v := .choices -}}
-            {{- if $v.Label -}}
-            <optgroup label="{{$v.Label}}">
+          {{- $optValue := readOptValue $v}}
+          {{- $optLabel := readOptLabel $v}}
+            <option value="{{$optValue}}"
+                    {{- if strIn "multiple" $.tags -}}
+                      {{- range $oldValue, $ignore := $.multValues -}}
+                        {{- if eq $oldValue $optValue}}selected {{- $valueExists = true -}}{{end -}}
+                      {{- end -}}
+                    {{- else -}}
+                      {{- if eq $.value $optValue}} selected {{- $valueExists = true -}} {{end -}}
+                    {{- end}}>
+                    {{- raw $optLabel -}}
+            </option>
+          {{- end}}
+          {{- end}}
+
+          {{- range $v := .choices -}}
+            {{- $optGroupLabel := readOptLabel $v}}
+            {{- if $optGroupLabel -}}
+            <optgroup label="{{$optGroupLabel}}">
             {{- end -}}
 
             {{- range $v.Children -}}
-            <option value="{{.Value}}"
-                    {{- if strIn "multiple" $p.tags -}}
-                      {{- $id :=.Value -}}
-                      {{- range $k2, $p2 :=$p.multValues -}}
-                        {{- if eq $k2 $id}}selected {{- $valueExists = true -}}{{end -}}
+            {{- $optValue := readOptValue .}}
+            {{- $optLabel := readOptLabel .}}
+            <option value="{{$optValue}}"
+                    {{- if strIn "multiple" $.tags -}}
+                      {{- range $oldValue, $ignore :=$.multValues -}}
+                        {{- if eq $oldValue $optValue}}selected {{- $valueExists = true -}}{{end -}}
                       {{- end -}}
                     {{- else -}}
-                      {{- if eq $p.value .Value}} selected {{- $valueExists = true -}}{{end -}}
-                    {{- end}}>{{.Label -}}
+                      {{- if eq $.value $optValue}} selected {{- $valueExists = true -}} {{end -}}
+                    {{- end}}>{{raw $optLabel -}}
             </option>
             {{- end -}}
-
-            {{- if $v.Label -}}
+            
+            {{- if $optGroupLabel -}}
             </optgroup>
             {{- end -}}
           {{- end -}}
 
           {{- if and $isEditable (not $valueExists) }}
-            {{- if strIn "multiple" $p.tags -}}
-              {{- range $k2, $p2 :=$p.multValues -}}
-              <option value="{{$k2}}" selected> {{$k2}} </option>
+            {{- if strIn "multiple" $.tags -}}
+              {{- range $oldValue, $ignore :=$.multValues -}}
+              <option value="{{$oldValue}}" selected> {{$oldValue}} </option>
               {{- end -}}
             {{- else -}}
-              <option value="{{$p.value}}" selected> {{$p.value}} </option>
+              <option value="{{$.value}}" selected> {{$.value}} </option>
             {{- end -}}
           {{- end -}}
 
@@ -104,7 +123,7 @@
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
   </div>
 
-  {{- if strIn "multiple" $p.tags -}}
+  {{- if strIn "multiple" $.tags -}}
   {{- if not .ctx_parent.___hasChosen___ -}}
   {{- set .ctx_parent "___hasChosen___" true -}}
   <script>

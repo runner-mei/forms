@@ -1,26 +1,26 @@
 {{- define "main"}}{{ $p := . }}
 <div {{if .id}}id='{{.id}}_div'{{end}} class="form-group">
   {{- if not .nolabel -}}
-  <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
+  <label class="col-lg-{{default .labelWidth 2}} control-label {{ if $.labelClasses }}{{range $.labelClasses}} {{.}}{{end}}{{end}}">
     {{- if .label}}{{.label}}{{- end}}</label>
   {{- end -}}
 	<div class="col-lg-{{default .controlWidth 9}}">
-  {{ range .choices }}
-    <label class="control-label {{ if $p.labelClasses }}{{range $p.labelClasses}} {{.}}{{end}}{{end}}">
-      <input type="radio" name="{{$p.name}}"
-      {{- if $p.classes }} class="{{range $p.classes}}{{.}} {{end}}"
-      {{- end}} value="{{.Value}}" id="{{$p.id}}"
-      {{- if $p.params}}
-        {{- range $k2, $v2 := $p.params}} {{$k2}}="{{$v2}}"
+  {{- range .choices }}
+    {{- $optValue := readOptValue .}}
+    {{- $optLabel := readOptLabel .}}
+    <label class="control-label {{ if $.labelClasses }}{{range $.labelClasses}} {{.}}{{end}}{{end}}">
+      <input type="radio" name="{{$.name}}"
+      {{- if $.classes }} class="{{range $.classes}}{{.}} {{end}}"
+      {{- end}} value="{{$optValue}}" id="{{$.id}}"
+      {{- if $.params}}
+        {{- range $k2, $v2 := $.params}} {{$k2}}="{{$v2}}"
         {{- end}}
       {{- end}}
-      {{- if $p.css}} style="{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}"{{end}}
-      {{- if eq $p.value .Value}} checked{{end}}
-      {{- range $v2 := $p.tags}} {{$v2}}{{end}}>
-      {{.Label}}
+      {{- if $.css}} style="{{range $k2, $v2 := .css}}{{$k2}}: {{$v2}}; {{end}}"{{end}}
+      {{- if eq $.value $optValue}} checked{{end}}
+      {{- range $v2 := $.tags}} {{$v2}}{{end}}>
+      {{$optLabel}}
     </label>
   {{- end}}
 	</div>
-<!-- </div> -->
-
 </div>{{end}}

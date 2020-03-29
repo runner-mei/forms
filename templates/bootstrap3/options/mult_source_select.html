@@ -12,7 +12,10 @@
     {{- $name := .name}}
     {{- range $v := .sources}}
     {{- range $v.choices -}}
-      {{- if eq (toString $v.value) (toString .Value) -}}
+    {{- $optValue := readOptValue . }}
+    {{- $optLabel := readOptLabel . }}
+
+      {{- if eq (toString $v.value) (toString $optValue) -}}
         {{- $name = $v.name -}}
       {{- end -}}
     {{- end -}}
@@ -39,7 +42,9 @@
               {{ end }}
 
               {{- range $v.choices -}}
-              <option value="{{.Value}}" mark="{{$v.name}}" {{- if eq (toString $v.value) (toString .Value) }} selected{{end}}>{{raw .Label -}}</option>
+              {{- $optValue := readOptValue . }}
+              {{- $optLabel := readOptLabel . }}
+              <option value="{{$optValue}}" mark="{{$v.name}}" {{- if eq (toString $v.value) (toString $optValue) }} selected{{end}}>{{raw $optLabel -}}</option>
               {{- end -}}
 
           {{- if $v.label -}}

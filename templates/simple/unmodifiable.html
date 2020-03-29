@@ -4,40 +4,74 @@
       {{- $i := toInt $v -}}
       style="height: {{mul $i 15}}px"
     {{- end}}{{end}}{{end}}>
-      {{- if .choices}}
-            {{- if strIn "multiple" $.tags -}}
-                {{- range $k2, $p2 :=$.multValues -}}
+      {{- if .choices -}}
 
-                    {{- $valueExists := false}}
-                    {{- range $v := .choices -}}
-                      {{- range $v.Children -}}
-                        {{- if eq $k2 .Value}} 
-                          {{- .Label}}<br/>
-                          {{- $valueExists = true}}
-                        {{- end -}}
-                      {{- end -}}
-                    {{- end -}}
-                    {{- if not $valueExists }}
-                      {{- $k2 }}
-                    {{- end}}
 
-                {{- end -}}
-            {{- else -}}
+
+        {{- if strIn "multiple" $.tags -}}
+            {{- range $oldValue, $ignore :=$.multValues -}}
 
                 {{- $valueExists := false}}
                 {{- range $v := .choices -}}
-                  {{- range $v.Children -}}
-                    {{- if eq $.value .Value}} 
-                      {{- .Label}} 
+
+                  {{- if $.nogroup -}}
+                    {{- $optValue := readOptValue $v}}
+                    {{- $optLabel := readOptLabel $v}}
+                    {{- if eq $oldValue $optValue}} 
+                      {{- $optLabel}}<br/>
                       {{- $valueExists = true}}
                     {{- end -}}
+                  {{- else}}
+                    {{- range $v.Children -}}
+                      {{- $optValue := readOptValue .}}
+                      {{- $optLabel := readOptLabel .}}
+                      {{- if eq $oldValue $optValue}} 
+                        {{- $optLabel}}<br/>
+                        {{- $valueExists = true}}
+                      {{- end -}}
+                    {{- end -}}
                   {{- end -}}
+
                 {{- end -}}
                 {{- if not $valueExists }}
-                  {{- $.value }}
+                  {{- $oldValue }}
                 {{- end}}
 
             {{- end -}}
+        {{- else -}}
+
+            {{- $valueExists := false}}
+            {{- range $v := .choices -}}
+
+              {{- if $.nogroup -}}
+              
+                {{- $optValue := readOptValue $v}}
+                {{- $optLabel := readOptLabel $v}}
+                {{- if eq $.value $optValue}} 
+                  {{- $optLabel}}<br/>
+                  {{- $valueExists = true}}
+                {{- end -}}
+
+              {{- else}}
+
+                {{- range $v.Children -}}
+                  {{- $optValue := readOptValue .}}
+                  {{- $optLabel := readOptLabel .}}
+                  {{- if eq $.value $optValue}} 
+                    {{- $optLabel}} 
+                    {{- $valueExists = true}}
+                  {{- end -}}
+                {{- end -}}
+
+              {{- end -}}
+
+            {{- end -}}
+            {{- if not $valueExists }}
+              {{- $.value }}
+            {{- end -}}
+
+
+
       {{- else if eq .type "checkbox" -}}
         {{- if toOptionBoolean .value -}}是{{else}}否{{end}}
       {{- else if eq .type "date" -}}

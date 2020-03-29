@@ -11,6 +11,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"reflect"
 	"strconv"
 	"strings"
 	"sync"
@@ -376,6 +377,8 @@ var defaultFuncs = template.FuncMap{
 	"add": func(a, b int) int {
 		return a + b
 	},
+	"readOptValue": readOptValue,
+	"readOptLabel": readOptLabel,
 }
 
 func toBoolean(v interface{}) bool {
@@ -426,4 +429,100 @@ func toTime(v interface{}) (time.Time, bool) {
 	}
 
 	return time.Time{}, false
+}
+
+func readOptValue(v interface{}) interface{} {
+	if v == nil {
+		return nil
+	}
+
+	switch value := v.(type) {
+	case *InputChoice:
+		return value.Value
+	case InputChoice:
+		return value.Value
+	case [2]string:
+		return value[0]
+	case map[string]interface{}:
+		id := value["value"]
+		if id == nil {
+			id = value["id"]
+		}
+		return id
+	case map[string]string:
+		id, ok := value["value"]
+		if !ok {
+			id = value["id"]
+		}
+		return id
+	case interface {
+		OptionValue() interface{}
+	}:
+		return value.OptionValue()
+	case interface {
+		Value() interface{}
+	}:
+		return value.Value()
+	default:
+		rv := reflect.ValueOf(v)
+		rValue := rv.FieldByName("OptionValue")
+		if rValue.IsValid() {
+			return rValue.Interface()
+		}
+		rValue = rv.FieldByName("Value")
+		if rValue.IsValid() {
+			return rValue.Interface()
+		}
+		panic(fmt.Errorf("read option value fail, unknown type is %T", v))
+	}
+}
+
+func readOptLabel(v interface{}) interface{} {
+	if v == nil {
+		return nil
+	}
+
+	switch value := v.(type) {
+	case *InputChoice:
+		return value.Label
+	case InputChoice:
+		return value.Label
+	case *HierarchyChoice:
+		return value.Label
+	case HierarchyChoice:
+		return value.Label
+	case [2]string:
+		return value[1]
+	case map[string]interface{}:
+		text := value["label"]
+		if text == nil {
+			text = value["text"]
+		}
+		return text
+	case map[string]string:
+		text, ok := value["label"]
+		if !ok {
+			text = value["text"]
+		}
+		return text
+	case interface {
+		OptionLabel() string
+	}:
+		return value.OptionLabel()
+	case interface {
+		Label() string
+	}:
+		return value.Label()
+	default:
+		rv := reflect.ValueOf(v)
+		rValue := rv.FieldByName("OptionLabel")
+		if rValue.IsValid() {
+			return rValue.Interface()
+		}
+		rValue = rv.FieldByName("Label")
+		if rValue.IsValid() {
+			return rValue.Interface()
+		}
+		panic(fmt.Errorf("read option label fail, unknown type is %T", v))
+	}
 }

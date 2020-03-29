@@ -12,23 +12,36 @@
       style="height: {{mul $i 15}}px"
     {{- end}}{{end}}{{end}}>
     <p class="form-control form-control-static" {{- if .id}} id="{{.id}}-p" {{end}}>
-      {{- if .choices}}
+      {{- if .choices -}}
 
 
         {{- if strIn "multiple" $.tags -}}
-            {{- range $k2, $p2 :=$.multValues -}}
+            {{- range $oldValue, $ignore :=$.multValues -}}
 
                 {{- $valueExists := false}}
                 {{- range $v := .choices -}}
-                  {{- range $v.Children -}}
-                    {{- if eq $k2 .Value}} 
-                      {{- .Label}}<br/>
+
+                  {{- if $.nogroup -}}
+                    {{- $optValue := readOptValue $v}}
+                    {{- $optLabel := readOptLabel $v}}
+                    {{- if eq $oldValue $optValue}} 
+                      {{- $optLabel}}<br/>
                       {{- $valueExists = true}}
                     {{- end -}}
+                  {{- else}}
+                    {{- range $v.Children -}}
+                      {{- $optValue := readOptValue .}}
+                      {{- $optLabel := readOptLabel .}}
+                      {{- if eq $oldValue $optValue}} 
+                        {{- $optLabel}}<br/>
+                        {{- $valueExists = true}}
+                      {{- end -}}
+                    {{- end -}}
                   {{- end -}}
+
                 {{- end -}}
                 {{- if not $valueExists }}
-                  {{- $k2 }}
+                  {{- $oldValue }}
                 {{- end}}
 
             {{- end -}}
@@ -36,12 +49,29 @@
 
             {{- $valueExists := false}}
             {{- range $v := .choices -}}
-              {{- range $v.Children -}}
-                {{- if eq $.value .Value}} 
-                  {{- .Label}} 
+
+              {{- if $.nogroup -}}
+
+                {{- $optValue := readOptValue $v}}
+                {{- $optLabel := readOptLabel $v}}
+                {{- if eq $.value $optValue}} 
+                  {{- $optLabel}}<br/>
                   {{- $valueExists = true}}
                 {{- end -}}
+
+              {{- else}}
+
+                {{- range $v.Children -}}
+                  {{- $optValue := readOptValue .}}
+                  {{- $optLabel := readOptLabel .}}
+                  {{- if eq $.value $optValue}} 
+                    {{- $optLabel}} 
+                    {{- $valueExists = true}}
+                  {{- end -}}
+                {{- end -}}
+
               {{- end -}}
+
             {{- end -}}
             {{- if not $valueExists }}
               {{- $.value }}
