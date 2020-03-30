@@ -58,7 +58,7 @@
       {{- else if eq .type "datetime-local" -}}
         {{- form_datetime .value -}}
       {{- else -}}
-        {{.value}}
+        {{- nl2br  .value}}
       {{- end -}}
     </p>
 
@@ -90,7 +90,7 @@
       </ul>
       {{- end -}}
     </span>
-    {{end -}}
+    {{- end -}}
   </div>
 </div>
 {{- end -}}
