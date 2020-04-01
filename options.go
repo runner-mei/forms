@@ -14,6 +14,22 @@ type OptionSetReader interface {
 	Read() (nogroup bool, options interface{})
 }
 
+type optSetReader struct {
+	nogroup bool
+	options interface{}
+}
+
+func (r optSetReader) Read() (nogroup bool, options interface{}) {
+	return r.nogroup, r.options
+}
+
+func ToOptionSetReader(nogroup bool, options interface{}) OptionSetReader {
+	return optSetReader{
+		nogroup: nogroup,
+		options: options,
+	}
+}
+
 // InputChoice - Value pair used to define an option for select and redio input fields.
 type InputChoice struct {
 	Value string `json:"value" xorm:"value"`
