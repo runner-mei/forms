@@ -422,6 +422,7 @@ func toTime(v interface{}) (time.Time, bool) {
 		time.RFC3339,
 		time.RFC3339Nano,
 		"2006-01-02",
+		"2006-01-02 15:04",
 		"2006-01-02 15:04:05"} {
 		if m, e := time.Parse(layout, s); nil == e {
 			return m, true

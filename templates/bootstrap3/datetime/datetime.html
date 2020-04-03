@@ -20,7 +20,7 @@
 		<div class="input-group date">
 			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 			<input type="text" class="form-control {{ if .classes }}{{range .classes}} {{.}} {{end}}{{end}}"
-						 name="{{.name}}date"
+						 id="{{.name}}date"
 						 {{- if .id}} id="{{.id}}" {{end -}}
 						 {{- if .params -}}
 						 {{- range $k, $v :=.params}} {{$k}}="{{$v}}" {{end -}}
@@ -43,7 +43,7 @@
 
 		<div class="col-lg-6">
 		<div class="input-group clockpicker" data-autoclose="true">
-			<input type="text" class="form-control" value="{{ if .value }}{{ form_time .value }}{{ end }}" name="{{.name}}time">
+			<input type="text" class="form-control" value="{{ if .value }}{{ form_time .value }}{{ end }}" id="{{.name}}time">
 			<span class="input-group-addon">
 				<span class="fa fa-clock-o"></span>
 			</span>
@@ -57,8 +57,8 @@
         }
         tpt_form_callbacks.push(function () {
             $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on("change",function () {
-                var date = $('[name="{{ .name }}date"]').val();
-                var time = $('[name="{{ .name }}time"]').val();
+                var date = $('[id="{{ .name }}date"]').val();
+                var time = $('[id="{{ .name }}time"]').val();
                 if (date || time){
                     $('[name="{{ .name }}"]').val(date+" "+time);
                 }
