@@ -2,7 +2,7 @@
     
     <p class="form-control-static" {{- if .id}} id="{{.id}}-p" {{end}} {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
       {{- $i := toInt $v -}}
-      style="height: {{mul $i 15}}px"
+      style="overflow:scroll; height: {{mul $i 15}}px"
     {{- end}}{{end}}{{end}}>
       {{- if .choices -}}
 
