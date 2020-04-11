@@ -75,6 +75,9 @@ func RadioField(ctx interface{}, name, label string, choices interface{}) *Field
 		}
 		ret.additionalData["nogroup"] = nogroup
 		ret.additionalData["choices"] = values
+	} else if ok, nogroup := isOptionSet(choices, true); ok {
+		ret.additionalData["nogroup"] = nogroup
+		ret.additionalData["choices"] = choices
 	} else {
 		ret.SetRadioChoices(readChoices(name, choices))
 	}
@@ -93,6 +96,9 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 		nogroup, values := reader.Read()
 		ret.additionalData["nogroup"] = nogroup
 		ret.additionalData["choices"] = values
+	} else if ok, nogroup := isOptionSet(choices, true); ok {
+		ret.additionalData["nogroup"] = nogroup
+		ret.additionalData["choices"] = choices
 	} else {
 		ret.SetSelectChoices(readChoiceGroups(name, choices))
 	}

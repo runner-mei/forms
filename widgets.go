@@ -12,6 +12,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"sync"
@@ -526,4 +527,269 @@ func readOptLabel(v interface{}) interface{} {
 		}
 		panic(fmt.Errorf("read option label fail, unknown type is %T", v))
 	}
+}
+
+func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
+	if v == nil {
+		return false, false
+	}
+
+	switch value := v.(type) {
+	case []*InputChoice:
+		return true, false
+	case []InputChoice:
+		return true, false
+	case []*HierarchyChoice:
+		return true, true
+	case []HierarchyChoice:
+		return true, true
+	case [][2]string:
+		return true, false
+	case []interface{}:
+		if len(value) == 0 {
+			return true, false
+		}
+		for _, v := range value {
+			return isOptionSet(v, false)
+		}
+		return false, false
+	case map[string]interface{}:
+		if len(value) == 0 {
+			return true, false
+		}
+		for _, v := range value {
+			return isOptionSet(v, false)
+		}
+		return false, false
+	case []map[string]interface{}:
+		if len(value) == 0 {
+			return true, false
+		}
+		object := value[0]
+		_, ok := object["label"]
+		if ok {
+			_, ok = object["value"]
+			if ok {
+				return true, false
+			}
+			_, ok = object["id"]
+			if ok {
+				return true, false
+			}
+			return false, false
+		}
+		_, ok = object["text"]
+		if ok {
+			_, ok = object["value"]
+			if ok {
+				return true, false
+			}
+			_, ok = object["id"]
+			if ok {
+				return true, false
+			}
+			return true, false
+		}
+		return false, false
+	case []map[string]string:
+		if len(value) == 0 {
+			return true, false
+		}
+		object := value[0]
+		_, ok := object["label"]
+		if ok {
+			_, ok = object["value"]
+			if ok {
+				return true, false
+			}
+			_, ok = object["id"]
+			if ok {
+				return true, false
+			}
+			return false, false
+		}
+		_, ok = object["text"]
+		if ok {
+			_, ok = object["value"]
+			if ok {
+				return true, false
+			}
+			_, ok = object["id"]
+			if ok {
+				return true, false
+			}
+			return true, false
+		}
+		return false, false
+	default:
+		var rv reflect.Value
+		if isSlice {
+			rv := reflect.ValueOf(v)
+			if rv.Kind() != reflect.Slice {
+				return false, false
+			}
+			if rv.Len() == 0 {
+				return isOptionSetByType(rv.Type(), true)
+			}
+			rv = rv.Index(0)
+			if !rv.IsValid() {
+				return false, false
+			}
+		}
+
+		switch rv.Interface().(type) {
+		case *InputChoice:
+			return true, false
+		case InputChoice:
+			return true, false
+		case [2]string:
+			return true, false
+		case interface {
+			OptionLabel() string
+			OptionValue() interface{}
+		}:
+			return true, false
+		case interface {
+			Label() string
+			Value() interface{}
+		}:
+			return true, false
+		}
+
+		rValue := rv.FieldByName("OptionLabel")
+		if rValue.IsValid() {
+			rValue = rv.FieldByName("OptionValue")
+			if rValue.IsValid() {
+				return true, false
+			}
+
+			rValue = rv.FieldByName("Children")
+			if rValue.IsValid() {
+				return isOptionSet(rValue.Interface(), true)
+			}
+
+			return false, false
+		}
+		rValue = rv.FieldByName("Label")
+		if rValue.IsValid() {
+			rValue = rv.FieldByName("Value")
+			if rValue.IsValid() {
+				return true, false
+			}
+
+			rValue = rv.FieldByName("Children")
+			if rValue.IsValid() {
+				return isOptionSet(rValue.Interface(), true)
+			}
+			return false, false
+		}
+		return false, false
+	}
+}
+
+var InputChoiceType = reflect.TypeOf(InputChoice{})
+var InputChoicePtrType = reflect.TypeOf(&InputChoice{})
+
+var HierarchyChoiceType = reflect.TypeOf(HierarchyChoice{})
+var HierarchyChoicePtrType = reflect.TypeOf(&HierarchyChoice{})
+var StrArrayPtrType = reflect.TypeOf([2]string{})
+
+func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
+	defer func() {
+		if o := recover(); o != nil {
+			fmt.Println(o)
+
+			fmt.Println(o, string(debug.Stack()))
+		}
+	}()
+
+	if t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	if isSlice {
+		if t.Kind() != reflect.Slice {
+			return false, false
+		}
+		t = t.Elem()
+		if t.Kind() == reflect.Ptr {
+			t = t.Elem()
+		}
+	}
+
+	switch t {
+	case InputChoiceType:
+		return true, false
+	case InputChoicePtrType:
+		return true, false
+	case HierarchyChoiceType:
+		return true, true
+	case HierarchyChoicePtrType:
+		return true, true
+	case StrArrayPtrType:
+		return true, false
+		// case interface {
+		// 	OptionLabel() string
+		// 	OptionValue() interface{}
+		// }:
+		// 	return true, false
+		// case interface {
+		// 	Label() string
+		// 	Value() interface{}
+		// }:
+		// 	return true, false
+	}
+
+	if hasFunc(t, "OptionLabel") {
+		if hasFunc(t, "OptionValue") {
+			return true, false
+		}
+		return false, false
+	}
+
+	if hasFunc(t, "Label") {
+		if hasFunc(t, "Value") {
+			return true, false
+		}
+		return false, false
+	}
+
+	if ok, _ := hasField(t, "OptionLabel"); ok {
+		if ok, _ := hasField(t, "OptionValue"); ok {
+			return true, false
+		}
+		ok, vt := hasField(t, "Children")
+		if ok {
+			return isOptionSetByType(vt, true)
+		}
+		return false, false
+	}
+
+	if ok, _ := hasField(t, "Label"); ok {
+		if ok, _ := hasField(t, "Value"); ok {
+			return true, false
+		}
+
+		ok, vt := hasField(t, "Children")
+		if ok {
+			return isOptionSetByType(vt, true)
+		}
+		return false, false
+	}
+	return false, false
+}
+
+func hasFunc(t reflect.Type, name string) bool {
+	_, ok := t.MethodByName(name)
+	if ok {
+		return true
+	}
+	return false
+}
+
+func hasField(t reflect.Type, name string) (bool, reflect.Type) {
+	f, ok := t.FieldByName(name)
+	if ok {
+		return true, f.Type
+	}
+	return false, nil
 }
