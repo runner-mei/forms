@@ -9,7 +9,7 @@
   {{- end -}}
   <div class="col-lg-{{default .controlWidth 9}}" {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
       {{- $i := toInt $v -}}
-      style="overflow:scroll; height: {{mul $i 15}}px"
+      style="overflow:auto; height: {{mul $i 20}}px"
     {{- end}}{{end}}{{end}}>
     <p class="form-control form-control-static" {{- if .id}} id="{{.id}}-p" {{end}}>
       {{- if .choices}}
