@@ -667,6 +667,13 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 			return true, false
 		}
 
+		if rv.Kind() == reflect.Ptr {
+			rv = rv.Elem()
+		}
+		if rv.Kind() != reflect.Struct {
+			return false, false
+		}
+
 		rValue := rv.FieldByName("OptionLabel")
 		if rValue.IsValid() {
 			rValue = rv.FieldByName("OptionValue")
@@ -742,6 +749,10 @@ func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
 		// 	Value() interface{}
 		// }:
 		// 	return true, false
+	}
+
+	if t.Kind() != reflect.Struct {
+		return false, false
 	}
 
 	if hasFunc(t, "OptionLabel") {
