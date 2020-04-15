@@ -12,7 +12,6 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
-	"runtime/debug"
 	"strconv"
 	"strings"
 	"sync"
@@ -624,7 +623,7 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 	default:
 		var rv reflect.Value
 		if isSlice {
-			rv := reflect.ValueOf(v)
+			rv = reflect.ValueOf(v)
 			if rv.Kind() != reflect.Slice {
 				return false, false
 			}
@@ -695,14 +694,6 @@ var HierarchyChoicePtrType = reflect.TypeOf(&HierarchyChoice{})
 var StrArrayPtrType = reflect.TypeOf([2]string{})
 
 func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
-	defer func() {
-		if o := recover(); o != nil {
-			fmt.Println(o)
-
-			fmt.Println(o, string(debug.Stack()))
-		}
-	}()
-
 	if t.Kind() == reflect.Ptr {
 		t = t.Elem()
 	}
