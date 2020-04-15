@@ -93,11 +93,11 @@ func SelectField(ctx interface{}, name, label string, choices interface{}) *Fiel
 
 	reader, ok := choices.(OptionSetReader)
 	if ok {
-		nogroup, values := reader.Read()
-		ret.additionalData["nogroup"] = nogroup
+		hasgroup, values := reader.Read()
+		ret.additionalData["nogroup"] = !hasgroup
 		ret.additionalData["choices"] = values
-	} else if ok, nogroup := isOptionSet(choices, true); ok {
-		ret.additionalData["nogroup"] = nogroup
+	} else if ok, hasgroup := isOptionSet(choices, true); ok {
+		ret.additionalData["nogroup"] = !hasgroup
 		ret.additionalData["choices"] = choices
 	} else {
 		ret.SetSelectChoices(readChoiceGroups(name, choices))

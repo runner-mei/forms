@@ -49,47 +49,49 @@
       {{- $valueExists := false}}
 
       {{- if .nogroup -}}
-      {{- range $v := .choices -}}
-      {{- $optValue := readOptValue $v}}
-      {{- $optLabel := readOptLabel $v}}
+        {{- range $v := .choices -}}
+        {{- $optValue := readOptValue $v}}
+        {{- $optLabel := readOptLabel $v}}
 
-        <option value="{{$optValue}}"
-                {{- if strIn "multiple" $.tags -}}
-                  {{- range $oldValue, $ignore := $.multValues -}}
-                    {{- if eq $oldValue $optValue}}selected {{- $valueExists = true -}}{{end -}}
-                  {{- end -}}
-                {{- else -}}
-                  {{- if eq $.value $optValue}} selected {{- $valueExists = true -}} {{end -}}
-                {{- end}}>
-                {{- raw $optLabel -}}
-        </option>
+          <option value="{{$optValue}}"
+                  {{- if strIn "multiple" $.tags -}}
+                    {{- range $oldValue, $ignore := $.multValues -}}
+                      {{- if eq (toString $oldValue) (toString $optValue)}}selected {{- $valueExists = true -}}{{end -}}
+                    {{- end -}}
+                  {{- else -}}
+                    {{- if eq (toString $.value) (toString $optValue)}} selected {{- $valueExists = true -}} {{end -}}
+                  {{- end}}>
+                  {{- raw (toString $optLabel) -}}
+          </option>
+        {{- end}}
+      {{- else}}
+        {{- range $v := .choices -}}
+          {{- $optGroupLabel := readOptLabel $v}}
+          {{- if $optGroupLabel -}}
+          <optgroup label="{{$optGroupLabel}}">
+          {{- end -}}
+
+          {{- range $v.Children -}}
+          {{- $optValue := readOptValue .}}
+          {{- $optLabel := readOptLabel .}}
+          <option value="{{$optValue}}"
+                  {{- if strIn "multiple" $.tags -}}
+                    {{- range $oldValue, $ignore :=$.multValues -}}
+                      {{- if eq (toString $oldValue) (toString $optValue)}}selected {{- $valueExists = true -}}{{end -}}
+                    {{- end -}}
+                  {{- else -}}
+                    {{- if eq (toString $.value) (toString $optValue)}} selected {{- $valueExists = true -}} {{end -}}
+                  {{- end}}>
+                  {{- raw (toString $optLabel) -}}
+          </option>
+          {{- end -}}
+          
+          {{- if $optGroupLabel -}}
+          </optgroup>
+          {{- end -}}
+        {{- end -}}
       {{- end}}
-      {{- end}}
 
-      {{- range $v := .choices -}}
-        {{- $optGroupLabel := readOptLabel $v}}
-        {{- if $optGroupLabel -}}
-        <optgroup label="{{$optGroupLabel}}">
-        {{- end -}}
-
-        {{- range $v.Children -}}
-        {{- $optValue := readOptValue .}}
-        {{- $optLabel := readOptLabel .}}
-        <option value="{{$optValue}}"
-                {{- if strIn "multiple" $.tags -}}
-                  {{- range $oldValue, $ignore :=$.multValues -}}
-                    {{- if eq $oldValue $optValue}}selected {{- $valueExists = true -}}{{end -}}
-                  {{- end -}}
-                {{- else -}}
-                  {{- if eq $.value $optValue}} selected {{- $valueExists = true -}} {{end -}}
-                {{- end}}>{{raw $optLabel -}}
-        </option>
-        {{- end -}}
-        
-        {{- if $optGroupLabel -}}
-        </optgroup>
-        {{- end -}}
-      {{- end -}}
 
       {{- if and $isEditable (not $valueExists) }}
         {{- if strIn "multiple" $.tags -}}

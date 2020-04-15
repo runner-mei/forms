@@ -367,6 +367,12 @@ var defaultFuncs = template.FuncMap{
 		}
 		return i
 	},
+	"toString": func(v interface{}) string {
+		if v == nil {
+			return ""
+		}
+		return fmt.Sprint(v)
+	},
 
 	// Skips sanitation on the parameter.  Do not use with dynamic data.
 	"mul": func(a, b int) int {
@@ -444,6 +450,8 @@ func readOptValue(v interface{}) interface{} {
 		return value.Value
 	case [2]string:
 		return value[0]
+	case string:
+		return value
 	case map[string]interface{}:
 		id := value["value"]
 		if id == nil {
@@ -494,6 +502,8 @@ func readOptLabel(v interface{}) interface{} {
 		return value.Label
 	case [2]string:
 		return value[1]
+	case string:
+		return value
 	case map[string]interface{}:
 		text := value["label"]
 		if text == nil {
@@ -543,6 +553,8 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 	case []HierarchyChoice:
 		return true, true
 	case [][2]string:
+		return true, false
+	case []string:
 		return true, false
 	case []interface{}:
 		if len(value) == 0 {
@@ -664,7 +676,8 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 
 			rValue = rv.FieldByName("Children")
 			if rValue.IsValid() {
-				return isOptionSet(rValue.Interface(), true)
+				valid, _ := isOptionSet(rValue.Interface(), true)
+				return valid, true
 			}
 
 			return false, false
@@ -678,7 +691,8 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 
 			rValue = rv.FieldByName("Children")
 			if rValue.IsValid() {
-				return isOptionSet(rValue.Interface(), true)
+				valid, _ := isOptionSet(rValue.Interface(), true)
+				return valid, true
 			}
 			return false, false
 		}
@@ -750,7 +764,8 @@ func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
 		}
 		ok, vt := hasField(t, "Children")
 		if ok {
-			return isOptionSetByType(vt, true)
+			valid, _ := isOptionSetByType(vt, true)
+			return valid, true
 		}
 		return false, false
 	}
@@ -762,7 +777,8 @@ func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
 
 		ok, vt := hasField(t, "Children")
 		if ok {
-			return isOptionSetByType(vt, true)
+			valid, _ := isOptionSetByType(vt, true)
+			return valid, true
 		}
 		return false, false
 	}
