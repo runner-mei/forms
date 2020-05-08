@@ -52,7 +52,7 @@
     
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
 
-        <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}"
+        <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{- if or $.customDatasource $.customDatasourceAJAX }}{{if ne . "select2"}} {{.}} {{end}}{{else}}{{if eq . "select2"}} my_select2 {{else}} {{.}} {{end}}{{end}}{{end}}{{end}}"
                 {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
                 {{- if .css}}
                 style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
@@ -124,27 +124,6 @@
     {{- if or .helptext .errors }}<span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
     {{- if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end}}</ul>{{end}}</span>{{end -}}
   </div>
-
-  {{- if strIn "multiple" $.tags -}}
-  {{- if not .ctx_parent.___hasChosen___ -}}
-  {{- set .ctx_parent "___hasChosen___" true -}}
-  <script>
-    if (tpt_form_callbacks == null) {
-      tpt_form_callbacks = new Array();
-    }
-    tpt_form_callbacks.push(function () {
-        $(function () {
-            if (typeof $.fn.chosen !== "undefined"){
-              $(".chosen").each(function(){
-                var disabled = $(this).attr("readonly") === "readonly";
-                $(this).prop("disabled", disabled).chosen({search_contains:true,width:'100%',disabled:disabled});
-              })
-            }
-        });
-      });
-  </script>
-  {{- end -}}
-  {{- end -}}
   
   {{- range .classes}}
       {{- if eq .  "chosen" }}
@@ -218,7 +197,7 @@
         tpt_form_callbacks.push(function () {
             $(function () {
                 if (typeof $.fn.select2 !== "undefined"){
-                  $(".select2").each(function(){
+                  $(".my_select2").each(function(){
                     var disabled = $(this).attr("readonly") === "readonly";
                     $(this).prop("disabled", disabled).select2({
                       // search_contains:true,
