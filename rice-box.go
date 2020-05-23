@@ -90,8 +90,8 @@ func init() {
 	}
 	filem := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/static.html`,
-		FileModTime: time.Unix(1489735114, 0),
-		Content:     string("{{define \"main\"}}<div class=\"form-group\">\n{{ if .label }}<label{{ if .labelClasses }} class=\"{{range .labelClasses}}{{.}} {{end}}\"{{end}}{{if .id}} for=\"{{.id}}\"{{end}}>{{.label}}</label>{{end}}\n<p name=\"{{.name}}\" class=\"form-control-static {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</p>\n</div>{{end}}"),
+		FileModTime: time.Unix(1590215035, 0),
+		Content:     string("{{define \"main\"}}<div class=\"form-group\">\n  {{- if not .nolabel -}}\n    <label class=\"col-lg-{{default .labelWidth 2}} control-label {{ if .labelClasses -}}\n    {{range .labelClasses}} {{.}}{{end}}\n    {{- end}}\"\n  {{- if .id}} for=\"{{.id}}\" \n  {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>\n  {{- end -}}\n  \n  <div class=\"col-lg-{{default .controlWidth 9}}\">\n<p name=\"{{.name}}\" class=\"form-control-static {{ if .classes }}{{range .classes}}{{.}} {{end}}{{end}}\"{{if .id}} id=\"{{.id}}\"{{end}}{{if .params}}{{range $k, $v := .params}} {{$k}}=\"{{$v}}\"{{end}}{{end}}{{if .css}} style=\"{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}\"{{end}}{{range $v := .tags}} {{$v}}{{end}}>{{.text}}</p>\n</div></div>{{end}}"),
 	}
 	fileo := &embedded.EmbeddedFile{
 		Filename:    `bootstrap3/text/passwordinput.html`,

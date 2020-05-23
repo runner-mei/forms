@@ -12,6 +12,7 @@ import (
 	"path"
 	"path/filepath"
 	"reflect"
+	"runtime/debug"
 	"strconv"
 	"strings"
 	"sync"
@@ -439,6 +440,13 @@ func toTime(v interface{}) (time.Time, bool) {
 }
 
 func readOptValue(v interface{}) interface{} {
+	defer func() {
+		if o := recover(); o != nil {
+			fmt.Println(o)
+			debug.PrintStack()
+			panic(o)
+		}
+	}()
 	if v == nil {
 		return nil
 	}
@@ -474,19 +482,31 @@ func readOptValue(v interface{}) interface{} {
 		return value.Value()
 	default:
 		rv := reflect.ValueOf(v)
-		rValue := rv.FieldByName("OptionValue")
-		if rValue.IsValid() {
-			return rValue.Interface()
+
+		ok, rValue := readField(rv, "OptionValue")
+		if ok {
+			return rValue
 		}
-		rValue = rv.FieldByName("Value")
-		if rValue.IsValid() {
-			return rValue.Interface()
+		ok, rValue = readField(rv, "Value")
+		if ok {
+			return rValue
+		}
+		ok, rValue = readField(rv, "ID")
+		if ok {
+			return rValue
 		}
 		panic(fmt.Errorf("read option value fail, unknown type is %T", v))
 	}
 }
 
 func readOptLabel(v interface{}) interface{} {
+	defer func() {
+		if o := recover(); o != nil {
+			fmt.Println(o)
+			debug.PrintStack()
+			panic(o)
+		}
+	}()
 	if v == nil {
 		return nil
 	}
@@ -526,16 +546,43 @@ func readOptLabel(v interface{}) interface{} {
 		return value.Label()
 	default:
 		rv := reflect.ValueOf(v)
-		rValue := rv.FieldByName("OptionLabel")
-		if rValue.IsValid() {
-			return rValue.Interface()
+		ok, rValue := readField(rv, "OptionLabel")
+		if ok {
+			return rValue
 		}
-		rValue = rv.FieldByName("Label")
-		if rValue.IsValid() {
-			return rValue.Interface()
+		ok, rValue = readField(rv, "Label")
+		if ok {
+			return rValue
+		}
+		ok, rValue = readField(rv, "Name")
+		if ok {
+			return rValue
 		}
 		panic(fmt.Errorf("read option label fail, unknown type is %T", v))
 	}
+}
+
+func readField(rv reflect.Value, name string) (bool, interface{}) {
+	rValue := rv.FieldByName(name)
+	if rValue.IsValid() {
+		return true, rValue.Interface()
+	}
+
+	t := rv.Type()
+	for i := 0; i < t.NumField(); i++ {
+		if !t.Field(i).Anonymous {
+			continue
+		}
+
+		rValue := rv.Field(i)
+		if rValue.IsValid() {
+			ok, f := readField(rValue, name)
+			if ok {
+				return true, f
+			}
+		}
+	}
+	return false, nil
 }
 
 func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
@@ -674,36 +721,7 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 			return false, false
 		}
 
-		rValue := rv.FieldByName("OptionLabel")
-		if rValue.IsValid() {
-			rValue = rv.FieldByName("OptionValue")
-			if rValue.IsValid() {
-				return true, false
-			}
-
-			rValue = rv.FieldByName("Children")
-			if rValue.IsValid() {
-				valid, _ := isOptionSet(rValue.Interface(), true)
-				return valid, true
-			}
-
-			return false, false
-		}
-		rValue = rv.FieldByName("Label")
-		if rValue.IsValid() {
-			rValue = rv.FieldByName("Value")
-			if rValue.IsValid() {
-				return true, false
-			}
-
-			rValue = rv.FieldByName("Children")
-			if rValue.IsValid() {
-				valid, _ := isOptionSet(rValue.Interface(), true)
-				return valid, true
-			}
-			return false, false
-		}
-		return false, false
+		return isOptionSetByType(rv.Type(), false)
 	}
 }
 
@@ -785,11 +803,23 @@ func isOptionSetByType(t reflect.Type, isSlice bool) (bool, bool) {
 		if ok, _ := hasField(t, "Value"); ok {
 			return true, false
 		}
-
+		if ok, _ := hasField(t, "ID"); ok {
+			return true, false
+		}
 		ok, vt := hasField(t, "Children")
 		if ok {
 			valid, _ := isOptionSetByType(vt, true)
 			return valid, true
+		}
+		return false, false
+	}
+
+	if ok, _ := hasField(t, "Name"); ok {
+		if ok, _ := hasField(t, "Value"); ok {
+			return true, false
+		}
+		if ok, _ := hasField(t, "ID"); ok {
+			return true, false
 		}
 		return false, false
 	}
@@ -808,6 +838,15 @@ func hasField(t reflect.Type, name string) (bool, reflect.Type) {
 	f, ok := t.FieldByName(name)
 	if ok {
 		return true, f.Type
+	}
+	for i := 0; i < t.NumField(); i++ {
+		if !t.Field(i).Anonymous {
+			continue
+		}
+		ok, f := hasField(t.Field(i).Type, name)
+		if ok {
+			return true, f
+		}
 	}
 	return false, nil
 }
