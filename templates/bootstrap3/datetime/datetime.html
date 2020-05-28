@@ -14,7 +14,6 @@
 
 	{{- if .id}}{{else}}{{generateID | set . "widget_id" }} {{end}}
 	<div class="col-lg-{{default .controlWidth 9}}" name="{{.name}}-form-group" id="{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}}">
-
 	  <div class="row">
 		<div class="col-lg-6">
 		<div class="input-group date">
@@ -59,8 +58,10 @@
             $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on("change",function () {
                 var date = $('[id="{{ .name }}date"]').val();
                 var time = $('[id="{{ .name }}time"]').val();
-                if (date || time){
+                if ( date && date != '' ){
                     $('[name="{{ .name }}"]').val(date+" "+time);
+                } else {
+                    $('[name="{{ .name }}"]').val('');
                 }
             });
 

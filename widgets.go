@@ -459,6 +459,10 @@ func readOptValue(v interface{}) interface{} {
 	case [2]string:
 		return value[0]
 	case string:
+		values := strings.SplitN(value, ";", 2)
+		if len(values) >= 2 {
+			return values[1]
+		}
 		return value
 	case map[string]interface{}:
 		id := value["value"]
@@ -523,6 +527,10 @@ func readOptLabel(v interface{}) interface{} {
 	case [2]string:
 		return value[1]
 	case string:
+		values := strings.SplitN(value, ";", 2)
+		if len(values) >= 1 {
+			return values[0]
+		}
 		return value
 	case map[string]interface{}:
 		text := value["label"]

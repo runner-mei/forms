@@ -52,8 +52,10 @@
             $('#{{if .id}}{{.id}}{{else}}{{.widget_id}}{{end}} input').on("change",function () {
                 var date = $('[name="{{ .name }}date"]').val();
                 var time = $('[name="{{ .name }}time"]').val();
-                if (date || time){
+                if ( date && date != '' ){
                     $('[name="{{ .name }}"]').val(date+" "+time);
+                } else {
+                    $('[name="{{ .name }}"]').val('');
                 }
             });
 
