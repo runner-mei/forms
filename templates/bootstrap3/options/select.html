@@ -52,7 +52,7 @@
     
     {{- if .preText}}<span>{{.preText}}</span>{{end -}}
 
-        <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{- if or $.customDatasource $.customDatasourceAJAX }}{{if ne . "select2"}} {{.}} {{end}}{{else}}{{if eq . "select2"}} my_select2 {{else}} {{.}} {{end}}{{end}}{{end}}{{end}}"
+        <select name="{{.name}}" class="form-control {{ if .classes }}{{range .classes}}{{- if or $.customDatasource $.customDatasourceAJAX }}{{if ne . "select2"}} {{.}} {{end}}{{else}}{{if eq . "select2"}} select2 my_select2 {{else}} {{.}} {{end}}{{end}}{{end}}{{end}}"
                 {{- if .id}} id="{{.id}}" {{end}}{{if .params}}{{range $k, $v :=.params}} {{$k}}="{{$v}}" {{end}}{{end -}}
                 {{- if .css}}
                 style="{{range $k, $v := .css}}{{$k}}: {{$v}}; {{end}}"
