@@ -19,13 +19,13 @@
             {{- range $oldValue, $ignore :=$.multValues -}}
 
                 {{- $valueExists := false}}
-                {{- range $v := .choices -}}
+                {{- range $v := $.choices -}}
 
                   {{- if $.nogroup -}}
                     {{- $optValue := readOptValue $v}}
                     {{- $optLabel := readOptLabel $v}}
                     {{- if eq $oldValue $optValue}} 
-                      {{- $optLabel}}<br/>
+                      {{- $optLabel}}&nbsp;&nbsp;
                       {{- $valueExists = true}}
                     {{- end -}}
                   {{- else}}
@@ -33,7 +33,7 @@
                       {{- $optValue := readOptValue .}}
                       {{- $optLabel := readOptLabel .}}
                       {{- if eq $oldValue $optValue}} 
-                        {{- $optLabel}}<br/>
+                        {{- $optLabel}}&nbsp;&nbsp;
                         {{- $valueExists = true}}
                       {{- end -}}
                     {{- end -}}
@@ -55,7 +55,7 @@
                 {{- $optValue := readOptValue $v}}
                 {{- $optLabel := readOptLabel $v}}
                 {{- if eq $.value $optValue}} 
-                  {{- $optLabel}}<br/>
+                  {{- $optLabel}}&nbsp;
                   {{- $valueExists = true}}
                 {{- end -}}
 
