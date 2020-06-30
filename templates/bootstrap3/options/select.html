@@ -1,5 +1,6 @@
 {{- define "main"}}
 
+    {{- if .id}}{{else}}{{generateID | set . "id" }} {{end}}
     {{- if strIn "multiple" .tags -}}
       {{- append .ctx_parent "moreScripts" "/public/js/plugins/chosen/chosen.jquery.js" -}}
       {{- append .ctx_parent "moreLazyStyles" "/public/css/plugins/chosen/chosen.css"}}

@@ -1,5 +1,6 @@
 {{- define "main"}}
 
+    {{- if .id}}{{else}}{{generateID | set . "id" }} {{end}}
     {{- $isEditable := false}}
     {{- $ctx_parent := $.ctx_parent}}
     {{- if and $ctx_parent $ctx_parent.ctx_parent}}

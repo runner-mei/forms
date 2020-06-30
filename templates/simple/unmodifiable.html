@@ -12,7 +12,7 @@
             {{- range $oldValue, $ignore :=$.multValues -}}
 
                 {{- $valueExists := false}}
-                {{- range $v := .choices -}}
+                {{- range $v := $.choices -}}
 
                   {{- if $.nogroup -}}
                     {{- $optValue := readOptValue $v}}
