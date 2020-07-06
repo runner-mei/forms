@@ -14,7 +14,7 @@
            value="{{.value}}"
            {{end}} />
     {{- if or .helptext .errors -}}
-    <span class="help-block">{{if .helptext}}{{ .helptext }}{{end -}}
+    <span class="help-block">{{if .helptext}}{{raw .helptext }}{{end -}}
             {{if .errors}}<ul>{{ range .errors }}<li>{{.}}</li>{{end -}}
               </ul>{{end -}}
     </span>
