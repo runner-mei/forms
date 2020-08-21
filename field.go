@@ -345,12 +345,14 @@ func (f *Field) Render(theme string) template.HTML {
 		unmodifiable := toBoolean(f.additionalData["unmodifiable"])
 
 		if unmodifiable {
-			args, ok := f.ctx.(map[string]interface{})
-			if ok {
-				if mode := args["form_mode"]; mode != nil && mode.(string) != "new" {
-					fieldType = "unmodifiable"
-				}
-			}
+			// args, ok := f.ctx.(map[string]interface{})
+			// if ok {
+			// 	if mode := args["form_mode"]; mode != nil && mode.(string) != "new" {
+			// 		fieldType = "unmodifiable"
+			// 	}
+			// }
+
+			fieldType = "unmodifiable"
 		}
 	}
 
