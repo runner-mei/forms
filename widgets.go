@@ -407,11 +407,12 @@ func toBoolean(v interface{}) bool {
 
 func toTime(v interface{}) (time.Time, bool) {
 	if t, ok := v.(time.Time); ok {
-		return t, true
+		return t.Local(), true
 	}
 
 	if t, ok := v.(*time.Time); ok {
-		return *t, true
+
+		return t.Local(), true
 	}
 
 	s, ok := v.(string)
@@ -432,7 +433,7 @@ func toTime(v interface{}) (time.Time, bool) {
 		"2006-01-02 15:04",
 		"2006-01-02 15:04:05"} {
 		if m, e := time.Parse(layout, s); nil == e {
-			return m, true
+			return m.Local(), true
 		}
 	}
 
