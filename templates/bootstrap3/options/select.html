@@ -200,11 +200,35 @@
                 if (typeof $.fn.select2 !== "undefined"){
                   $(".my_select2").each(function(){
                     var disabled = $(this).attr("readonly") === "readonly";
-                    $(this).prop("disabled", disabled).select2({
+                    var isSupportInput = $(this).attr("is_support_input") == "true";
+                    var placeholder = $(this).attr("placeholder");
+                    var opts = {
                       // search_contains:true,
                       width:'100%',
-                      disabled:disabled});
-                  })
+                      disabled: disabled,
+                    };
+                    if (!!placeholder && placeholder != '') {
+                       opts.placeholder = placeholder;
+                    }
+                    if (isSupportInput) {
+                       opts.tags = true;
+                       opts.createTag = function (params) {
+                          var term = $.trim(params.term);
+
+                          if (term === '') {
+                            return null;
+                          }
+
+                          return {
+                            id: term,
+                            text: term,
+                            newTag: true // add additional parameters
+                          };
+                        }
+                    }
+
+                    $(this).prop("disabled", disabled).select2(opts);
+                  });
                 }
             });
           });
