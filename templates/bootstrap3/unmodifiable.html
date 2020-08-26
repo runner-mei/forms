@@ -7,11 +7,11 @@
   {{- if .id}} for="{{.id}}" 
   {{- end -}}>{{- if .label -}}{{.label}}{{- end -}}</label>
   {{- end -}}
-  <div class="col-lg-{{default .controlWidth 9}}" {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
+  <div class="col-lg-{{default .controlWidth 9}}">
+    <p class="form-control-static" {{- if .id}} id="{{.id}}-p" {{end}} {{if .params }}{{range $k, $v := .params}} {{if eq $k "rows" -}}
       {{- $i := toInt $v -}}
       style="overflow:auto; height: {{mul $i 20}}px"
     {{- end}}{{end}}{{end}}>
-    <p class="form-control-static" {{- if .id}} id="{{.id}}-p" {{end}}>
       {{- if .choices -}}
 
 

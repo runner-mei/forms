@@ -386,6 +386,13 @@ var defaultFuncs = template.FuncMap{
 	},
 	"readOptValue": readOptValue,
 	"readOptLabel": readOptLabel,
+	"isEmpty": func(value interface{}) bool {
+		if value == nil {
+			return true
+		}
+		rValue := reflect.ValueOf(value)
+		return isZero(rValue)
+	},
 }
 
 func toBoolean(v interface{}) bool {
