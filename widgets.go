@@ -714,6 +714,8 @@ func isOptionSet(v interface{}, isSlice bool) (bool, bool) {
 			if !rv.IsValid() {
 				return false, false
 			}
+		} else {
+			return false, false
 		}
 
 		switch rv.Interface().(type) {
