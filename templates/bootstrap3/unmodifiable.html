@@ -88,7 +88,7 @@
       {{- else if eq .type "datetime-local" -}}
         {{- form_datetime .value -}}
       {{- else -}}
-        {{- nl2br  .value}}
+        {{- nl2br (strReplace .value "<br>" "\n")}}
       {{- end -}}
     </p>
 

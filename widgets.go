@@ -306,7 +306,7 @@ var defaultFuncs = template.FuncMap{
 		if t.IsZero() {
 			return ""
 		}
-		return t.Format("2006-01-02")
+		return t.Local().Format("2006-01-02")
 	},
 	"form_time": func(value interface{}) string {
 		t, ok := toTime(value)
@@ -316,7 +316,7 @@ var defaultFuncs = template.FuncMap{
 		if t.IsZero() {
 			return ""
 		}
-		return t.Format("15:04")
+		return t.Local().Format("15:04")
 	},
 	"form_date_and_time": func(value interface{}) string {
 		t, ok := toTime(value)
@@ -326,7 +326,7 @@ var defaultFuncs = template.FuncMap{
 		if t.IsZero() {
 			return ""
 		}
-		return t.Format("2006-01-02 15:04")
+		return t.Local().Format("2006-01-02 15:04")
 	},
 	"form_datetime": func(value interface{}) string {
 		t, ok := toTime(value)
@@ -336,7 +336,7 @@ var defaultFuncs = template.FuncMap{
 		if t.IsZero() {
 			return ""
 		}
-		return t.Format("2006-01-02 15:04:05")
+		return t.Local().Format("2006-01-02 15:04:05")
 	},
 	"generateID": func() string {
 		v := atomic.AddInt32(&gID, 1)
@@ -353,6 +353,11 @@ var defaultFuncs = template.FuncMap{
 	// Replaces newlines with <br>
 	"nl2br": func(text string) template.HTML {
 		return template.HTML(strings.Replace(template.HTMLEscapeString(text), "\n", "<br>", -1))
+	},
+
+	// Replaces newlines with <br>
+	"strReplace": func(text, oldValue, newValue string) string {
+		return strings.Replace(text, oldValue, newValue, -1)
 	},
 
 	// Skips sanitation on the parameter.  Do not use with dynamic data.
