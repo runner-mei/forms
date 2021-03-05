@@ -444,7 +444,7 @@ func toTime(v interface{}) (time.Time, bool) {
 		"2006-01-02",
 		"2006-01-02 15:04",
 		"2006-01-02 15:04:05"} {
-		if m, e := time.Parse(layout, s); nil == e {
+		if m, e := time.ParseInLocation(layout, s, time.Local); nil == e {
 			return m.Local(), true
 		}
 	}
