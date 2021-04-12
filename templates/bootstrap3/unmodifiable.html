@@ -16,15 +16,17 @@
 
 
         {{- if strIn "multiple" $.tags -}}
+
             {{- range $oldValue, $ignore :=$.multValues -}}
 
+                {{- $oldValueStr := toString $oldValue}}
                 {{- $valueExists := false}}
                 {{- range $v := $.choices -}}
 
                   {{- if $.nogroup -}}
                     {{- $optValue := readOptValue $v}}
                     {{- $optLabel := readOptLabel $v}}
-                    {{- if eq $oldValue $optValue}} 
+                    {{- if eq $oldValueStr (toString $optValue)}} 
                       {{- $optLabel}}&nbsp;&nbsp;
                       {{- $valueExists = true}}
                     {{- end -}}
@@ -32,7 +34,7 @@
                     {{- range $v.Children -}}
                       {{- $optValue := readOptValue .}}
                       {{- $optLabel := readOptLabel .}}
-                      {{- if eq $oldValue $optValue}} 
+                      {{- if eq $oldValueStr (toString $optValue)}} 
                         {{- $optLabel}}&nbsp;&nbsp;
                         {{- $valueExists = true}}
                       {{- end -}}
@@ -47,14 +49,14 @@
             {{- end -}}
         {{- else -}}
 
+            {{- $valueStr := toString $.value}}
             {{- $valueExists := false}}
             {{- range $v := .choices -}}
 
               {{- if $.nogroup -}}
-
                 {{- $optValue := readOptValue $v}}
                 {{- $optLabel := readOptLabel $v}}
-                {{- if eq $.value $optValue}} 
+                {{- if eq $valueStr (toString $optValue)}} 
                   {{- $optLabel}}&nbsp;
                   {{- $valueExists = true}}
                 {{- end -}}
@@ -64,7 +66,7 @@
                 {{- range $v.Children -}}
                   {{- $optValue := readOptValue .}}
                   {{- $optLabel := readOptLabel .}}
-                  {{- if eq $.value $optValue}} 
+                  {{- if eq $valueStr (toString $optValue)}}
                     {{- $optLabel}} 
                     {{- $valueExists = true}}
                   {{- end -}}
