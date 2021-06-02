@@ -420,6 +420,9 @@ func (f *Field) RemoveLabelClass(class string) FieldInterface {
 
 // SetParam adds a parameter (defined as key-value pair) in the field.
 func (f *Field) SetParam(key, value string) FieldInterface {
+	if key == "data-placeholder" {
+		value = gettext.Gettext(value)	
+	}
 	f.params[key] = value
 	return f
 }
