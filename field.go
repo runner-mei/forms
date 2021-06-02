@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/revel/revel"
+	"github.com/runner-mei/goutils/gettext"
 )
 
 // Field is a generic type containing all data associated to an input field.
@@ -395,7 +396,7 @@ func (f *Field) SetID(id string) FieldInterface {
 
 // SetLabel saves the label to be rendered along with the field.
 func (f *Field) SetLabel(label string) FieldInterface {
-	f.label = label
+	f.label = gettext.Gettext(label)
 	return f
 }
 
