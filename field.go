@@ -494,7 +494,7 @@ func (f *Field) SetValue(value interface{}) FieldInterface {
 
 // SetHelptext saves the field helptext.
 func (f *Field) SetHelptext(text string) FieldInterface {
-	f.helptext = text
+	f.helptext = gettext.Gettext(text)
 	return f
 }
 
