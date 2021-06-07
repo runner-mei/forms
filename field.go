@@ -396,12 +396,13 @@ func (f *Field) SetID(id string) FieldInterface {
 
 // SetLabel saves the label to be rendered along with the field.
 func (f *Field) SetLabel(label string) FieldInterface {
-	if strings.HasPrefix(label, ":") {
-		f.label = gettext.Gettext(strings.TrimPrefix(label, ":")) + ":"
-	} else if strings.HasPrefix(label, "：") {
-		f.label = gettext.Gettext(strings.TrimPrefix(label, "：")) + "："
-	} else {
-		f.label = gettext.Gettext(label)
+	f.label = gettext.Gettext(label)
+	if f.label == label {
+		if strings.HasSuffix(label, ":") {
+			f.label = gettext.Gettext(strings.TrimSuffix(label, ":")) + ":"
+		} else if strings.HasSuffix(label, "：") {
+			f.label = gettext.Gettext(strings.TrimSuffix(label, "：")) + "："
+		}
 	}
 	return f
 }
